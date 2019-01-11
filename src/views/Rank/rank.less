@@ -8,12 +8,14 @@
     box-sizing: border-box;
     overflow: hidden;
     height: 100%;
-    padding-top: 30*@rem;
+    padding-top: 76*@rem;
+    padding-bottom: 49*@rem;
 }
 #rank-swiper .swiper-slide{
     overflow: auto;
 }
 #rank-pag{
+    top: 46*@rem;
     position: absolute;
     height: 30*@rem;  
     display: flex;
@@ -26,7 +28,7 @@
             display: block;
             flex: 1;
             width: 33.3%;
-            height: 30*@rem;
+            height: 33*@rem;
             line-height: 30*@rem;
             color: #666666;
             flex: 1;
@@ -37,7 +39,7 @@
             span{
                 position: absolute;
                 display: block;
-                
+                margin-top: 8*@rem;
                 height: 2px;
                 
             }
@@ -47,9 +49,9 @@
             display: block;
             color: #47A83A;
             span{
-                background: #47A83A;
-                width: 22*@rem;
-                bottom: 0;
+                border-bottom: 2*@rem solid #47A83A;
+                width: 47*@rem;
+                bottom: 1*@rem;
                 left: 50%;
                 transform: translateX(-50%);
             }

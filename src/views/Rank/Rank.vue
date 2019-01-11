@@ -1,10 +1,11 @@
 <template>
     <div class="rank">
+        <TopBar />
         <div class="swiper-pagination" id="rank-pag"></div>
         <div class="swiper-container" id="rank-swiper">
             <div class="swiper-wrapper">
                 <div class="swiper-slide new-game">
-                    <scroller :on-infinite="infinite" :on-refresh="refresh" ref="my_scroller">
+                    <scroller :on-infinite="infinite" :on-refresh="refresh" ref="my_scroller" refreshText="3733盒子刷新">
                         <Billboard :top3="newgameTop3"></Billboard>
                         <GameInfo v-for="(list, index) of qualityFirstList" :key="index" :list="list">
                         </GameInfo>
@@ -27,6 +28,7 @@
 </template>
 <script>
     import Swiper from 'swiper';
+    import TopBar from '@/components/topbar/topbar.vue';
     import NavCom from '@/components/navcom/navcom.vue';
     import GameInfo from '@/components/gameinfo/gameinfo.vue';
     import Billboard from '@/components/billboard/billboard.vue';
@@ -68,10 +70,10 @@
                 }, 1500)
             },
             refresh: function() { //下拉刷新
-                // console.log('refresh')
-                this.timeout = setTimeout(() => {
-                    this.$refs.my_scroller.finishpulltorefresh()
-                }, 1500)
+                setTimeout(()=>{
+                    this.$refs.my_scroller.finishPullToRefresh();
+                },1000)
+                
             }
         },
         mounted() {
@@ -118,7 +120,8 @@
         components: {
             GameInfo,
             Billboard,
-            NavCom
+            NavCom,
+            TopBar
         }
     }
 </script>

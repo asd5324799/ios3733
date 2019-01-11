@@ -1,0 +1,46 @@
+/* top-bar */
+@rem: 0.0267rem;
+.top-bar{
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 8*@rem 0;
+    justify-content: space-between;
+    .search{
+        box-sizing: border-box;
+        color: #888888;
+        display: block;
+        width: 347*@rem;
+        height: 30*@rem;
+        line-height: 30*@rem;
+        text-align: left;
+        margin: 0 auto;
+        padding-left: 33*@rem;
+        font-size:14*@rem;
+        letter-spacing: 2*@rem;
+        font-family:PingFang-SC-Regular;
+        font-weight:400;
+        background: url(../../assets/images/search.png) 10*@rem center no-repeat #F5F5F5;
+        background-size: 15*@rem 15*@rem;
+        position: relative;
+        object{
+            position: absolute;
+            right: 0;
+            top: 9*@rem;
+            width: 28*@rem;
+            height: 12*@rem;
+            border-left: 1px solid #E5E5E5;
+        }
+        .qrcode{
+            display: block;
+        }
+        .code-icon{
+            display: block;
+            height: 12*@rem;
+            background: url(../../assets/images/qrcode.png) center center no-repeat;
+            background-size: 14*@rem 12*@rem;
+        }
+    }
+}

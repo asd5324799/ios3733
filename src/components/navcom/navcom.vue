@@ -40,7 +40,7 @@ export default {
                 {
                     title:"我的",
                     desc:"mine",
-                    src:"./about",
+                    src:"./mine",
                     icon:"../../assets/images/mine.png",
                     activeSrc:"../../assets/images/mine-active.png"
                 }
