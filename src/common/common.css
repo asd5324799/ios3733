@@ -4,19 +4,21 @@
   border: none;
   line-height: 1.2;
 }
-html,body{
+html,
+body {
   height: 100%;
 }
-#app{
+#app {
   height: 100%;
 }
 a {
   text-decoration: none;
   color: inherit;
 }
-a,input {
+a,
+input {
   outline: none;
 }
-li{
+li {
   list-style: none;
 }

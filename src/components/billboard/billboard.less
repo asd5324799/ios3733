@@ -1,0 +1,146 @@
+/* billboard */
+@rem: 0.0267rem;
+.billboard{
+    overflow: hidden;
+    background:linear-gradient(90deg,rgba(255,157,2,1),rgba(255,190,87,1));
+    .title{
+        h3{
+            height:43*@rem;
+            font-size:21*@rem;
+            font-family:BigruixianBoldkGBV10;
+            font-weight:400;
+            color:rgba(255,255,255,1);
+            line-height:43*@rem;
+            text-align: center;
+            i.left-ico{
+                background:url(../../assets/images/title-left.png) no-repeat;
+                margin-right: 14*@rem;
+            }
+            i.right-ico{
+                background:url(../../assets/images/title-right.png) no-repeat;
+                margin-left: 14*@rem;
+            }
+            i{
+                display: inline-block;
+                width: 38*@rem;
+                height: 12*@rem;
+                background-size: 100% 100% !important;
+            }
+        }
+    }
+    .game-box{
+        width: 347*@rem;
+        height: 153*@rem;
+        margin: 18*@rem auto 10*@rem;
+        background: #fff;
+        border-radius: 8*@rem;
+        .game-list{
+            position: relative;
+            
+            .game-item{
+                width: 30%;
+                text-align: center;
+                position: absolute;
+                .game-pic{
+                    width: 65*@rem;
+                    height: 65*@rem;
+                    position: relative;
+                    background: #EEEEEE;
+                    border-radius: 50%;
+                    margin: 19*@rem auto 0;
+                    img{
+                        background: #EEEEEE;
+                        width: 65*@rem;
+                        height: 65*@rem;
+                        border-radius: 50%;
+                    }
+                    .cap-ico{
+                        display: block;
+                        position: absolute;
+                        width: 25*@rem;
+                        height: 20*@rem;
+                        right: 0;
+                        top: -8*@rem;
+                        background: #000;
+                        z-index: 2;
+                    }
+                    .no-ico{
+                        display: block;
+                        position: absolute;
+                        width: 74*@rem;
+                        height: 16*@rem;
+                        bottom: -10*@rem;
+                        left: 50%;
+                        transform:translateX(-50%);
+                        background: #000;
+                        z-index: 2;
+                    }
+                }
+                .game-title{
+                    font-size:12*@rem;
+                    font-family:PingFang-SC-Regular;
+                    font-weight:400;
+                    color:rgba(51,51,51,1);
+                    margin-top:15*@rem;
+                    padding: 0 10*@rem;
+                    overflow: hidden;
+                    height: 14*@rem;
+                }
+                a.down{
+                    display: block;
+                    width:50*@rem;
+                    height:25*@rem;
+                    // border:1px solid rgba(255,157,2,1);
+                    background-color: rgba(71, 168, 58, 1);
+                    border-radius:3*@rem;
+                    line-height: 25*@rem;
+                    font-size:14*@rem;
+                    font-family:PingFang-SC-Regular;
+                    font-weight:400;
+                    color:#fff;
+                    margin: 5*@rem auto;
+                    letter-spacing: 2*@rem;
+                }
+                &:nth-of-type(1){
+                    width: 40%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    top: -15*@rem;
+                    background: url(../../assets/images/shadow-side.png)no-repeat;
+                    background-size: 100% 100%;
+                    .game-pic{
+                        transform: scale(1.2);
+                        transform-origin: top;
+                    }
+                    .game-title{
+                        margin-top:30*@rem;
+                    }
+                    .cap-ico{
+                        background: url(../../assets/images/cap-yellow.png) center center/100% no-repeat;
+                    }
+                    .no-ico{
+                        background: url(../../assets/images/no1.png) center center/100% no-repeat;
+                    }
+                }
+                &:nth-of-type(2){
+                    left: 0;
+                    .cap-ico{
+                        background: url(../../assets/images/cap-red.png) center center/100% no-repeat;
+                    }
+                    .no-ico{
+                        background: url(../../assets/images/no2.png) center center/100% no-repeat;
+                    }
+                }
+                &:nth-of-type(3){
+                    right: 0;
+                    .cap-ico{
+                        background: url(../../assets/images/cap-blue.png) center center/100% no-repeat;
+                    }
+                    .no-ico{
+                        background: url(../../assets/images/no3.png) center center/100% no-repeat;
+                    }
+                }
+            }
+        }
+    }
+}

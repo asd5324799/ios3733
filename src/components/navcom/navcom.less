@@ -1,0 +1,80 @@
+/* top-bar */
+@rem: 0.0267rem;
+    .router-link-exact-active p{
+        display: block;
+        color: #5EB352;
+        transition: 0.3s;
+    }
+    .nav-list{
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        background: #fff;
+        width: 100%;
+        height: 49*@rem;
+        text-align: center;
+        border-top: 1px solid #eee;
+        z-index: 99999;
+    }
+    .nav-item{
+        width: 25%;
+        a{
+            display: block;
+        }
+        i{
+            display: block;
+            width: 18*@rem;
+            height: 18*@rem;
+            transition: 0.3s;
+            margin: 0 auto;
+            margin-top: 8*@rem;
+            
+        }
+        .recom{
+            background: url(../../assets/images/recom.png) no-repeat;
+            background-size: 18*@rem 18*@rem;
+        }
+        .rank{
+            background: url(../../assets/images/rank.png) no-repeat;
+            background-size: 18*@rem 18*@rem;
+        }
+        .list{
+            background: url(../../assets/images/list.png) no-repeat;
+            background-size: 18*@rem 18*@rem;
+        }
+        .mine{
+            background: url(../../assets/images/mine.png) no-repeat;
+            background-size: 18*@rem 18*@rem;
+        }
+        .router-link-exact-active{
+            .recom{
+                background: url(../../assets/images/recom-active.png) no-repeat;
+                background-size: 18*@rem 18*@rem;
+            }
+            .rank{
+                background: url(../../assets/images/rank-active.png) no-repeat;
+                background-size: 18*@rem 18*@rem;
+            }
+            .list{
+                background: url(../../assets/images/list-active.png) no-repeat;
+                background-size: 18*@rem 18*@rem;
+            }
+            .mine{
+                background: url(../../assets/images/mine-active.png) no-repeat;
+                background-size: 18*@rem 18*@rem;
+            }
+        }
+    } 
+    .nav-item p{
+        font-size: 10*@rem;
+        margin-top: 5*@rem;
+        transition: 0.3s;
+    }
+    .nav-item a{
+        color: #919191;
+        transition: 0.3s;
+        
+    }
+    .active{
+        color: #5EB352;
+    }

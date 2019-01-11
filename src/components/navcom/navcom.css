@@ -1,0 +1,75 @@
+/* top-bar */
+.router-link-exact-active p {
+  display: block;
+  color: #5EB352;
+  transition: 0.3s;
+}
+.nav-list {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  background: #fff;
+  width: 100%;
+  height: 1.3083rem;
+  text-align: center;
+  border-top: 1px solid #eee;
+  z-index: 99999;
+}
+.nav-item {
+  width: 25%;
+}
+.nav-item a {
+  display: block;
+}
+.nav-item i {
+  display: block;
+  width: 0.4806rem;
+  height: 0.4806rem;
+  transition: 0.3s;
+  margin: 0 auto;
+  margin-top: 0.2136rem;
+}
+.nav-item .recom {
+  background: url(../../assets/images/recom.png) no-repeat;
+  background-size: 0.4806rem 0.4806rem;
+}
+.nav-item .rank {
+  background: url(../../assets/images/rank.png) no-repeat;
+  background-size: 0.4806rem 0.4806rem;
+}
+.nav-item .list {
+  background: url(../../assets/images/list.png) no-repeat;
+  background-size: 0.4806rem 0.4806rem;
+}
+.nav-item .mine {
+  background: url(../../assets/images/mine.png) no-repeat;
+  background-size: 0.4806rem 0.4806rem;
+}
+.nav-item .router-link-exact-active .recom {
+  background: url(../../assets/images/recom-active.png) no-repeat;
+  background-size: 0.4806rem 0.4806rem;
+}
+.nav-item .router-link-exact-active .rank {
+  background: url(../../assets/images/rank-active.png) no-repeat;
+  background-size: 0.4806rem 0.4806rem;
+}
+.nav-item .router-link-exact-active .list {
+  background: url(../../assets/images/list-active.png) no-repeat;
+  background-size: 0.4806rem 0.4806rem;
+}
+.nav-item .router-link-exact-active .mine {
+  background: url(../../assets/images/mine-active.png) no-repeat;
+  background-size: 0.4806rem 0.4806rem;
+}
+.nav-item p {
+  font-size: 0.267rem;
+  margin-top: 0.1335rem;
+  transition: 0.3s;
+}
+.nav-item a {
+  color: #919191;
+  transition: 0.3s;
+}
+.active {
+  color: #5EB352;
+}
