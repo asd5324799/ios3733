@@ -5,11 +5,11 @@
       :key="index"
       class="game-info">
       <router-link
-        to="/detail"
+        :to="{name: 'Detail'}"
         tag="div">
         <img class="big-img" v-if="showBigImg(index)" :src="BigImgSrc(index)">
         <div class="container" v-if="!showBigImg(index)">
-          <div class="game-number" v-if="type === 2 ? true : false">{{index}}</div>
+          <div class="game-number" v-if="type === 2 ? true : false">{{index + 4}}</div>
           <img 
             :src="item.titlepic"
             class="game-img">
@@ -34,18 +34,16 @@
           </div>
         </div>
       </router-link>
-      <a :href="item.down_ip" class="game-download" v-if="!showBigImg(index)">下载</a>
+      <a :href="item.down_ip" class="game-download" v-if="!showBigImg(index)">{{'下载'}}</a>
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: 'GameInfo',
+  name: 'GameList',
   props: {
     list: Array,
     type: Number,
-  },
-  mounted() {
   },
   methods: {
     showBigImg(index) {
@@ -69,6 +67,6 @@ export default {
   },
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   @import './gamelist.less';
 </style>

@@ -2,15 +2,17 @@
   <div class="game-title">
     {{headerTitle}}
     <router-link 
-    to=""
+    :to="{name: router}"
     tag="span"
     class="more">更多</router-link>
   </div>
 </template>
 <script>
 export default {
+  name: 'GameTitle',
   props: {
-    headerTitle: String
+    headerTitle: String,
+    router: String
   }
 }
 </script>

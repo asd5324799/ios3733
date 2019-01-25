@@ -8,8 +8,9 @@
         <router-link class="container" to="/detail">
           <img :src="item.titlepic" class="game-img">
           <div class="game-name">{{item.title}}</div>
+          <div class="game-type" v-if="type === '3'">{{item.totaldown}}人在玩</div>
         </router-link>
-        <a :href="item.down_ip" class="button">下载</a>
+        <a :href="item.down_ip" class="button">{{type === 2 ? '预约' : '下载'}}</a>
       </li>
     </ul>
   </div>
@@ -17,10 +18,9 @@
 <script>
 export default {
   props: {
-    list: Array
-  },
-  mounted() {
-  },
+    list: Array,
+    type: String
+  }
 };
 </script>
 <style lang="less">
