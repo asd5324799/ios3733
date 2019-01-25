@@ -1,9 +1,12 @@
 const express = require('express');
 const gameRouter = require('./game');
-
+var bodyParser = require('body-parser');
 const app = express(); 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
-app.post('/api/index', (req, res) =>{
+
+app.post('/api/index/index', (req, res) =>{
   res.json(
     {
       "log": {
@@ -1504,9 +1507,451 @@ app.post('/api/index', (req, res) =>{
           ],
           "interstitial": null
       }
-  }
+  },
+  res.end(req.body)
   )
 });
+app.post('/api/subject/items', (req, res) =>{
+    res.json(
+        {
+            "log": {
+                "sql": [
+                    "[ DB ] CONNECT:[ UseTime:0.014122s ] mysql:host=rm-uf6t81p3k9h712109.mysql.rds.aliyuncs.com;port=3306;dbname=xiaoyu3733db;charset=utf8",
+                    "[ SQL ] SHOW COLUMNS FROM `www_92game_net_d_ecms_subject` [ RunTime:0.003182s ]",
+                    "[ SQL ] SELECT `id`,`title`,`subject_desc`,`titlepic`,`newstime` FROM `www_92game_net_d_ecms_subject` WHERE  `id` = 108 LIMIT 1 [ RunTime:0.002568s ]",
+                    "[ SQL ] SHOW COLUMNS FROM `www_92game_net_d_ecms_app` [ RunTime:0.003537s ]",
+                    "[ SQL ] SELECT `a`.`id`,`a`.`classid`,`a`.`totaldown`,`a`.`title`,`a`.`newstime`,`a`.`titlepic`,`a`.`down_a`,`a`.`version`,`a`.`titleimg`,`a`.`size_a`,`a`.`size_ip`,`a`.`type`,`a`.`sign`,`a`.`yxftitle`,`a`.`version_code`,`a`.`package_name`,`a`.`license_md5`,`a`.`app_tag`,`a`.`gm_url`,`a`.`cp_id`,`a`.`smalltext`,`a`.`video_url`,`a`.`video_thumb`,`a`.`subpackage_domain`,`a`.`state`,`a`.`uc_dl`,`a`.`app_id`,`a`.`app_id_i`,`a`.`enable_speedup` FROM `www_92game_net_d_ecms_app` `a` INNER JOIN `xiaoyu3733db`.`www_92game_net_d_ecms_subject_game` `b` ON `a`.`id`=`b`.`game_id` WHERE  `a`.`state` IN (1,5)  AND `a`.`platform` LIKE '%IOS%'  AND `b`.`subject_id` = 108 ORDER BY `b`.`tuijian` DESC,`b`.`newstime` DESC LIMIT 0,20 [ RunTime:0.003510s ]"
+                ],
+                "info": [
+                    "[ LANG ] C:\\www\\3733.com\\api2\\thinkphp\\lang\\zh-cn.php",
+                    "[ ROUTE ] array (\n  'type' => 'module',\n  'module' => \n  array (\n    0 => 'api',\n    1 => 'subject',\n    2 => 'items',\n  ),\n)",
+                    "[ HEADER ] array (\n  'content-type' => 'application/x-www-form-urlencoded',\n  'cache-control' => 'no-cache',\n  'postman-token' => '1bc98930-dd69-4e9c-a2c6-d14e27e38b0b',\n  'user-agent' => 'PostmanRuntime/7.6.0',\n  'accept' => '*/*',\n  'host' => 'api2.c3733.com',\n  'accept-encoding' => 'gzip, deflate',\n  'content-length' => '76',\n  'connection' => 'keep-alive',\n)",
+                    "[ PARAM ] array (\n  '/api/subject/items' => '',\n  'uuid' => 'ffffffff-1234-1234-1234-123456789012',\n  'from' => '103',\n  'id' => '108',\n  'page' => '1',\n  'listRows' => '20',\n)",
+                    "[ RUN ] app\\api\\controller\\Subject->items[ C:\\www\\3733.com\\api2\\application\\api\\controller\\Subject.php ]",
+                    "[ DB ] INIT mysql",
+                    "[ CACHE ] INIT File"
+                ]
+            },
+            "time": 1547720653,
+            "code": 1,
+            "data": {
+                "info": {
+                    "id": 108,
+                    "title": "【第56期】3733手游一周好游戏推荐",
+                    "subject_desc": "一步从冬天跨入夏天，马上就要进入到酷热的炎暑，最近一批好玩的游戏上线3733平台了，在这热情的季节了，3733游戏作为东道主，自然要好好款待每一个登门的小伙伴，赶紧来看看小编今天为各位玩家带来了什么游戏吧。",
+                    "titlepic": "http://pic3.3733.com/d/file/zhuanti/2018-05-25/75fab5bf0ca54af4ab7122475fd4e062.jpg",
+                    "newstime": 1527239834
+                },
+                "games": [
+                    {
+                        "id": 3011,
+                        "classid": 1,
+                        "totaldown": 14361,
+                        "title": "大唐升官路",
+                        "newstime": 1533261605,
+                        "titlepic": "http://pic5.3733.com/icon/201812/aa29332de1ad7560cc1368d0c9b1eeb7.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/guanrhh.apk",
+                        "version": "1.0",
+                        "titleimg": "",
+                        "size_a": "103.7 MB",
+                        "size_ip": "",
+                        "type": [
+                            "策略"
+                        ],
+                        "sign": [],
+                        "yxftitle": "上线送V5，8888元宝，3000铜钱",
+                        "version_code": 1,
+                        "package_name": "com.jianwan.grhh",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 4,
+                                "name": "变态版",
+                                "color": "#ba69ff",
+                                "icon": "http://pic5.3733.com/icon/201805/dc2ec5deea466fb62e7255d97fa5adbc.png"
+                            },
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:200",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "玩家以当官为第一视角，通过娶妻生娃、培养门客、组建帮会、玩家PK",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/8e45c765vodtransgzp1252153290/c1b3960c7447398156166161075/v.f30.mp4",
+                        "video_thumb": "http://pic5.3733.com/snapshot/201901/c1c50204b25955ea306818cf07b24f12_n.jpeg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 60634,
+                        "app_id_i": 6338,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/grhhios_6338/grhhios_6338.plist"
+                    },
+                    {
+                        "id": 2992,
+                        "classid": 49,
+                        "totaldown": 5599,
+                        "title": "独孤天下",
+                        "newstime": 1538287200,
+                        "titlepic": "http://pic5.3733.com/icon/201812/534daf4f192fc6ae83d5bc41d4776c01.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/dugtx.apk",
+                        "version": "1.05.0",
+                        "titleimg": "http://pic5.3733.com/banner/201812/3ee085c74add20ecf8611293fb0e2bd8_n.jpeg",
+                        "size_a": "103.3 MB",
+                        "size_ip": "",
+                        "type": [
+                            "角色",
+                            "动作"
+                        ],
+                        "sign": [],
+                        "yxftitle": "送V5，10元满V，绑元38888，银币300W",
+                        "version_code": 105,
+                        "package_name": "com.junhai.wxjh.cgamex.zhuayou",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 7,
+                                "name": "满Vip版",
+                                "color": "#f87e71",
+                                "icon": "http://pic5.3733.com/icon/201805/ea27ee5a7a44c48461d1ecaba68b8183.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:200",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "进入一个无限遐想的诗意武侠大江湖",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/8e45c765vodtransgzp1252153290/c0e7f1677447398155631281332/v.f30.mp4",
+                        "video_thumb": "http://pic3.3733.com/d/file/cb/2018-05-30/5de23ea5eac23083954880a674a78aa5.jpg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 60807,
+                        "app_id_i": 6429,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/dgtxios_6429/dgtxios_6429.plist"
+                    },
+                    {
+                        "id": 3079,
+                        "classid": 1,
+                        "totaldown": 12881,
+                        "title": "新大主宰",
+                        "newstime": 1532746801,
+                        "titlepic": "http://pic5.3733.com/icon/201901/4eeca9c87ce6f0ea039735ac56e917fe.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/xindazz.apk",
+                        "version": "3.0.0.0",
+                        "titleimg": "http://pic3.3733.com/d/file/game/2018-10-09/c3b0c46a4805430efbc839a7fc89d396.jpg",
+                        "size_a": "234.2 MB",
+                        "size_ip": "",
+                        "type": [
+                            "角色",
+                            "卡牌"
+                        ],
+                        "sign": [],
+                        "yxftitle": "上线送vip6，100万铜币",
+                        "version_code": 3000,
+                        "package_name": "com.heitao.dzz",
+                        "license_md5": "",
+                        "app_tag": [
+                            {
+                                "type": 4,
+                                "name": "变态版",
+                                "color": "#ba69ff",
+                                "icon": "http://pic5.3733.com/icon/201805/dc2ec5deea466fb62e7255d97fa5adbc.png"
+                            },
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:200",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "《新大主宰》是由起点白金作家天蚕土豆正版授权",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/8e45c765vodtransgzp1252153290/0d56a9317447398155863490351/v.f30.mp4",
+                        "video_thumb": "http://pic3.3733.com/d/file/game/2018-05-02/0aa546b7ab587d821ee2822e50ccec8c.jpg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 60792,
+                        "app_id_i": 7077,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/xdzz_xsdk_ios_7077/xdzz_xsdk_ios_7077.plist"
+                    },
+                    {
+                        "id": 1277,
+                        "classid": 49,
+                        "totaldown": 9601,
+                        "title": "梦幻回合-爽玩版",
+                        "newstime": 1529026206,
+                        "titlepic": "http://pic3.3733.com/d/file/cb/2018-06-22/4ab8c8d26ebdc795d06eb63db52da65e.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/menghcjbtb.apk",
+                        "version": "3.6.0",
+                        "titleimg": "http://pic3.3733.com/d/file/cb/2018-10-31/a2d1bb88c54b3b604802e8002cf1d83f.jpg",
+                        "size_a": "206.45 MB",
+                        "size_ip": "",
+                        "type": [
+                            "回合"
+                        ],
+                        "sign": [
+                            "仙侠",
+                            "Q版"
+                        ],
+                        "yxftitle": "上线即送至尊VIP(满V)，28888水玉，999W银币",
+                        "version_code": 30600,
+                        "package_name": "com.mhcjbtb.com",
+                        "license_md5": "24F8FDD198FAA68AC77F9E910A9698D7",
+                        "app_tag": [
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 7,
+                                "name": "满Vip版",
+                                "color": "#f87e71",
+                                "icon": "http://pic5.3733.com/icon/201805/ea27ee5a7a44c48461d1ecaba68b8183.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:1000",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "超劲爆福利，各种免费，不花钱也能爽，萌妹子等你来约",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/8e45c765vodtransgzp1252153290/c04a03474564972818595767984/v.f30.mp4",
+                        "video_thumb": "http://pic3.3733.com/d/file/cb/2018-05-28/56c72443938bdfbd9bd282170b7a6bd0.jpg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 60505,
+                        "app_id_i": 6130,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/mhcjbtbios_6130/mhcjbtbios_6130.plist"
+                    }
+                ]
+            }
+        }
+    )
+})
+
+app.post('/api/subject/index', (req, res) =>{
+    res.json(
+        {
+            "log": {
+                "sql": [
+                    "[ DB ] CONNECT:[ UseTime:0.014825s ] mysql:host=rm-uf6t81p3k9h712109.mysql.rds.aliyuncs.com;port=3306;dbname=xiaoyu3733db;charset=utf8",
+                    "[ SQL ] SHOW COLUMNS FROM `www_92game_net_d_ecms_subject` [ RunTime:0.003418s ]",
+                    "[ SQL ] SELECT `id`,`title`,`titlepic`,`newstime` FROM `www_92game_net_d_ecms_subject` ORDER BY `newstime` DESC LIMIT 0,20 [ RunTime:0.002948s ]"
+                ],
+                "info": [
+                    "[ LANG ] C:\\www\\3733.com\\api2\\thinkphp\\lang\\zh-cn.php",
+                    "[ ROUTE ] array (\n  'type' => 'module',\n  'module' => \n  array (\n    0 => 'api',\n    1 => 'subject',\n    2 => 'index',\n  ),\n)",
+                    "[ HEADER ] array (\n  'content-type' => 'application/x-www-form-urlencoded',\n  'cache-control' => 'no-cache',\n  'postman-token' => 'c3febcf0-d9b4-4e45-8e9a-7c70ce440f98',\n  'user-agent' => 'PostmanRuntime/7.6.0',\n  'accept' => '*/*',\n  'host' => 'api2.c3733.com',\n  'accept-encoding' => 'gzip, deflate',\n  'content-length' => '69',\n  'connection' => 'keep-alive',\n)",
+                    "[ PARAM ] array (\n  '/api/subject/index' => '',\n  'uuid' => 'ffffffff-1234-1234-1234-123456789012',\n  'from' => '103',\n  'page' => '1',\n  'listRows' => '20',\n)",
+                    "[ RUN ] app\\api\\controller\\Subject->index[ C:\\www\\3733.com\\api2\\application\\api\\controller\\Subject.php ]",
+                    "[ DB ] INIT mysql",
+                    "[ CACHE ] INIT File"
+                ]
+            },
+            "time": 1547711031,
+            "code": 1,
+            "data": [
+                {
+                    "info": {
+                        "id": 108,
+                        "title": "【第56期】3733手游一周好游戏推荐",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2018-05-25/75fab5bf0ca54af4ab7122475fd4e062.jpg",
+                        "newstime": 1527239834
+                    }
+                },
+                {
+                    "info": {
+                        "id": 107,
+                        "title": "【第55期】3733手游一周好游戏推荐",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2018-05-18/9c49a7e82ffd421228614f4e5361c9af.jpg",
+                        "newstime": 1526634677
+                    }
+                },
+                {
+                    "info": {
+                        "id": 106,
+                        "title": "【第54期】3733手游一周好游戏推荐",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2018-05-11/c81cc9f89aa88173e90f869b54521df3.jpg",
+                        "newstime": 1526021938
+                    }
+                },
+                {
+                    "info": {
+                        "id": 105,
+                        "title": "【第53期】3733手游一周好游戏推荐",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2018-04-13/14b10c8149372992dd11836eee5e0de9.png",
+                        "newstime": 1523603013
+                    }
+                },
+                {
+                    "info": {
+                        "id": 104,
+                        "title": "【第52期】3733手游一周好游戏推荐",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2018-03-23/40084655f53ce9698a0d9c85e66f2d71.jpg",
+                        "newstime": 1521797421
+                    }
+                },
+                {
+                    "info": {
+                        "id": 103,
+                        "title": "【第51期】3733手游一周好游戏推荐",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2018-03-16/dfb3d392476e0985066d8a484b382409.jpg",
+                        "newstime": 1521195932
+                    }
+                },
+                {
+                    "info": {
+                        "id": 102,
+                        "title": "【第50期】3733手游一周好游戏推荐",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2018-03-09/b5718ff4e6826bbf7aba667089d60328.jpg",
+                        "newstime": 1520588511
+                    }
+                },
+                {
+                    "info": {
+                        "id": 101,
+                        "title": "【第49期】3733元宵热门游戏推荐专题",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2018-03-02/c94f729af84e5c2b172d02404e7bab1f.jpg",
+                        "newstime": 1519984423
+                    }
+                },
+                {
+                    "info": {
+                        "id": 100,
+                        "title": "【春节必玩】3733春节热门游戏专题",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2018-02-13/60ffc840bf56684c57e275d7eeb11b25.jpg",
+                        "newstime": 1518492634
+                    }
+                },
+                {
+                    "info": {
+                        "id": 99,
+                        "title": "【第48期】3733手游寒假必玩游戏专题",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2018-02-13/27588e4a5dcad550b69b4a8228e352ed.jpg",
+                        "newstime": 1518146221
+                    }
+                },
+                {
+                    "info": {
+                        "id": 98,
+                        "title": "【第47期】3733手游一周好游戏推荐",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2018-01-19/86c83bfbda1c391102e02e368ead2756.jpg",
+                        "newstime": 1516357252
+                    }
+                },
+                {
+                    "info": {
+                        "id": 97,
+                        "title": "【第46期】3733手游一周好游戏推荐",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2018-01-12/cacb786c737c76e85bcb410fb0b1f211.jpg",
+                        "newstime": 1515751375
+                    }
+                },
+                {
+                    "info": {
+                        "id": 96,
+                        "title": "【第45期】3733手游一周好游戏推荐",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2018-01-05/7bba52b5e5ae237253b644f761b7ac01.jpg",
+                        "newstime": 1515146184
+                    }
+                },
+                {
+                    "info": {
+                        "id": 95,
+                        "title": "【第44期】3733手游一周好游戏推荐",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2017-12-29/cedd00866fa364847224318a142c51c6.jpg",
+                        "newstime": 1513937187
+                    }
+                },
+                {
+                    "info": {
+                        "id": 94,
+                        "title": "【第43期】3733手游一周好游戏推荐",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2017-12-15/7bfd8faf2fb7ac0a7f98e2ad036bb6ff.jpg",
+                        "newstime": 1513334266
+                    }
+                },
+                {
+                    "info": {
+                        "id": 93,
+                        "title": "【第42期】3733手游一周好游戏推荐",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2017-12-15/c975726a363490f7f7f06ad8c03e55f4.jpg",
+                        "newstime": 1512727345
+                    }
+                },
+                {
+                    "info": {
+                        "id": 92,
+                        "title": "【第41期】3733手游一周好游戏推荐",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2017-12-01/e52e7fa06239d869da4afa657e2c2d1f.jpg",
+                        "newstime": 1512129751
+                    }
+                },
+                {
+                    "info": {
+                        "id": 91,
+                        "title": "【第40期】3733手游一周好游戏推荐",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2017-12-01/d1067e169585aaa12999eb29d067174c.jpg",
+                        "newstime": 1511524001
+                    }
+                },
+                {
+                    "info": {
+                        "id": 90,
+                        "title": "【第39期】3733手游一周好游戏推荐",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2017-11-17/196c9ecd88cd8f94957fd78549df5b5a.jpg",
+                        "newstime": 1510919586
+                    }
+                },
+                {
+                    "info": {
+                        "id": 89,
+                        "title": "【第38期】3733手游一周好游戏推荐",
+                        "titlepic": "http://pic3.3733.com/d/file/zhuanti/2017-11-10/5c16a183da6b643eda44dd778c8940f1.jpg",
+                        "newstime": 1510313911
+                    }
+                }
+            ]
+        }
+    )
+})
 app.post('/api/game/index', (req, res) =>{
   res.json(
     {
@@ -2611,8 +3056,1963 @@ app.post('/api/game/index', (req, res) =>{
       }
   }
   )
+});
+app.post('/api/newgame/index', (req, res) =>{
+    res.json(
+        {
+            "log": {
+                "sql": [
+                    "[ DB ] CONNECT:[ UseTime:0.013730s ] mysql:host=rm-uf6t81p3k9h712109.mysql.rds.aliyuncs.com;port=3306;dbname=xiaoyu3733db;charset=utf8",
+                    "[ SQL ] SHOW COLUMNS FROM `www_92game_net_d_ecms_app` [ RunTime:0.003942s ]",
+                    "[ SQL ] SELECT `id`,`classid`,`totaldown`,`title`,`newstime`,`titlepic`,`down_a`,`version`,`titleimg`,`size_a`,`size_ip`,`type`,`sign`,`yxftitle`,`version_code`,`package_name`,`license_md5`,`app_tag`,`gm_url`,`cp_id`,`smalltext`,`video_url`,`video_thumb`,`subpackage_domain`,`state`,`uc_dl`,`app_id`,`app_id_i`,`enable_speedup` FROM `www_92game_net_d_ecms_app` WHERE  `state` IN (1,5)  AND `platform` LIKE '%IOS%'  AND `classid` IN (1,49) ORDER BY `priority` DESC LIMIT 0,20 [ RunTime:0.014374s ]"
+                ],
+                "info": [
+                    "[ LANG ] C:\\www\\3733.com\\api2\\thinkphp\\lang\\zh-cn.php",
+                    "[ ROUTE ] array (\n  'type' => 'module',\n  'module' => \n  array (\n    0 => 'api',\n    1 => 'game',\n    2 => 'index',\n  ),\n)",
+                    "[ HEADER ] array (\n  'content-type' => 'application/x-www-form-urlencoded',\n  'cache-control' => 'no-cache',\n  'postman-token' => 'ae5a0b71-85fc-47a4-8ac8-746512690690',\n  'user-agent' => 'PostmanRuntime/7.6.0',\n  'accept' => '*/*',\n  'host' => 'api2.c3733.com',\n  'accept-encoding' => 'gzip, deflate',\n  'content-length' => '60',\n  'connection' => 'keep-alive',\n)",
+                    "[ PARAM ] array (\n  '/api/game/index' => '',\n  'uuid' => 'ffffffff-1234-1234-1234-123456789012',\n  'from' => '103',\n  'order' => '101',\n)",
+                    "[ RUN ] app\\api\\controller\\Game->index[ C:\\www\\3733.com\\api2\\application\\api\\controller\\Game.php ]",
+                    "[ DB ] INIT mysql",
+                    "[ CACHE ] INIT File"
+                ]
+            },
+            "time": 1547602292,
+            "code": 1,
+            "data": {
+                "list": [
+                    {
+                        "id": 20000516,
+                        "classid": 1,
+                        "totaldown": 45776,
+                        "title": "斗破西游超爆版",
+                        "newstime": 1546916400,
+                        "titlepic": "http://pic5.3733.com/icon/201812/c331866ced1027347f685ec9273bfce1.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/doupxycbb.apk",
+                        "version": "1.0.0",
+                        "titleimg": "http://pic5.3733.com/banner/201901/86a8b02f152f78af568d79bf9fad120f_n.jpeg",
+                        "size_a": "268.7 MB",
+                        "size_ip": "",
+                        "type": [
+                            "角色",
+                            "动作",
+                            "即时"
+                        ],
+                        "sign": [],
+                        "yxftitle": "上线送VIP9、绑定元宝*28888",
+                        "version_code": 1,
+                        "package_name": "com.dpxy.guandu",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 4,
+                                "name": "变态版",
+                                "color": "#ba69ff",
+                                "icon": "http://pic5.3733.com/icon/201805/dc2ec5deea466fb62e7255d97fa5adbc.png"
+                            },
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:200",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "装备全靠靠打,超级爆率9.8!",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/da1e24bdvodgzp1252153290/0cc967355285890784176406916/LaYljc1SBRUA.mp4",
+                        "video_thumb": "http://pic5.3733.com/snapshot/201901/2addafe990d8979c6d7362a0d86c651f_n.jpeg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61613,
+                        "app_id_i": 6979,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/dpxycbbios_6979/dpxycbbios_6979.plist"
+                    },
+                    {
+                        "id": 20000445,
+                        "classid": 1,
+                        "totaldown": 34927,
+                        "title": "校花学院",
+                        "newstime": 1546909200,
+                        "titlepic": "http://pic5.3733.com/icon/201812/b96aa3cedb565dc09f74a6c3c74ff757.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/xiaohmgc.apk",
+                        "version": "2.0.2.4",
+                        "titleimg": "http://pic5.3733.com/banner/201812/833a15ff60f8b5184f2fff5e5e9ced75_n.jpeg",
+                        "size_a": "324 MB",
+                        "size_ip": "",
+                        "type": [
+                            "回合",
+                            "卡牌"
+                        ],
+                        "sign": [],
+                        "yxftitle": "送V10，金币88万，钻石18888",
+                        "version_code": 11,
+                        "package_name": "com.jianwan.xhdtsgs.yy3733",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 4,
+                                "name": "变态版",
+                                "color": "#ba69ff",
+                                "icon": "http://pic5.3733.com/icon/201805/dc2ec5deea466fb62e7255d97fa5adbc.png"
+                            },
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:200",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "起点金牌作家鱼人二代正式授权，唯一正版校花青春手游大作",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/da1e24bdvodgzp1252153290/2a969d3d5285890783696586810/V7qja8AR1AIA.mp4",
+                        "video_thumb": "http://pic5.3733.com/snapshot/201812/732207418944e53b291974699f1d8e77_n.jpeg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61461,
+                        "app_id_i": 7059,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/xhmgc_jsdk_ios_7059/xhmgc_jsdk_ios_7059.plist"
+                    },
+                    {
+                        "id": 20000961,
+                        "classid": 49,
+                        "totaldown": 43762,
+                        "title": "大圣归来星耀版",
+                        "newstime": 1546920000,
+                        "titlepic": "http://pic5.3733.com/icon/201901/c1f32e60766db2af1b525ae39b835c7c.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/dasglxyb.apk",
+                        "version": "4.0.0",
+                        "titleimg": "http://pic5.3733.com/banner/201812/ac15140c72dd15afd83360c4dbe74910_n.jpeg",
+                        "size_a": "139.6 MB",
+                        "size_ip": "",
+                        "type": [
+                            "角色",
+                            "动作",
+                            "即时"
+                        ],
+                        "sign": [],
+                        "yxftitle": "上线直接赠送加强版星耀满V",
+                        "version_code": 400,
+                        "package_name": "com.jianwan.dsglxy.yy3733",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 7,
+                                "name": "满Vip版",
+                                "color": "#f87e71",
+                                "icon": "http://pic5.3733.com/icon/201805/ea27ee5a7a44c48461d1ecaba68b8183.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:1000",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "同名动画电影改编的3D-ARPG动作手游",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/da1e24bdvodgzp1252153290/70af97fe5285890783958544771/p6ayPdBZlD0A.mp4",
+                        "video_thumb": "http://pic5.3733.com/snapshot/201812/3941c167dce4c08aa71eb7ef5d4cb666.jpeg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61671,
+                        "app_id_i": 7030,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/dsglxybios_7030/dsglxybios_7030.plist"
+                    },
+                    {
+                        "id": 20000591,
+                        "classid": 49,
+                        "totaldown": 43276,
+                        "title": "传奇归来",
+                        "newstime": 1544767200,
+                        "titlepic": "http://pic5.3733.com/icon/201812/ed20807c0a431fe36962afe4484546e3.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/chuanqgl.apk",
+                        "version": "1.0.0",
+                        "titleimg": "http://pic5.3733.com/banner/201812/1f56b2f8a048af7c2eef2eced7129d03.jpeg",
+                        "size_a": "3.4 MB",
+                        "size_ip": "",
+                        "type": [
+                            "角色",
+                            "即时"
+                        ],
+                        "sign": [],
+                        "yxftitle": "送V15、元宝58888、铜币200万",
+                        "version_code": 1,
+                        "package_name": "com.qn.cqgl.sy3733",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 7,
+                                "name": "满Vip版",
+                                "color": "#f87e71",
+                                "icon": "http://pic5.3733.com/icon/201805/ea27ee5a7a44c48461d1ecaba68b8183.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:500",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "竖版合击版传奇游戏",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/da1e24bdvodgzp1252153290/25fe537d5285890783696396415/XVtPaEbrPjUA.mp4",
+                        "video_thumb": "http://pic5.3733.com/snapshot/201812/d6445419fad56e901843a01a1121ee8b.jpeg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61610,
+                        "app_id_i": 7072,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/cqgl_xsdk_ios_7072/cqgl_xsdk_ios_7072.plist"
+                    },
+                    {
+                        "id": 20000823,
+                        "classid": 49,
+                        "totaldown": 33603,
+                        "title": "暗黑血缘疯狂版",
+                        "newstime": 1546048200,
+                        "titlepic": "http://pic5.3733.com/icon/201812/342df1399f0dae38a072846b41f79161.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/anhxyfkb.apk",
+                        "version": "1.0.0",
+                        "titleimg": "http://pic5.3733.com/banner/201812/dff73454dc24ec938e4cd4cb67af2e01.jpeg",
+                        "size_a": "310.8 MB",
+                        "size_ip": "",
+                        "type": [
+                            "角色",
+                            "动作",
+                            "即时"
+                        ],
+                        "sign": [],
+                        "yxftitle": "送至尊V，钻石60000，金币500W",
+                        "version_code": 100,
+                        "package_name": "com.sfsy.slws999b.m3733",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 7,
+                                "name": "满Vip版",
+                                "color": "#f87e71",
+                                "icon": "http://pic5.3733.com/icon/201805/ea27ee5a7a44c48461d1ecaba68b8183.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:1000",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "幻想题材的RPG动作手游",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/da1e24bdvodgzp1252153290/70af92db5285890783958544606/VDutOXIL1HUA.mp4",
+                        "video_thumb": "http://pic5.3733.com/snapshot/201812/9d78c1765c3d0853bf8b226112a64722.jpeg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61654,
+                        "app_id_i": 7065,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/ahxyfkbios_7065/ahxyfkbios_7065.plist"
+                    },
+                    {
+                        "id": 3996,
+                        "classid": 49,
+                        "totaldown": 35050,
+                        "title": "梦回仙游星耀版",
+                        "newstime": 1546912800,
+                        "titlepic": "http://pic5.3733.com/icon/201812/ff6f5962f2a5536f1292fff3e8a8445d.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/menghxyxyb.apk",
+                        "version": "1.0.1",
+                        "titleimg": "http://pic5.3733.com/banner/201812/3c73101b51a042a90f86b58d5f6b82bf_n.jpeg",
+                        "size_a": "358.7 MB",
+                        "size_ip": "",
+                        "type": [
+                            "角色",
+                            "回合"
+                        ],
+                        "sign": [],
+                        "yxftitle": "送满V，绑定元宝*20000，铜币*500W",
+                        "version_code": 101,
+                        "package_name": "com.sfsy.ttdzf.m3733",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 7,
+                                "name": "满Vip版",
+                                "color": "#f87e71",
+                                "icon": "http://pic5.3733.com/icon/201805/ea27ee5a7a44c48461d1ecaba68b8183.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:200",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "2018年精美3D回合制手游力作",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/da1e24bdvodgzp1252153290/fa38b00a5285890783111289521/ZMWN1w24RjgA.mp4",
+                        "video_thumb": "http://pic3.3733.com/d/file/cb/2018-11-19/6d0307e13b8b1e7663c9147a9ee4769e.jpg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61431,
+                        "app_id_i": 6836,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/mhxyxybios_6836/mhxyxybios_6836.plist"
+                    },
+                    {
+                        "id": 1242,
+                        "classid": 49,
+                        "totaldown": 20899,
+                        "title": "寻道回合",
+                        "newstime": 1545382800,
+                        "titlepic": "http://pic5.3733.com/icon/201812/641fe0061c696688cf5fd9d403a4f703.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/xundhh.apk",
+                        "version": "1.0.11.12",
+                        "titleimg": "http://pic5.3733.com/banner/201812/3f9d5701256909f4e0417fe5c6c30e1b_n.jpeg",
+                        "size_a": "317.2 MB",
+                        "size_ip": "",
+                        "type": [
+                            "回合"
+                        ],
+                        "sign": [],
+                        "yxftitle": "上线送300万银币，送10元代金券，送70级装备",
+                        "version_code": 23,
+                        "package_name": "com.jiayou.xundao.yueyou",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 7,
+                                "name": "满Vip版",
+                                "color": "#f87e71",
+                                "icon": "http://pic5.3733.com/icon/201805/ea27ee5a7a44c48461d1ecaba68b8183.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:500",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "游戏以交友为主题，快来寻找你的红颜",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/8e45c765vodtransgzp1252153290/c041052c9031868223502577577/v.f30.mp4",
+                        "video_thumb": "http://pic3.3733.com/d/file/cb/2017-11-08/f8946af0329995b2ed947302e4779252.jpg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 60480,
+                        "app_id_i": 7063,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": false,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/xdhh_xsdk_ios_7063/xdhh_xsdk_ios_7063.plist"
+                    },
+                    {
+                        "id": 20000530,
+                        "classid": 1,
+                        "totaldown": 32331,
+                        "title": "山海异闻录",
+                        "newstime": 1545379200,
+                        "titlepic": "http://pic5.3733.com/icon/201901/df5c08f6b98ccfe4512367c4930c2ad7.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/shanhywl.apk",
+                        "version": "1.2.1",
+                        "titleimg": "http://pic5.3733.com/banner/201812/308869539a30fbf3c982fc6dcede4aa9.jpeg",
+                        "size_a": "326.1 MB",
+                        "size_ip": "",
+                        "type": [
+                            "角色",
+                            "回合"
+                        ],
+                        "sign": [],
+                        "yxftitle": "送V7，极品妖兽，魂玉18888，铜币188w",
+                        "version_code": 2,
+                        "package_name": "com.gaea.shanhai.yixu",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 4,
+                                "name": "变态版",
+                                "color": "#ba69ff",
+                                "icon": "http://pic5.3733.com/icon/201805/dc2ec5deea466fb62e7255d97fa5adbc.png"
+                            },
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:200",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "3D国韵奇遇式手游《山海异闻录》删档测试正式开启",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/da1e24bdvodgzp1252153290/a926cb515285890783548143624/IWAe4hX621QA.mp4",
+                        "video_thumb": "http://pic5.3733.com/snapshot/201812/7a2c937f5edc3c0d13ef0797c54f1b75.jpeg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61616,
+                        "app_id_i": 7057,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/shywl_xsdk_ios_7057/shywl_xsdk_ios_7057.plist"
+                    },
+                    {
+                        "id": 3529,
+                        "classid": 49,
+                        "totaldown": 30377,
+                        "title": "超梦西游海量版",
+                        "newstime": 1546044600,
+                        "titlepic": "http://pic5.3733.com/icon/201901/11ab9518ca1cede650a7023a430bd86f.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/chaomxywxb.apk",
+                        "version": "1.1.7",
+                        "titleimg": "http://pic5.3733.com/banner/201812/3eb872e49582a747294a907e823e98fa_n.jpeg",
+                        "size_a": "386.5 MB",
+                        "size_ip": "",
+                        "type": [
+                            "回合"
+                        ],
+                        "sign": [],
+                        "yxftitle": "上线送贵族20专属特权，18888元宝",
+                        "version_code": 10107,
+                        "package_name": "com.gzbq.cmwx.cgamex.zhuayou",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 7,
+                                "name": "满Vip版",
+                                "color": "#f87e71",
+                                "icon": "http://pic5.3733.com/icon/201805/ea27ee5a7a44c48461d1ecaba68b8183.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:200",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "经典回合制手游，海量资源，开局一直鲲进化全靠吞",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/8e45c765vodtransgzp1252153290/bb8571085285890781260476203/v.f30.mp4",
+                        "video_thumb": "http://pic5.3733.com/snapshot/201811/c8f48adc3106f4c3e04d7564c3fcb3be.jpeg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61101,
+                        "app_id_i": 7046,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/cmxyhlb_xsdk_ios_704/cmxyhlb_xsdk_ios_704.plist"
+                    },
+                    {
+                        "id": 20001141,
+                        "classid": 1,
+                        "totaldown": 31088,
+                        "title": "梦缘江湖",
+                        "newstime": 1546918200,
+                        "titlepic": "http://pic5.3733.com/icon/201901/91f08e99172eaa6d327a428dffb5067b.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/mengyjh.apk",
+                        "version": "1.0.5",
+                        "titleimg": "http://pic5.3733.com/banner/201901/702651d66d47c75a8304f62d588d1a72.jpeg",
+                        "size_a": "430.1 MB",
+                        "size_ip": "",
+                        "type": [
+                            "角色",
+                            "动作"
+                        ],
+                        "sign": [],
+                        "yxftitle": "送贵族V、绑元88888、金币2888万",
+                        "version_code": 6,
+                        "package_name": "com.myjh.sy3733",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 4,
+                                "name": "变态版",
+                                "color": "#ba69ff",
+                                "icon": "http://pic5.3733.com/icon/201805/dc2ec5deea466fb62e7255d97fa5adbc.png"
+                            },
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:500",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "一款青春武侠MMORPG手游",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/da1e24bdvodgzp1252153290/f8e76b3b5285890784298677322/bEKMOeRyUwMA.mp4",
+                        "video_thumb": "http://pic5.3733.com/snapshot/201901/c4cfe7d349fdfab8fa3939895b315b5c.jpeg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61693,
+                        "app_id_i": 7053,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/myjhios_7053/myjhios_7053.plist"
+                    },
+                    {
+                        "id": 4032,
+                        "classid": 49,
+                        "totaldown": 35218,
+                        "title": "烈焰莽夫豪华版",
+                        "newstime": 1542067200,
+                        "titlepic": "http://pic5.3733.com/icon/201812/bfcfe0fd55067571cd3baae7d2374369.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/lieymfhhb.apk",
+                        "version": "1.0",
+                        "titleimg": "http://pic3.3733.com/d/file/cb/2018-11-12/733fc58955a569563fb02fabbe2687d3.jpg",
+                        "size_a": "9.4 MB",
+                        "size_ip": "",
+                        "type": [
+                            "角色"
+                        ],
+                        "sign": [],
+                        "yxftitle": "送V25，128888元宝，铜币608万",
+                        "version_code": 1,
+                        "package_name": "com.twmfxyb.jlhd",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 7,
+                                "name": "满Vip版",
+                                "color": "#f87e71",
+                                "icon": "http://pic5.3733.com/icon/201805/ea27ee5a7a44c48461d1ecaba68b8183.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:2000",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "让玩家切身体会到一个炫丽庞大的世界",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/da1e24bdvodgzp1252153290/fc1d62425285890783111322228/YuMkJ4gg17oA.mp4",
+                        "video_thumb": "http://pic3.3733.com/d/file/cb/2018-11-19/e99e39695689946fbbcafc93fa21685a.jpg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61458,
+                        "app_id_i": 7067,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/lymfhhb_xsdk_ios_706/lymfhhb_xsdk_ios_706.plist"
+                    },
+                    {
+                        "id": 3767,
+                        "classid": 49,
+                        "totaldown": 30406,
+                        "title": "少年三国传星耀版",
+                        "newstime": 1539918000,
+                        "titlepic": "http://pic5.3733.com/icon/201812/4d9d6cab0e1e04951f646c32ef9c35d5.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/shaonsgzxyb.apk",
+                        "version": "1.0.0",
+                        "titleimg": "http://pic5.3733.com/banner/201901/439f78c8dc169e20a9becd8435c0213b_n.jpeg",
+                        "size_a": "233.4 MB",
+                        "size_ip": "",
+                        "type": [
+                            "回合",
+                            "卡牌"
+                        ],
+                        "sign": [],
+                        "yxftitle": "送V19，30000魂玉，300W银两",
+                        "version_code": 100,
+                        "package_name": "com.sfsy.snqyzmvb.m3733",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 7,
+                                "name": "满Vip版",
+                                "color": "#f87e71",
+                                "icon": "http://pic5.3733.com/icon/201805/ea27ee5a7a44c48461d1ecaba68b8183.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:500",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "一款RPG战斗卡牌游戏",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/8e45c765vodtransgzp1252153290/7636d30f5285890782388503054/v.f30.mp4",
+                        "video_thumb": "http://pic3.3733.com/d/file/cb/2018-10-16/3eb40a710550958214ff03b9d0e998dc.jpg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61309,
+                        "app_id_i": 7068,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/snsgcxyb_xsdk_ios_70/snsgcxyb_xsdk_ios_70.plist"
+                    },
+                    {
+                        "id": 20001184,
+                        "classid": 1,
+                        "totaldown": 33535,
+                        "title": "斗罗乾坤",
+                        "newstime": 1546855325,
+                        "titlepic": "http://pic5.3733.com/icon/201901/8f9cf402f052ebf162e5b2b7439df864.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/doulqk.apk",
+                        "version": "1.0.0",
+                        "titleimg": "http://pic5.3733.com/banner/201901/a9d46d9dfc508dacacc4cb9c7c126333_n.jpeg",
+                        "size_a": "3.7 MB",
+                        "size_ip": "",
+                        "type": [
+                            "角色",
+                            "休闲"
+                        ],
+                        "sign": [],
+                        "yxftitle": "送SVIP3、元宝68888、金币500W",
+                        "version_code": 1,
+                        "package_name": "com.dlqk.guandu",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 4,
+                                "name": "变态版",
+                                "color": "#ba69ff",
+                                "icon": "http://pic5.3733.com/icon/201805/dc2ec5deea466fb62e7255d97fa5adbc.png"
+                            },
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:1000",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "100%剧情还原的经典魔幻MMORPG手游",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/da1e24bdvodgzp1252153290/5b6658765285890784248644427/FCJw37h9f8oA.mp4",
+                        "video_thumb": "http://pic5.3733.com/snapshot/201901/838a662b1214c38cf3809f7d5bcb4bb1.jpeg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61696,
+                        "app_id_i": 7083,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/dlqkcbbios_7083/dlqkcbbios_7083.plist"
+                    },
+                    {
+                        "id": 20001408,
+                        "classid": 1,
+                        "totaldown": 32023,
+                        "title": "造梦仙游",
+                        "newstime": 1546826400,
+                        "titlepic": "http://pic5.3733.com/icon/201901/a6c45127e196a1917220319e772b9a91.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/zaomxy.apk",
+                        "version": "1.0.0",
+                        "titleimg": "http://pic5.3733.com/banner/201901/fa2e058f5446c5f0562a1c3c725a12c7_n.jpeg",
+                        "size_a": "3.3 MB",
+                        "size_ip": "",
+                        "type": [
+                            "策略"
+                        ],
+                        "sign": [],
+                        "yxftitle": "送V8，绑元18888，银两188W",
+                        "version_code": 1,
+                        "package_name": "com.zmxybt.jlhd",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 4,
+                                "name": "变态版",
+                                "color": "#ba69ff",
+                                "icon": "http://pic5.3733.com/icon/201805/dc2ec5deea466fb62e7255d97fa5adbc.png"
+                            },
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:500",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "一款放置类角色扮演移动手机游戏",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/da1e24bdvodgzp1252153290/5dcf54415285890784248757946/7KyxguLcYR4A.mp4",
+                        "video_thumb": "http://pic5.3733.com/snapshot/201901/e7a3226898b7f5f2ec3eccc5890b10c1.jpeg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61730,
+                        "app_id_i": 7084,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/zmxyios_7084/zmxyios_7084.plist"
+                    },
+                    {
+                        "id": 4112,
+                        "classid": 1,
+                        "totaldown": 32503,
+                        "title": "斗罗高爆版",
+                        "newstime": 1544837400,
+                        "titlepic": "http://pic5.3733.com/icon/201812/a8ce1d83b5a6c4e09bfb6188e312655d.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/doulgbb.apk",
+                        "version": "1.0.0.5",
+                        "titleimg": "http://pic5.3733.com/banner/201901/b16e0d0ef7b4dae180159ce8b73a4e95_n.jpeg",
+                        "size_a": "132.1 MB",
+                        "size_ip": "",
+                        "type": [
+                            "角色",
+                            "动作"
+                        ],
+                        "sign": [],
+                        "yxftitle": "上线送VIP12，66888绑元宝",
+                        "version_code": 5,
+                        "package_name": "com.dlgbb.bt.qipa",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 4,
+                                "name": "变态版",
+                                "color": "#ba69ff",
+                                "icon": "http://pic5.3733.com/icon/201805/dc2ec5deea466fb62e7255d97fa5adbc.png"
+                            },
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:500",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "完美结合原著中特色分明的人物形象，带来前所未有的震撼爽快的打击感",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/da1e24bdvodgzp1252153290/23b81d115285890783584010829/cZEGTMvzA4EA.mp4",
+                        "video_thumb": "http://pic5.3733.com/snapshot/201812/89ea33ab63acd45220940d486742c4ac.jpeg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61470,
+                        "app_id_i": 7066,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/dlgbb_xsdk_ios_7066/dlgbb_xsdk_ios_7066.plist"
+                    },
+                    {
+                        "id": 3598,
+                        "classid": 49,
+                        "totaldown": 35586,
+                        "title": "我要当宰相",
+                        "newstime": 1539925200,
+                        "titlepic": "http://pic5.3733.com/icon/201812/2753771af609f38f71597b0447bf73da.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/woydzx.apk",
+                        "version": "1.0.0",
+                        "titleimg": "http://pic5.3733.com/banner/201812/1a581f11521cb4766b62222e85b3fcda_n.jpeg",
+                        "size_a": "4.9 MB",
+                        "size_ip": "",
+                        "type": [
+                            "角色",
+                            "策略",
+                            "休闲"
+                        ],
+                        "sign": [],
+                        "yxftitle": "上线送满V、48888元宝、银两100W",
+                        "version_code": 1,
+                        "package_name": "com.wydzx",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 7,
+                                "name": "满Vip版",
+                                "color": "#f87e71",
+                                "icon": "http://pic5.3733.com/icon/201805/ea27ee5a7a44c48461d1ecaba68b8183.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:1000",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "一款以古代官场斗争为题材的策略经营类手机网络游戏",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/8e45c765vodtransgzp1252153290/397d60c95285890781937100902/v.f30.mp4",
+                        "video_thumb": "http://pic3.3733.com/d/file/cb/2018-09-21/d6a2f6c0bb829f743091e7cbb3b661ff.jpg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61225,
+                        "app_id_i": 6638,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/wydzxios_6638/wydzxios_6638.plist"
+                    },
+                    {
+                        "id": 4345,
+                        "classid": 49,
+                        "totaldown": 18677,
+                        "title": "古龙群侠传星耀版",
+                        "newstime": 1544061000,
+                        "titlepic": "http://pic5.3733.com/icon/201812/ded52c742837b2f8ea2ec2a12760a689.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/gulqxzxyb.apk",
+                        "version": "1.0.0",
+                        "titleimg": "http://pic5.3733.com/banner/201812/ed54146092d240f3d8142d0bc52d84f6_n.jpeg",
+                        "size_a": "307.6 MB",
+                        "size_ip": "",
+                        "type": [
+                            "回合",
+                            "卡牌"
+                        ],
+                        "sign": [],
+                        "yxftitle": "送V17，元宝50000，铜币200W",
+                        "version_code": 100,
+                        "package_name": "com.sfsy.glqxz2mv.m3733",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 7,
+                                "name": "满Vip版",
+                                "color": "#f87e71",
+                                "icon": "http://pic5.3733.com/icon/201805/ea27ee5a7a44c48461d1ecaba68b8183.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:500",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "以古龙原著为基础的的2D角色扮演手游",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/da1e24bdvodgzp1252153290/23b890465285890783584011250/4J9aZDfe3LAA.mp4",
+                        "video_thumb": "http://pic5.3733.com/snapshot/201812/34e2b0ea7be7bfff7912a2d575f3142a.jpeg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61553,
+                        "app_id_i": 6929,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/glqxcxybios_6929/glqxcxybios_6929.plist"
+                    },
+                    {
+                        "id": 3862,
+                        "classid": 1,
+                        "totaldown": 19360,
+                        "title": "狂爆之翼",
+                        "newstime": 1544069400,
+                        "titlepic": "http://pic5.3733.com/icon/201812/6eaaa35c5798cab05b7d65ddb89cfaf6.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/kuangbzy.apk",
+                        "version": "1.0.0",
+                        "titleimg": "http://pic5.3733.com/banner/201812/e06f89b4b1bd092fabd8386ad96446fb_n.jpeg",
+                        "size_a": "469.4 MB",
+                        "size_ip": "",
+                        "type": [
+                            "角色"
+                        ],
+                        "sign": [],
+                        "yxftitle": "送V5，钻石*10000，黑钻*10000",
+                        "version_code": 100,
+                        "package_name": "com.sfsy.kbzy.m3733",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 4,
+                                "name": "变态版",
+                                "color": "#ba69ff",
+                                "icon": "http://pic5.3733.com/icon/201805/dc2ec5deea466fb62e7255d97fa5adbc.png"
+                            },
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:200",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "一款以激爽战斗为核心的3D炫战ARPG手游",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/da1e24bdvodgzp1252153290/4b2bbf6f5285890783146730509/SCnAAjckUDIA.mp4",
+                        "video_thumb": "http://pic5.3733.com/snapshot/201811/af153562a413d6f442c2d39736a36b5a.jpeg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61389,
+                        "app_id_i": 7051,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/kbzy_xsdk_ios_7051/kbzy_xsdk_ios_7051.plist"
+                    },
+                    {
+                        "id": 4218,
+                        "classid": 49,
+                        "totaldown": 27134,
+                        "title": "恶人传奇豪华版",
+                        "newstime": 1543197600,
+                        "titlepic": "http://pic5.3733.com/icon/201812/cf2a081601701d487f7bf32331e50988.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/ercqhhb.apk",
+                        "version": "1.0.0",
+                        "titleimg": "http://pic5.3733.com/banner/201811/e53456a522cf2271e65a4d3b0f918c7d_n.jpeg",
+                        "size_a": "130 MB",
+                        "size_ip": "",
+                        "type": [
+                            "角色"
+                        ],
+                        "sign": [],
+                        "yxftitle": "上线送VIP11，绑元*30000",
+                        "version_code": 18111900,
+                        "package_name": "com.erqcmvb.jlhd",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 7,
+                                "name": "满Vip版",
+                                "color": "#f87e71",
+                                "icon": "http://pic5.3733.com/icon/201805/ea27ee5a7a44c48461d1ecaba68b8183.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:300",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "以传奇为题材的角色扮演类手机网络游戏",
+                        "video_url": "http://1252153290.vod2.myqcloud.com/da1e24bdvodgzp1252153290/9d81a5145285890783368366116/0pQiRTnjcncA.mp4",
+                        "video_thumb": "http://pic5.3733.com/snapshot/201812/66ee2dfff140b25f30e0c65ddf38c056.jpeg",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61523,
+                        "app_id_i": 7060,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/ercqhhb_xsdk_ios_706/ercqhhb_xsdk_ios_706.plist"
+                    },
+                    {
+                        "id": 20001472,
+                        "classid": 1,
+                        "totaldown": 29490,
+                        "title": "龙城传奇",
+                        "newstime": 1547189880,
+                        "titlepic": "http://pic5.3733.com/icon/201901/83047f8874fb659953b87fed719c51c6.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/longccq.apk",
+                        "version": "1.1.0",
+                        "titleimg": "http://pic5.3733.com/banner/201901/3342fabbf04fd0ff2bf642059bf6c685.jpeg",
+                        "size_a": "319.4 MB",
+                        "size_ip": "",
+                        "type": [
+                            "角色",
+                            "动作"
+                        ],
+                        "sign": [],
+                        "yxftitle": "送V10，绑元88888，绑金888W",
+                        "version_code": 110,
+                        "package_name": "com.lccq.quick",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 4,
+                                "name": "变态版",
+                                "color": "#ba69ff",
+                                "icon": "http://pic5.3733.com/icon/201805/dc2ec5deea466fb62e7255d97fa5adbc.png"
+                            },
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:500",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "再现当年沙巴克攻城盛世",
+                        "video_url": "",
+                        "video_thumb": "",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61737,
+                        "app_id_i": 7094,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/lccqios_7094/lccqios_7094.plist"
+                    }
+                ],
+                "bg_img": "http://pic5.3733.com/banner/201808/14c88d8af2baa735d419bfa8389774a8_n.jpeg"
+            }
+        }
+    )
 })
-
+app.post('/api/search/index', (req, res) =>{
+    res.json(
+        {
+            "log": {
+                "sql": [
+                    "[ DB ] CONNECT:[ UseTime:0.014946s ] mysql:host=rm-uf6t81p3k9h712109.mysql.rds.aliyuncs.com;port=3306;dbname=xiaoyu3733db;charset=utf8",
+                    "[ SQL ] SHOW COLUMNS FROM `www_92game_net_d_ecms_app` [ RunTime:0.004349s ]",
+                    "[ SQL ] SELECT `b`.`id`,`b`.`classid`,`b`.`title`,`b`.`titlegame`,`b`.`cardbody`,`b`.`cardtext`,`b`.`renum`,`b`.`shuliang`,`b`.`qq_qun`,`a`.`classid`,`a`.`titlepic` FROM `www_92game_net_d_ecms_app` `a` INNER JOIN `xiaoyu3733db`.`www_92game_net_d_ecms_card` `b` ON `a`.`title`=`b`.`titlegame` WHERE  `a`.`state` IN (2,1,5)  AND `a`.`platform` LIKE '%IOS%'  AND `b`.`zhuangtai` <> 3  AND `b`.`title` LIKE '%回合%' ORDER BY `a`.`onclick` DESC LIMIT 0,20 [ RunTime:0.008463s ]"
+                ],
+                "info": [
+                    "[ LANG ] C:\\www\\3733.com\\api2\\thinkphp\\lang\\zh-cn.php",
+                    "[ ROUTE ] array (\n  'type' => 'module',\n  'module' => \n  array (\n    0 => 'api',\n    1 => 'search',\n    2 => 'index',\n  ),\n)",
+                    "[ HEADER ] array (\n  'content-type' => 'application/x-www-form-urlencoded',\n  'cache-control' => 'no-cache',\n  'postman-token' => 'e872fe02-4080-4989-86bc-5b00e187d28d',\n  'user-agent' => 'PostmanRuntime/7.6.0',\n  'accept' => '*/*',\n  'host' => 'api2.c3733.com',\n  'accept-encoding' => 'gzip, deflate',\n  'content-length' => '106',\n  'connection' => 'keep-alive',\n)",
+                    "[ PARAM ] array (\n  '/api/search/index' => '',\n  'from' => '103',\n  'uuid' => 'ffffffff-1234-1234-1234-123456789012',\n  'page' => '1',\n  'keyword' => '回合',\n  'fromAction' => '3',\n  'type' => '101',\n)",
+                    "[ RUN ] app\\api\\controller\\Search->index[ C:\\www\\3733.com\\api2\\application\\api\\controller\\Search.php ]",
+                    "[ DB ] INIT mysql",
+                    "[ CACHE ] INIT File"
+                ]
+            },
+            "time": 1547521759,
+            "code": 1,
+            "data": {
+                "game_list": [],
+                "card_list": [
+                    {
+                        "id": 1341,
+                        "classid": 49,
+                        "title": "寻道回合活动礼包",
+                        "titlegame": "寻道回合",
+                        "cardbody": "银袋子*1、宝宝丹*30、人物经验丹*10",
+                        "cardtext": "福利-cdkey礼包-领取",
+                        "qq_qun": "",
+                        "titlepic": "http://pic5.3733.com/icon/201812/641fe0061c696688cf5fd9d403a4f703.png",
+                        "remain": 5,
+                        "yi_ling_qu": 40423,
+                        "dl_config": 0,
+                        "enable_rebate": false,
+                        "down_ip": null
+                    },
+                    {
+                        "id": 1342,
+                        "classid": 49,
+                        "title": "寻道回合充值礼包",
+                        "titlegame": "寻道回合",
+                        "cardbody": "金袋子*2、宝宝丹*50、内功丹*20",
+                        "cardtext": "福利-cdkey礼包-领取",
+                        "qq_qun": "",
+                        "titlepic": "http://pic5.3733.com/icon/201812/641fe0061c696688cf5fd9d403a4f703.png",
+                        "remain": 0,
+                        "yi_ling_qu": 41897,
+                        "dl_config": 0,
+                        "enable_rebate": false,
+                        "down_ip": null
+                    },
+                    {
+                        "id": 1343,
+                        "classid": 49,
+                        "title": "寻道回合大R礼包",
+                        "titlegame": "寻道回合",
+                        "cardbody": "染料*3、人物经验丹*30、宝宝丹*60",
+                        "cardtext": "福利-cdkey礼包-领取",
+                        "qq_qun": "",
+                        "titlepic": "http://pic5.3733.com/icon/201812/641fe0061c696688cf5fd9d403a4f703.png",
+                        "remain": 36,
+                        "yi_ling_qu": 44649,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": null
+                    },
+                    {
+                        "id": 1433,
+                        "classid": 49,
+                        "title": "梦幻回合-爽玩版新手礼包",
+                        "titlegame": "梦幻回合-爽玩版",
+                        "cardbody": "水玉*5888、修炼丹*100、韬略丹*100、银币*100万",
+                        "cardtext": "汉中城NPC梦幻夫人（坐标270，150）处输入CDKEY兑换",
+                        "qq_qun": "",
+                        "titlepic": "http://pic3.3733.com/d/file/cb/2018-06-22/4ab8c8d26ebdc795d06eb63db52da65e.png",
+                        "remain": 1,
+                        "yi_ling_qu": 49714,
+                        "dl_config": 0,
+                        "enable_rebate": false,
+                        "down_ip": null
+                    },
+                    {
+                        "id": 1434,
+                        "classid": 49,
+                        "title": "梦幻回合-爽玩版关注礼包",
+                        "titlegame": "梦幻回合-爽玩版",
+                        "cardbody": "水玉*8888、初级强化石*10、浩然正气*100、银币*200万",
+                        "cardtext": "汉中城NPC梦幻夫人（坐标270，150）处输入CDKEY兑换",
+                        "qq_qun": "",
+                        "titlepic": "http://pic3.3733.com/d/file/cb/2018-06-22/4ab8c8d26ebdc795d06eb63db52da65e.png",
+                        "remain": 2,
+                        "yi_ling_qu": 49444,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": null
+                    },
+                    {
+                        "id": 1435,
+                        "classid": 49,
+                        "title": "梦幻回合-爽玩版独享礼包",
+                        "titlegame": "梦幻回合-爽玩版",
+                        "cardbody": "水玉*12888、5级宝石箱*3、驭客秘籍*10、银币*300万",
+                        "cardtext": "汉中城NPC梦幻夫人（坐标270，150）处输入CDKEY兑换",
+                        "qq_qun": "",
+                        "titlepic": "http://pic3.3733.com/d/file/cb/2018-06-22/4ab8c8d26ebdc795d06eb63db52da65e.png",
+                        "remain": 2,
+                        "yi_ling_qu": 46464,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": null
+                    },
+                    {
+                        "id": 1494,
+                        "classid": 49,
+                        "title": "梦幻回合-爽玩版至尊礼包",
+                        "titlegame": "梦幻回合-爽玩版",
+                        "cardbody": "水玉*16888、高级强化石*10、高级技能箱*2、银币*500万",
+                        "cardtext": "汉中城NPC梦幻夫人（坐标270，150）处输入CDKEY兑换",
+                        "qq_qun": "",
+                        "titlepic": "http://pic3.3733.com/d/file/cb/2018-06-22/4ab8c8d26ebdc795d06eb63db52da65e.png",
+                        "remain": 1,
+                        "yi_ling_qu": 41398,
+                        "dl_config": 0,
+                        "enable_rebate": false,
+                        "down_ip": null
+                    },
+                    {
+                        "id": 4256,
+                        "classid": 1,
+                        "title": "西游回合新手礼包",
+                        "titlegame": "西游回合",
+                        "cardbody": "金币*28888，绑元*888，坐骑培养丹*10",
+                        "cardtext": "福利大厅—激活码",
+                        "qq_qun": "",
+                        "titlepic": "http://pic5.3733.com/icon/201812/c4fc4cdaf1a54c3a53ce3bea6e2d6ec9.png",
+                        "remain": 49,
+                        "yi_ling_qu": 1544,
+                        "dl_config": 0,
+                        "enable_rebate": false,
+                        "down_ip": null
+                    },
+                    {
+                        "id": 4257,
+                        "classid": 1,
+                        "title": "西游回合特权礼包",
+                        "titlegame": "西游回合",
+                        "cardbody": "金币*58888，绑元1888，坐骑培养丹*10，宠物培养丹*10",
+                        "cardtext": "福利大厅—激活码",
+                        "qq_qun": "",
+                        "titlepic": "http://pic5.3733.com/icon/201812/c4fc4cdaf1a54c3a53ce3bea6e2d6ec9.png",
+                        "remain": 45,
+                        "yi_ling_qu": 1642,
+                        "dl_config": 0,
+                        "enable_rebate": false,
+                        "down_ip": null
+                    },
+                    {
+                        "id": 3003,
+                        "classid": 49,
+                        "title": "仙剑奇侠传回合预约礼包",
+                        "titlegame": "仙剑奇侠传回合",
+                        "cardbody": "鬼手差令*3、银票5000*4、三级宝石袋*2、元宝*2000、50级礼包(银票5000*10、灵宠魂石*10、如意金刚宝箱*3、元宝*9999(有几率开出iphoneX)",
+                        "cardtext": "在游戏中点击系统→礼包兑换→输入兑换礼包码",
+                        "qq_qun": "",
+                        "titlepic": "http://pic3.3733.com/d/file/cb/2018-10-18/d8812867a4420a0daa8c4f98f63d01ed.png",
+                        "remain": 12,
+                        "yi_ling_qu": 14294,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": null
+                    },
+                    {
+                        "id": 3525,
+                        "classid": 49,
+                        "title": "仙剑奇侠传回合十一礼包",
+                        "titlegame": "仙剑奇侠传回合",
+                        "cardbody": "玲珑宝石袋*2、银票1000*5、奇侠传*1、洛阳铲*2",
+                        "cardtext": "在游戏中点击系统→礼包兑换→输入兑换礼包码",
+                        "qq_qun": "",
+                        "titlepic": "http://pic3.3733.com/d/file/cb/2018-10-18/d8812867a4420a0daa8c4f98f63d01ed.png",
+                        "remain": 45,
+                        "yi_ling_qu": 5490,
+                        "dl_config": 0,
+                        "enable_rebate": false,
+                        "down_ip": null
+                    },
+                    {
+                        "id": 3526,
+                        "classid": 49,
+                        "title": "仙剑奇侠传回合老玩家回归礼包",
+                        "titlegame": "仙剑奇侠传回合",
+                        "cardbody": "鬼手差令*10、银票1000*10、随机神兵*1、绑定元宝*10000",
+                        "cardtext": "在游戏中点击系统→礼包兑换→输入兑换礼包码",
+                        "qq_qun": "",
+                        "titlepic": "http://pic3.3733.com/d/file/cb/2018-10-18/d8812867a4420a0daa8c4f98f63d01ed.png",
+                        "remain": 6,
+                        "yi_ling_qu": 4712,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": null
+                    },
+                    {
+                        "id": 3741,
+                        "classid": 1,
+                        "title": "仙道回合新手礼包",
+                        "titlegame": "仙道回合",
+                        "cardbody": "元宝*1000、体力*100",
+                        "cardtext": "点击主界面的设置按钮》点击礼包码按钮》输入礼包码",
+                        "qq_qun": "",
+                        "titlepic": "http://pic3.3733.com/d/file/game/2018-10-18/79a93f37b2d18bb7a35d7115a8850006.png",
+                        "remain": 69,
+                        "yi_ling_qu": 938,
+                        "dl_config": 0,
+                        "enable_rebate": false,
+                        "down_ip": null
+                    },
+                    {
+                        "id": 3742,
+                        "classid": 1,
+                        "title": "仙道回合独享礼包",
+                        "titlegame": "仙道回合",
+                        "cardbody": "元宝*2000、体力*200、铜钱*200000",
+                        "cardtext": "点击主界面的设置按钮》点击礼包码按钮》输入礼包码",
+                        "qq_qun": "",
+                        "titlepic": "http://pic3.3733.com/d/file/game/2018-10-18/79a93f37b2d18bb7a35d7115a8850006.png",
+                        "remain": 70,
+                        "yi_ling_qu": 887,
+                        "dl_config": 0,
+                        "enable_rebate": false,
+                        "down_ip": null
+                    }
+                ],
+                "news_list": []
+            }
+        }
+    )
+});
+app.post('/api/card/read', (req, res) =>{
+    res.json(
+        {
+            "log": {
+                "sql": [
+                    "[ DB ] CONNECT:[ UseTime:0.013917s ] mysql:host=rm-uf6t81p3k9h712109.mysql.rds.aliyuncs.com;port=3306;dbname=xiaoyu3733db;charset=utf8",
+                    "[ SQL ] SHOW COLUMNS FROM `www_92game_net_d_ecms_card` [ RunTime:0.003629s ]",
+                    "[ SQL ] SELECT `id`,`classid`,`title`,`titlegame`,`cardbody`,`cardtext`,`renum`,`shuliang`,`qq_qun`,`starttime`,`endtime`,`titleurl` FROM `www_92game_net_d_ecms_card` WHERE  `zhuangtai` <> 3  AND `id` = 3306 LIMIT 1 [ RunTime:0.003064s ]",
+                    "[ SQL ] SHOW COLUMNS FROM `www_92game_net_d_ecms_app` [ RunTime:0.003959s ]",
+                    "[ SQL ] SELECT `id`,`classid`,`totaldown`,`title`,`newstime`,`titlepic`,`down_a`,`version`,`titleimg`,`size_a`,`size_ip`,`type`,`sign`,`yxftitle`,`version_code`,`package_name`,`license_md5`,`app_tag`,`gm_url`,`cp_id`,`smalltext`,`video_url`,`video_thumb`,`subpackage_domain`,`state`,`uc_dl`,`app_id`,`app_id_i`,`enable_speedup` FROM `www_92game_net_d_ecms_app` WHERE  `state` IN (2,1,5)  AND `platform` LIKE '%IOS%'  AND `title` = '缥缈传说' LIMIT 1 [ RunTime:0.003135s ]"
+                ],
+                "info": [
+                    "[ LANG ] C:\\www\\3733.com\\api2\\thinkphp\\lang\\zh-cn.php",
+                    "[ ROUTE ] array (\n  'type' => 'module',\n  'module' => \n  array (\n    0 => 'api',\n    1 => 'card',\n    2 => 'read',\n  ),\n)",
+                    "[ HEADER ] array (\n  'content-type' => 'application/x-www-form-urlencoded',\n  'cache-control' => 'no-cache',\n  'postman-token' => '49b6fcdb-2e10-4b9a-b2a0-44bf244ff820',\n  'user-agent' => 'PostmanRuntime/7.6.0',\n  'accept' => '*/*',\n  'host' => 'api2.c3733.com',\n  'accept-encoding' => 'gzip, deflate',\n  'content-length' => '62',\n  'connection' => 'keep-alive',\n)",
+                    "[ PARAM ] array (\n  '/api/card/read' => '',\n  'uuid' => 'ffffffff-1234-1234-1234-123456789012',\n  'from' => '212',\n  'cardId' => '3306',\n)",
+                    "[ RUN ] app\\api\\controller\\Card->read[ C:\\www\\3733.com\\api2\\application\\api\\controller\\Card.php ]",
+                    "[ DB ] INIT mysql",
+                    "[ CACHE ] INIT File"
+                ]
+            },
+            "time": 1548337650,
+            "code": 1,
+            "data": {
+                "id": 3306,
+                "classid": 20,
+                "title": "缥缈传说特权礼包",
+                "titlegame": "缥缈传说",
+                "cardbody": "净世神兵石(中级)*10、五百万铜钱*1、扫荡券*10、经验副本门票*5",
+                "cardtext": "角色达到30级在福利界面的礼包兑换领取",
+                "qq_qun": "",
+                "starttime": "1535601000",
+                "endtime": "1567137000",
+                "game": {
+                    "id": 3582,
+                    "classid": 1,
+                    "totaldown": 8460,
+                    "title": "缥缈传说",
+                    "newstime": 1536026400,
+                    "titlepic": "http://pic3.3733.com/d/file/game/2018-08-30/f14ab6ed64ec1999d4943eaae4278110.png",
+                    "down_a": "http://xiazai.3733.com/apk/game/piaomcs.apk",
+                    "version": "1.1.68.0",
+                    "titleimg": "http://pic3.3733.com/d/file/game/2018-08-30/69b6d143cee4d1aa7b68b61a24b8b0d6.jpg",
+                    "size_a": "194.5 MB",
+                    "size_ip": "",
+                    "type": [
+                        "角色",
+                        "动作"
+                    ],
+                    "sign": [],
+                    "yxftitle": "送至尊2，3888绑定元宝、铜币100万",
+                    "version_code": 6,
+                    "package_name": "com.bn.pmcs.sy3733",
+                    "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                    "app_tag": [
+                        {
+                            "type": 4,
+                            "name": "变态版",
+                            "color": "#ba69ff",
+                            "icon": "http://pic5.3733.com/icon/201805/dc2ec5deea466fb62e7255d97fa5adbc.png"
+                        },
+                        {
+                            "type": 6,
+                            "name": "返利",
+                            "color": "#13cfae",
+                            "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                        },
+                        {
+                            "type": 12,
+                            "name": "1:200",
+                            "color": "#feac24",
+                            "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                        }
+                    ],
+                    "gm_url": null,
+                    "smalltext": "一款玄幻修仙题材的手机RPG游戏",
+                    "video_url": "http://1252153290.vod2.myqcloud.com/8e45c765vodtransgzp1252153290/c993554d5285890781820604348/v.f30.mp4",
+                    "video_thumb": "http://pic3.3733.com/d/file/game/2018-09-14/dcc20a0c260303fe073abff038427254.jpg",
+                    "state": 5,
+                    "uc_dl": 0,
+                    "app_id": 61194,
+                    "app_id_i": 6604,
+                    "enable_speedup": false,
+                    "dl_config": 0,
+                    "enable_rebate": true,
+                    "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/pmcsios_6604/pmcsios_6604.plist"
+                },
+                "cardpass": null,
+                "yi_ling_qu": 1258,
+                "notes": "1、每个用户仅可使用一次\r\n2、本礼包仅适用于3733游戏下载的《缥缈传说》客户端！",
+                "share_title": "缥缈传说特权礼包",
+                "share_url": "/card/3306.html",
+                "remain": 58
+            }
+        }
+    )
+})
+app.post('/api/game/read', (req, res) =>{
+    res.json(
+        {
+            "log": {
+                "sql": [
+                    "[ DB ] CONNECT:[ UseTime:0.004213s ] mysql:host=rm-uf6t81p3k9h712109.mysql.rds.aliyuncs.com;port=3306;dbname=xiaoyu3733db;charset=utf8",
+                    "[ SQL ] SHOW COLUMNS FROM `www_92game_net_d_ecms_app` [ RunTime:0.003100s ]",
+                    "[ SQL ] SELECT `id`,`classid`,`totaldown`,`title`,`newstime`,`titlepic`,`down_a`,`version`,`titleimg`,`size_a`,`size_ip`,`type`,`sign`,`yxftitle`,`version_code`,`package_name`,`license_md5`,`app_tag`,`gm_url`,`cp_id`,`smalltext`,`video_url`,`video_thumb`,`subpackage_domain`,`state`,`uc_dl`,`app_id`,`app_id_i`,`enable_speedup`,`titleurl`,`newstext`,`morepic`,`app_md5`,`kefu_qq`,`qq_qun`,`onclick`,`features`,`activity`,`channel_activity` FROM `www_92game_net_d_ecms_app` WHERE  `state` IN (2,1,5)  AND `platform` LIKE '%IOS%'  AND `title` = '缥缈传说' LIMIT 1 [ RunTime:0.002695s ]",
+                    "[ SQL ] SHOW COLUMNS FROM `gamebox_channel` [ RunTime:0.002499s ]",
+                    "[ SQL ] SELECT * FROM `gamebox_channel` WHERE  `channel_id` = 'none' LIMIT 1 [ RunTime:0.001964s ]",
+                    "[ SQL ] SHOW COLUMNS FROM `gamebox_rebate_game_set` [ RunTime:0.002499s ]",
+                    "[ SQL ] SELECT * FROM `gamebox_rebate_game_set` WHERE  `game_id` = 3582 LIMIT 1 [ RunTime:0.001979s ]",
+                    "[ DB ] CONNECT:[ UseTime:0.004689s ] mysql:host=rm-uf6t81p3k9h712109.mysql.rds.aliyuncs.com;port=3306;dbname=db_sdk_ios;charset=utf8",
+                    "[ SQL ] SHOW COLUMNS FROM `c_game` [ RunTime:0.003038s ]",
+                    "[ SQL ] SELECT `initial` FROM `c_game` WHERE  `id` = 6604 LIMIT 1 [ RunTime:0.002191s ]",
+                    "[ DB ] CONNECT:[ UseTime:0.014532s ] mysql:host=rm-uf6t81p3k9h712109.mysql.rds.aliyuncs.com;port=3306;dbname=vip3733;charset=utf8",
+                    "[ SQL ] SHOW COLUMNS FROM `vip_level` [ RunTime:0.003362s ]",
+                    "[ SQL ] SELECT `level_title`,`recharge` FROM `vip_level` WHERE  `status` = 1  AND `game_name` = '缥缈传说' ORDER BY `id` ASC [ RunTime:0.015934s ]",
+                    "[ SQL ] SHOW COLUMNS FROM `www_92game_net_d_ecms_card` [ RunTime:0.002576s ]",
+                    "[ SQL ] SELECT COUNT(*) AS tp_count FROM `www_92game_net_d_ecms_card` WHERE  `zhuangtai` <> 3  AND `titlegame` = '缥缈传说' LIMIT 1 [ RunTime:0.001797s ]",
+                    "[ SQL ] SHOW COLUMNS FROM `gamebox_config` [ RunTime:0.002069s ]",
+                    "[ SQL ] SELECT * FROM `gamebox_config` WHERE  `config_key` = 'qq' LIMIT 1 [ RunTime:0.001897s ]",
+                    "[ SQL ] SELECT * FROM `gamebox_config` WHERE  `config_key` = 'qq_url' LIMIT 1 [ RunTime:0.001888s ]",
+                    "[ SQL ] SELECT * FROM `gamebox_config` WHERE  `config_key` = 'bt_qun' LIMIT 1 [ RunTime:0.001731s ]",
+                    "[ SQL ] SELECT * FROM `gamebox_config` WHERE  `config_key` = 'vip_qun' LIMIT 1 [ RunTime:0.001724s ]",
+                    "[ SQL ] SELECT * FROM `gamebox_config` WHERE  `config_key` = 'gm_qun' LIMIT 1 [ RunTime:0.001774s ]",
+                    "[ SQL ] SHOW COLUMNS FROM `www_92game_net_d_ecms_news` [ RunTime:0.002406s ]",
+                    "[ SQL ] SELECT `id`,`classid`,`onclick`,`titleurl`,`title`,`newstime`,`titlepic`,`titlegame`,`smalltext` FROM `www_92game_net_d_ecms_news` WHERE  `state` = 1  AND (  (  `titlegame` = '缥缈传说'  AND `classid` IN (7,23,24) )  OR (  `classid` = 22  AND `cp_id` = 80 )  OR (  `classid` = 22  AND `titlegame` = '缥缈传说' ) ) ORDER BY `newstime` DESC LIMIT 0,10 [ RunTime:0.055271s ]",
+                    "[ SQL ] SELECT * FROM `www_92game_net_d_ecms_card` WHERE  `zhuangtai` <> 3  AND `titlegame` = '缥缈传说'  AND `classid` = 21 ORDER BY `id` DESC LIMIT 1 [ RunTime:0.002440s ]",
+                    "[ SQL ] SELECT `id`,`classid`,`totaldown`,`title`,`newstime`,`titlepic`,`down_a`,`version`,`titleimg`,`size_a`,`size_ip`,`type`,`sign`,`yxftitle`,`version_code`,`package_name`,`license_md5`,`app_tag`,`gm_url`,`cp_id`,`smalltext`,`video_url`,`video_thumb`,`subpackage_domain`,`state`,`uc_dl`,`app_id`,`app_id_i`,`enable_speedup` FROM `www_92game_net_d_ecms_app` WHERE  `state` IN (1,5)  AND `platform` LIKE '%IOS%'  AND `classid` IN (1,49)  AND `isgood` = 1 ORDER BY `newstime` DESC LIMIT 0,5 [ RunTime:0.002650s ]"
+                ],
+                "info": [
+                    "[ LANG ] C:\\www\\3733.com\\api2\\thinkphp\\lang\\zh-cn.php",
+                    "[ ROUTE ] array (\n  'type' => 'module',\n  'module' => \n  array (\n    0 => 'api',\n    1 => 'game',\n    2 => 'read',\n  ),\n)",
+                    "[ HEADER ] array (\n  'content-type' => 'application/x-www-form-urlencoded',\n  'cache-control' => 'no-cache',\n  'postman-token' => 'ee3595c0-6898-44d0-a2c1-6422a15637ff',\n  'user-agent' => 'PostmanRuntime/7.6.0',\n  'accept' => '*/*',\n  'host' => 'api2.c3733.com',\n  'accept-encoding' => 'gzip, deflate',\n  'content-length' => '93',\n  'connection' => 'keep-alive',\n)",
+                    "[ PARAM ] array (\n  '/api/game/read' => '',\n  'uuid' => 'ffffffff-1234-1234-1234-123456789012',\n  'from' => '212',\n  'title' => '缥缈传说',\n)",
+                    "[ RUN ] app\\api\\controller\\Game->read[ C:\\www\\3733.com\\api2\\application\\api\\controller\\Game.php ]",
+                    "[ DB ] INIT mysql",
+                    "[ CACHE ] INIT File",
+                    "[ DB ] INIT mysql",
+                    "[ DB ] INIT mysql"
+                ]
+            },
+            "time": 1548337775,
+            "code": 1,
+            "data": {
+                "detail": {
+                    "id": 3582,
+                    "classid": 1,
+                    "totaldown": 8460,
+                    "title": "缥缈传说",
+                    "newstime": 1536026400,
+                    "titlepic": "http://pic3.3733.com/d/file/game/2018-08-30/f14ab6ed64ec1999d4943eaae4278110.png",
+                    "down_a": "http://xiazai.3733.com/apk/game/piaomcs.apk",
+                    "version": "1.1.68.0",
+                    "titleimg": "http://pic3.3733.com/d/file/game/2018-08-30/69b6d143cee4d1aa7b68b61a24b8b0d6.jpg",
+                    "size_a": "194.5 MB",
+                    "size_ip": "",
+                    "type": [
+                        "角色",
+                        "动作"
+                    ],
+                    "sign": [],
+                    "yxftitle": "送至尊2，3888绑定元宝、铜币100万",
+                    "version_code": 6,
+                    "package_name": "com.bn.pmcs.sy3733",
+                    "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                    "app_tag": [
+                        {
+                            "type": 4,
+                            "name": "变态版",
+                            "color": "#ba69ff",
+                            "icon": "http://pic5.3733.com/icon/201805/dc2ec5deea466fb62e7255d97fa5adbc.png"
+                        },
+                        {
+                            "type": 6,
+                            "name": "返利",
+                            "color": "#13cfae",
+                            "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                        },
+                        {
+                            "type": 12,
+                            "name": "1:200",
+                            "color": "#feac24",
+                            "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                        }
+                    ],
+                    "gm_url": null,
+                    "smalltext": "1、首冲双倍!充值比例1:200，上线送3888绑定元宝、铜币100万<br/><br />2、创角即送：黄金月卡-直升至尊2，给你30天免费特权体验!<br />3、首充6元-赠送绝版红装;再冲30元-领取稀有时装<br />4、60级0元助力礼包，免费领强力橙装<br />5、投资计划可享10倍返还<br />6、升级加速，一天可达100级!<br />7、七天登录送大礼：豪华材料礼包惊喜连连!<br />————————<br />历史累计充值礼包(每个角色每个礼包限领取一次)：<br />长期有效(不可重复申请)<br />A累计充值满1000元礼包：3级攻击石1、一千万铜钱、初级法器精华*20<br />B累计充值满3000元礼包;3级保护石1、一千万铜钱、初级法器精华*40<br />C累计充值满5000元礼包：4级攻击石1、二千万铜钱、中级法器精华*20<br />D累计充值满10000元礼包：传说套装石-戒指*1、二千万铜钱、5级保护石1、中级法器精华*40<br />E累计充值满30000元礼包：完美套装石*1、四千万铜钱、6级攻击石1、高级法器精华*40<br />F累计充值满50000元礼包：完美套装石*3、四千万铜钱、7级保护石1、高级法器精华*80<br />说明：<br />1. 每个档位的礼包每个账号限领取一次<br />2. 充值满足要求可向平台申请礼包。例如小明累计充值5000元，可以领取A、B、C三挡礼包。<br />每日累充活动：<br />时间：长期有效，每日24点重置<br />单日累计充值达到200元：1.5倍经验丹*1、仙王令*1、100绑元*2<br />单日累计充值达到500元：2倍经验丹*1、仙王令*2、100绑元*3<br />单日累计充值达到1000元：净世神兵石(高级)*10、仙王令*3、坐骑经验丹40<br />单日累计充值达到2000元：净世神兵石(高级)*15、仙王令*4、坐骑经验丹60<br />单日累计充值达到3000元：净世神兵石(高级)*20、麒麟神兵石(高级)*10、仙王令*6、坐骑经验丹80<br />单日累计充值达到5000元：星曜魂石*1、麒麟神兵石(高级)*20、仙王令*10、坐骑经验丹100<br />说明：<br />1. 充值最高档位可以领取所有定档位奖励<br />2. 每个角色每日每档仅能领取一次<br />3. 活动仅限每日累计有效，次日重置统计",
+                    "video_url": "http://1252153290.vod2.myqcloud.com/8e45c765vodtransgzp1252153290/c993554d5285890781820604348/v.f30.mp4",
+                    "video_thumb": "http://pic3.3733.com/d/file/game/2018-09-14/dcc20a0c260303fe073abff038427254.jpg",
+                    "state": 5,
+                    "uc_dl": 0,
+                    "app_id": 61194,
+                    "app_id_i": 6604,
+                    "enable_speedup": false,
+                    "titleurl": "http://m.3733.com/pmcs",
+                    "newstext": "《缥缈传说》是一款玄幻修仙题材，宏大架空背景的手机RPG游戏，采用流畅的即时战斗模式，让玩家可以获得大型MMORPG的游戏体验。游戏内所有人物模型全部使用3D模型完成，以美轮美奂的场景和细腻华丽的角色形象来表现游戏世界，简单的操作和游戏前期大量的新手引导，让玩家可以更快速地上手游戏操作、熟悉游戏各项功能及玩法。游戏采用东方写实仙侠风格，拥有丰富多样的角色技能和精彩刺，激的副本体系。",
+                    "morepic": {
+                        "small": [
+                            "http://pic4.3733.com/d/file/game/2018-08-30/05bb19092410afe2a909246ae76ad63e.jpg",
+                            "http://pic4.3733.com/d/file/game/2018-08-30/6408145bd7b49fd783778238814c15cf.jpg",
+                            "http://pic4.3733.com/d/file/game/2018-08-30/297efe078fa9923ba5e517348702128b.jpg",
+                            "http://pic4.3733.com/d/file/game/2018-08-30/2f958f8fdd654a1a4eed5482ebd11de4.jpg"
+                        ],
+                        "big": [
+                            "http://pic4.3733.com/d/file/game/2018-08-30/05bb19092410afe2a909246ae76ad63e.jpg",
+                            "http://pic4.3733.com/d/file/game/2018-08-30/6408145bd7b49fd783778238814c15cf.jpg",
+                            "http://pic4.3733.com/d/file/game/2018-08-30/297efe078fa9923ba5e517348702128b.jpg",
+                            "http://pic4.3733.com/d/file/game/2018-08-30/2f958f8fdd654a1a4eed5482ebd11de4.jpg"
+                        ]
+                    },
+                    "app_md5": "7B540880C3F3E0A52736484391EAC10B",
+                    "kefu_qq": "800819997",
+                    "qq_qun": "759044253",
+                    "activity": "返利仅限单日累计充值，每日24点清零，第二天重新计算累计：<br />单日累计充值100-500元，返还10%<br />单日累计充值501-1000元，返还30%<br />单日累计充值1001-3000元，返还50%<br />单日累计充值3001-5000元，返还80%<br />单日累计充值5001-10000元，返还100%<br />单日累计充值10000元以上，返还150%<br />1、当日累积充值达到额度即可返利!只限一日累积，不能多日累积。<br />2、达到充值返利条件的玩家请联系客服，登记领取奖励。<br />3、游戏内不送任何装备和道具!<br />PS：充值返利会在2个工作日内发放到玩家邮件内",
+                    "dl_config": 0,
+                    "enable_rebate": true,
+                    "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/pmcsios_6604/pmcsios_6604.plist",
+                    "video": {
+                        "url": "http://1252153290.vod2.myqcloud.com/8e45c765vodtransgzp1252153290/c993554d5285890781820604348/v.f30.mp4",
+                        "thumb": "http://pic3.3733.com/d/file/game/2018-09-14/dcc20a0c260303fe073abff038427254.jpg"
+                    },
+                    "vip_price": [
+                        {
+                            "level_title": "VIP至尊3",
+                            "recharge": "140元或通过每天自然增长5点经验值获得"
+                        },
+                        {
+                            "level_title": "VIP至尊4",
+                            "recharge": "250元或通过每天自然增长5点经验值获得"
+                        },
+                        {
+                            "level_title": "VIP至尊5",
+                            "recharge": "500元或通过每天自然增长5点经验值获得"
+                        },
+                        {
+                            "level_title": "VIP至尊6",
+                            "recharge": "1200元或通过每天自然增长5点经验值获得"
+                        },
+                        {
+                            "level_title": "VIP至尊7",
+                            "recharge": "2400元或通过每天自然增长5点经验值获得"
+                        },
+                        {
+                            "level_title": "VIP至尊8",
+                            "recharge": "4800元或通过每天自然增长5点经验值获得"
+                        },
+                        {
+                            "level_title": "VIP至尊9",
+                            "recharge": "9600元或通过每天自然增长5点经验值获得"
+                        }
+                    ],
+                    "share_title": "缥缈传说",
+                    "share_url": "http://m.3733.com/pmcs",
+                    "favorite_num": 1692,
+                    "card_count": 3,
+                    "kefu_qq_url": "https://q.url.cn/abDUwo?_type=wpa&amp;qidian=true",
+                    "news_groups": [
+                        [
+                            {
+                                "id": 79201,
+                                "classid": 7,
+                                "onclick": 152,
+                                "titleurl": "http://m.3733.com/appnews/79201.html",
+                                "title": "《缥缈传说》游戏视频分享：一款玄幻修仙类手机RPG游戏",
+                                "newstime": 1536543807,
+                                "titlepic": "http://pic3.3733.com/d/file/video/2018-09-14/4d635d724e3ac9f16c25f08a8c4d5b49.png",
+                                "titlegame": "缥缈传说",
+                                "smalltext": "　　《缥缈传说》是一款玄幻修仙题材，宏大架空背景的手机RPG游戏，采用流畅的即时战斗模式，让玩家可以获得大型MMORPG的游戏体验。游戏内所有人物模型全部使用3D模型完成，以美轮美奂的场景和细腻华丽的角色形象来表现游戏世界，简单的操作和游戏前期大量的新手引导，让玩家可以更快速地上手游戏操作、熟悉游戏各项功能及玩法。游戏采用东方写实仙侠风格，拥有丰富多样的角色技能和精彩刺激的副本体系。",
+                                "class_name": "视频",
+                                "tag_color": "#feac24"
+                            },
+                            {
+                                "id": 78608,
+                                "classid": 23,
+                                "onclick": 230,
+                                "titleurl": "http://m.3733.com/appnews/78608.html",
+                                "title": "《缥缈传说》新手攻略坐骑大盘点",
+                                "newstime": 1536043296,
+                                "titlepic": "http://pic3.3733.com//d/file/zixun/gonglue/2018-09-04/4c496c28bbee854ffee95470b28376cb.png",
+                                "titlegame": "缥缈传说",
+                                "smalltext": "坐骑系统是《缥缈传说》中玩家刷本跑图的强力帮手，不仅能提升玩家的移动速度，更有12阶坐骑为玩家助战。下面小编来盘点下游戏中的坐骑，一起来看看吧。",
+                                "class_name": "攻略",
+                                "tag_color": "#56b8ff"
+                            },
+                            {
+                                "id": 78606,
+                                "classid": 23,
+                                "onclick": 173,
+                                "titleurl": "http://m.3733.com/appnews/78606.html",
+                                "title": "缺金币做悬赏《缥缈传说》赏金任务教学",
+                                "newstime": 1536042292,
+                                "titlepic": "http://pic3.3733.com//d/file/zixun/gonglue/2018-09-04/95ccfec055699cc9d128e93593336199.jpg",
+                                "titlegame": "缥缈传说",
+                                "smalltext": "《缥缈传说​》中玩家战力的提升需要消耗大量的金币，而玩家在完成46级主线任务后，可以开启赏金任务，玩家可以通过完成各种赏金任务来获取大量金币与经验奖励。",
+                                "class_name": "攻略",
+                                "tag_color": "#56b8ff"
+                            }
+                        ],
+                        [
+                            {
+                                "id": 78605,
+                                "classid": 23,
+                                "onclick": 171,
+                                "titleurl": "http://m.3733.com/appnews/78605.html",
+                                "title": "缥缈传说战力如何提升_缥缈传说战力提升教学",
+                                "newstime": 1536041750,
+                                "titlepic": "http://pic3.3733.com//d/file/zixun/gonglue/2018-09-04/15eeb4209ffa0dd3af42298bde7a0c2e.jpg",
+                                "titlegame": "缥缈传说",
+                                "smalltext": "《缥缈传说》战力如何提升?缥缈传说战力提升教学?缥缈传说战力是衡量玩家实力的重要依据，游戏中的各项数值的都与战力的提升息息相关，本次小编来分享下如何提升战力。",
+                                "class_name": "攻略",
+                                "tag_color": "#56b8ff"
+                            },
+                            {
+                                "id": 78604,
+                                "classid": 23,
+                                "onclick": 149,
+                                "titleurl": "http://m.3733.com/appnews/78604.html",
+                                "title": "缥缈传说如何飞升_缥缈传说飞升有什么用",
+                                "newstime": 1536041030,
+                                "titlepic": "http://pic3.3733.com//d/file/zixun/gonglue/2018-09-04/4067d05117393bbeb5bae3b70aaa5793.png",
+                                "titlegame": "缥缈传说",
+                                "smalltext": "缥缈传说如何飞升?缥缈传说飞升有什么用?飞升系统是缥缈传说​中最核心的系统，玩家角色通过收集散落在四周的神凯不断成长，解锁新的地图章节和角色技能，大幅提升角色的实力!",
+                                "class_name": "攻略",
+                                "tag_color": "#56b8ff"
+                            },
+                            {
+                                "id": 78603,
+                                "classid": 23,
+                                "onclick": 145,
+                                "titleurl": "http://m.3733.com/appnews/78603.html",
+                                "title": "《缥缈传说​》离线挂机玩法教学",
+                                "newstime": 1536040609,
+                                "titlepic": "http://pic3.3733.com//d/file/zixun/gonglue/2018-09-04/1d8af892a9ff54d77967e790d63f2838.jpg",
+                                "titlegame": "缥缈传说",
+                                "smalltext": "《缥缈传说​》中为玩家们设计了全新离线挂机玩法，即使没有时间玩游戏，玩家也能够照样打怪升级拿装备，下面随小编来看看票面传说离线挂机的详细内容。",
+                                "class_name": "攻略",
+                                "tag_color": "#56b8ff"
+                            }
+                        ],
+                        [
+                            {
+                                "id": 78602,
+                                "classid": 23,
+                                "onclick": 188,
+                                "titleurl": "http://m.3733.com/appnews/78602.html",
+                                "title": "新手必看《缥缈传说​》合成系统教学",
+                                "newstime": 1536033147,
+                                "titlepic": "http://pic3.3733.com//d/file/zixun/gonglue/2018-09-04/0b51d6edb3e46cc5a43e86261dbdd8c0.png",
+                                "titlegame": "缥缈传说",
+                                "smalltext": "合成系统是《缥缈传说​》中的特色系统，玩家可以通过合成系统来获取各种稀有的资源，强化自身的战力。",
+                                "class_name": "攻略",
+                                "tag_color": "#56b8ff"
+                            },
+                            {
+                                "id": 78601,
+                                "classid": 23,
+                                "onclick": 175,
+                                "titleurl": "http://m.3733.com/appnews/78601.html",
+                                "title": "新手必备《缥缈传说》全职业介绍",
+                                "newstime": 1536032536,
+                                "titlepic": "http://pic3.3733.com//d/file/zixun/gonglue/2018-09-04/cb7231fb10def6a4b1a76dcadf07ae37.png",
+                                "titlegame": "缥缈传说",
+                                "smalltext": "《缥缈传说》游戏内总共分为3种职业，分别为刀剑师，羽翎师和魔师。每个职业都有各自的特色。下面小编来为玩家们一一介绍，帮助各位玩家选择到适合自己的职业。",
+                                "class_name": "攻略",
+                                "tag_color": "#56b8ff"
+                            },
+                            {
+                                "id": 78599,
+                                "classid": 23,
+                                "onclick": 163,
+                                "titleurl": "http://m.3733.com/appnews/78599.html",
+                                "title": "缥缈传说仙盟任务怎么做_缥缈传说仙盟任务教学",
+                                "newstime": 1536031985,
+                                "titlepic": "http://pic3.3733.com//d/file/zixun/gonglue/2018-09-04/4abb7a57ccd73ae523d864da4dbd2d5a.jpg",
+                                "titlegame": "缥缈传说",
+                                "smalltext": "缥缈传说仙盟任务怎么做?缥缈传说​中仙盟任务是玩家们日常必做玩法，能够为玩家们带来丰厚的资源，下面小编来为玩家们介绍下如何完成仙盟任务。",
+                                "class_name": "攻略",
+                                "tag_color": "#56b8ff"
+                            }
+                        ]
+                    ],
+                    "notices": [
+                        {
+                            "id": 1,
+                            "title": "点击加入《缥缈传说》玩家群：759044253",
+                            "text_size": 14,
+                            "text_color": "#ff3200",
+                            "content": "点击加入《缥缈传说》玩家群：759044253",
+                            "action_code": 1,
+                            "action_text": "759044253"
+                        }
+                    ]
+                },
+                "liked": [
+                    {
+                        "id": 20001546,
+                        "classid": 49,
+                        "totaldown": 5539,
+                        "title": "妖尾海量版",
+                        "newstime": 1548306000,
+                        "titlepic": "http://pic5.3733.com/icon/201901/58cfb29c68bcb3982be5147695ed7c0d.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/yaowhlb.apk",
+                        "version": "1.0.0",
+                        "titleimg": "http://pic5.3733.com/banner/201901/4206829731825d58d1bd226ee4dc50ee.jpeg",
+                        "size_a": "270.9 MB",
+                        "size_ip": "",
+                        "type": [
+                            "角色",
+                            "格斗"
+                        ],
+                        "sign": [],
+                        "yxftitle": "上线送至尊VIP，钻石88888",
+                        "version_code": 100,
+                        "package_name": "com.sfsy.ywhlb.m3733",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 7,
+                                "name": "满Vip版",
+                                "color": "#f87e71",
+                                "icon": "http://pic5.3733.com/icon/201805/ea27ee5a7a44c48461d1ecaba68b8183.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:1000",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "这里是证明实力的地方，你就是下一位最强魔导士",
+                        "video_url": "",
+                        "video_thumb": "",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61746,
+                        "app_id_i": 7148,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/ywhlbios_7148/ywhlbios_7148.plist"
+                    },
+                    {
+                        "id": 20001869,
+                        "classid": 1,
+                        "totaldown": 9543,
+                        "title": "掌门我要后宫版",
+                        "newstime": 1548302400,
+                        "titlepic": "http://pic5.3733.com/icon/201901/5f58e2d4ff9a122677ba4852b208d00b.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/zhangmwyhlb.apk",
+                        "version": "1.0.0",
+                        "titleimg": "http://pic5.3733.com/banner/201901/777d382044afe197c3533ea8e087eed3_n.jpeg",
+                        "size_a": "3.3 MB",
+                        "size_ip": "",
+                        "type": [
+                            "策略",
+                            "模拟"
+                        ],
+                        "sign": [],
+                        "yxftitle": "送V6，元宝38888、金蛇套装",
+                        "version_code": 1,
+                        "package_name": "com.zmwy.guandu",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 4,
+                                "name": "变态版",
+                                "color": "#ba69ff",
+                                "icon": "http://pic5.3733.com/icon/201805/dc2ec5deea466fb62e7255d97fa5adbc.png"
+                            },
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:500",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "一款模拟经营类游戏",
+                        "video_url": "",
+                        "video_thumb": "",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61823,
+                        "app_id_i": 7154,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/zmwyhgbios_7154/zmwyhgbios_7154.plist"
+                    },
+                    {
+                        "id": 20001794,
+                        "classid": 1,
+                        "totaldown": 4501,
+                        "title": "仙剑客栈-巅峰回合",
+                        "newstime": 1548298800,
+                        "titlepic": "http://pic5.3733.com/icon/201901/0022f1db65f806d860ab6731e08167a0.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/xianjkzdfhh.apk",
+                        "version": "1.0.0",
+                        "titleimg": "",
+                        "size_a": "219.7 MB",
+                        "size_ip": "",
+                        "type": [
+                            "卡牌",
+                            "策略"
+                        ],
+                        "sign": [],
+                        "yxftitle": "送V8，金币188万，仙玉21888",
+                        "version_code": 10000,
+                        "package_name": "com.xjkz.qipa",
+                        "license_md5": "24F8FDD198FAA68AC77F9E910A9698D7",
+                        "app_tag": [
+                            {
+                                "type": 4,
+                                "name": "变态版",
+                                "color": "#ba69ff",
+                                "icon": "http://pic5.3733.com/icon/201805/dc2ec5deea466fb62e7255d97fa5adbc.png"
+                            },
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:500",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "汇集多个仙剑角色的巅峰回合制手游",
+                        "video_url": "",
+                        "video_thumb": "",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61813,
+                        "app_id_i": 7157,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/xjkz_dfhhios_7157/xjkz_dfhhios_7157.plist"
+                    },
+                    {
+                        "id": 20001857,
+                        "classid": 49,
+                        "totaldown": 10731,
+                        "title": "仙域争霸",
+                        "newstime": 1548298200,
+                        "titlepic": "http://pic5.3733.com/icon/201901/c65bff1bfef503970698183da03a8592.png",
+                        "down_a": "http://xiazai.3733.com/apk/game/xianyzb.apk",
+                        "version": "1.0.0",
+                        "titleimg": "http://pic5.3733.com/banner/201901/81c9007f3dbb96f62603eb357e772a57_n.jpeg",
+                        "size_a": "3.2 MB",
+                        "size_ip": "",
+                        "type": [
+                            "角色",
+                            "动作",
+                            "即时"
+                        ],
+                        "sign": [],
+                        "yxftitle": "送V20，88888元宝，金币88888",
+                        "version_code": 1,
+                        "package_name": "com.xuanyumanv.yingtao",
+                        "license_md5": "9AF5A6E5A083BD2AA222011FAA4D43A5",
+                        "app_tag": [
+                            {
+                                "type": 6,
+                                "name": "返利",
+                                "color": "#13cfae",
+                                "icon": "http://pic5.3733.com/icon/201805/50a3f12afc50a07177491e98994a0de8.png"
+                            },
+                            {
+                                "type": 7,
+                                "name": "满Vip版",
+                                "color": "#f87e71",
+                                "icon": "http://pic5.3733.com/icon/201805/ea27ee5a7a44c48461d1ecaba68b8183.png"
+                            },
+                            {
+                                "type": 12,
+                                "name": "1:1000",
+                                "color": "#feac24",
+                                "icon": "http://pic5.3733.com/icon/201805/29fcaad48feddfcc9380cc409580d66b.png"
+                            }
+                        ],
+                        "gm_url": null,
+                        "smalltext": "浪漫邂逅修仙世界，正统修仙战斗为你打造",
+                        "video_url": "",
+                        "video_thumb": "",
+                        "state": 1,
+                        "uc_dl": 0,
+                        "app_id": 61820,
+                        "app_id_i": 7155,
+                        "enable_speedup": false,
+                        "dl_config": 0,
+                        "enable_rebate": true,
+                        "down_ip": "itms-services://?action=download-manifest&url=https://d2.3733.com/sdkgame/xyzbios_7155/xyzbios_7155.plist"
+                    }
+                ]
+            }
+        }
+    )
+})
 app.get('/api', (req, res) => {
   res.send("<h2>It's port 9093</h2>")
 });

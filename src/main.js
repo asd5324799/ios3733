@@ -10,7 +10,7 @@ import vuescroller from 'vue-scroller'
 Vue.config.productionTip = false
 
 Vue.use(vuescroller)
-new Vue({
+ new Vue({
   router,
   store,
   render: h => h(App)

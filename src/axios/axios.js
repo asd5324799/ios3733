@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
+import qs from 'qs'
 
 axios.interceptors.response.use(res => {
   res = res.data;
@@ -13,3 +14,4 @@ axios.interceptors.response.use(res => {
 })
 
 Vue.prototype.$axios = axios;
+Vue.prototype.$qs = qs;

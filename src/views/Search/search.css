@@ -1,0 +1,195 @@
+/* search */
+.search {
+  padding-top: 0.9879rem;
+}
+.search .top-search {
+  position: fixed;
+  top: 0;
+  background: #47A83A;
+  display: flex;
+  padding: 0.1602rem 0;
+  line-height: 0.6675rem;
+  height: 0.6675rem;
+  width: 100%;
+  z-index: 1000;
+}
+.search .top-search .back-btn {
+  display: inline-block;
+  width: 0.5073rem;
+  height: 0.6675rem;
+  background: url(../../assets/images/back.png) center center no-repeat;
+  background-size: 0.5073rem 0.4005rem;
+  margin-left: 0.4005rem;
+}
+.search .top-search .search-board {
+  position: relative;
+  background: #F5F5F5;
+  width: 7.209rem;
+  height: 0.6675rem;
+  border-radius: 0.1068rem;
+  margin: 0 auto;
+}
+.search .top-search .search-board .search-icon {
+  display: inline-block;
+  width: 0.6675rem;
+  height: 0.6675rem;
+  background: url(../../assets/images/search.png) center center no-repeat;
+  background-size: 0.4005rem 0.4005rem;
+  vertical-align: 0.0534rem;
+}
+.search .top-search .search-board input {
+  background: rgba(0, 0, 0, 0);
+  vertical-align: 0.267rem;
+  width: 5.34rem;
+  font-size: 0.3204rem;
+}
+.search .top-search .search-board .clear-key {
+  position: absolute;
+  width: 0.3471rem;
+  height: 0.3471rem;
+  background: url(../../assets/images/clear-key.png) no-repeat;
+  background-size: 0.3471rem 0.3471rem;
+  right: 0.1869rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.search .top-search .search-btn {
+  display: inline-block;
+  color: #fff;
+  font-size: 0.3738rem;
+  height: 0.6675rem;
+  line-height: 0.6675rem;
+  margin-right: 0.4005rem;
+}
+.search .section-title {
+  height: 0.801rem;
+  line-height: 0.801rem;
+  position: relative;
+  margin: 0 0.267rem;
+}
+.search .section-title .hot-title {
+  font-size: 0.3738rem;
+  color: #888;
+}
+.search .section-title .hot-change {
+  position: absolute;
+  right: 0;
+  font-size: 0.267rem;
+  color: #888;
+  top: 0.2136rem;
+}
+.search .section-title .hot-change i {
+  display: inline-block;
+  width: 0.1335rem;
+  height: 0.1335rem;
+}
+.search .hot-search .hot-game-list {
+  display: flex;
+  padding: 0 0.267rem;
+}
+.search .hot-search .hot-game-list .hot-game-item {
+  width: 25%;
+}
+.search .hot-search .hot-game-list .hot-game-item a {
+  display: block;
+}
+.search .hot-search .hot-game-list .hot-game-item a .hot-game-pic {
+  width: 1.4685rem;
+  height: 1.4685rem;
+  margin: 0 auto;
+  border-radius: 0.267rem;
+  background: #eee;
+  overflow: hidden;
+}
+.search .hot-search .hot-game-list .hot-game-item a .hot-game-pic img {
+  display: block;
+  width: 1.4685rem;
+  height: 1.4685rem;
+}
+.search .hot-search .hot-game-list .hot-game-item a .hot-game-title {
+  width: 1.602rem;
+  margin: 0 auto;
+  font-size: 0.267rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-top: 0.267rem;
+  text-align: center;
+}
+.search .hot-search .tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 0.267rem;
+  padding: 0 0.267rem;
+}
+.search .hot-search .tag-list .tag-item {
+  width: 25%;
+  margin-bottom: 0.267rem;
+}
+.search .hot-search .tag-list .tag-item span {
+  display: block;
+  width: 2.0025rem;
+  height: 0.6675rem;
+  line-height: 0.6675rem;
+  border: 1px solid #888;
+  border-radius: 0.4005rem;
+  text-align: center;
+  color: #888;
+  margin: 0 auto;
+  font-size: 0.3204rem;
+}
+.search .hot-search .tag-list .tag-item span.visited {
+  color: #F32B3E;
+  border-color: #F32B3E;
+}
+.search .search-history {
+  border-top: 1px solid #eee;
+}
+.search .search-history .section-title .history-title {
+  font-size: 0.3738rem;
+  color: #888;
+}
+.search .search-history .history-list {
+  border-top: 1px solid #eee;
+  margin: 0 0.267rem;
+  padding: 0.1335rem 0;
+}
+.search .search-history .history-list .history-item {
+  position: relative;
+  height: 0.801rem;
+  line-height: 0.801rem;
+}
+.search .search-history .history-list .history-item a {
+  font-size: 0.267rem;
+  color: #888;
+  display: block;
+  height: 0.801rem;
+  line-height: 0.801rem;
+  padding-left: 0.1335rem;
+}
+.search .search-history .history-list .history-item a i {
+  display: inline-block;
+  width: 0.3204rem;
+  height: 0.3204rem;
+  margin-right: 0.1335rem;
+  background: url(../../assets/images/time.png) no-repeat;
+  background-size: 0.3204rem 0.3204rem;
+  vertical-align: -0.0267rem;
+}
+.search .search-history .history-list .history-item span.clear-history {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: block;
+  width: 0.801rem;
+  height: 0.801rem;
+  background: url(../../assets/images/clear.png) center center no-repeat;
+  background-size: 0.2136rem 0.2136rem;
+}
+.search .search-history .clear-history-all {
+  border-top: 1px solid #eee;
+  color: #F32B3E;
+  margin: 0 0.267rem;
+  font-size: 0.3738rem;
+  padding: 0.267rem 0;
+}

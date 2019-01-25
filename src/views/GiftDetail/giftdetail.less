@@ -1,0 +1,107 @@
+/* giftdetail */
+@rem: 0.0267rem;
+.gift-detail{
+    box-sizing: border-box;
+    height: 100%;
+    padding-top: 37*@rem;
+    .top-green-bar{
+        position: fixed;
+        top: 0;
+        background: #47A83A;
+        padding: 6*@rem 0;
+        line-height: 25*@rem;
+        height: 25*@rem;
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        font-size: 16*@rem;
+        z-index: 10000;
+        .back-btn{
+            display: inline-block;
+            position: absolute;
+            width: 19*@rem;
+            height: 25*@rem;
+            background: url(../../assets/images/back.png) center center no-repeat;
+            background-size: 19*@rem 15*@rem;
+            left: 15*@rem;
+        }
+    }
+    .gift-info{
+        position: relative;
+        h4{
+            font-size: 15*@rem;
+            font-weight: normal;
+        }
+        .gift-remain{
+            margin: 5*@rem 0;
+            b{
+              display: inline-block;
+              background: #E5E5E5;
+              width: 100*@rem;
+              height: 4*@rem;
+              margin-right: 5*@rem;
+              border-radius: 3*@rem;
+              overflow: hidden;
+              vertical-align: 2*@rem;
+              i{
+                display: block;
+                height: 4*@rem;
+                background: rgba(71, 168, 58, 1);
+              }
+            }
+            span{
+                color: #666666;
+              font-size: 10*@rem;
+            }
+          }
+          .get-number{
+            font-size: 10*@rem;
+            color: #666666;
+            line-height: 16*@rem;
+            
+          }
+          a.get-gift{
+            box-sizing: border-box;
+            position: absolute;
+            right: 10*@rem;
+            top: 10*@rem;
+            display: block;
+            width: 50*@rem;
+            height: 25*@rem;
+            border-radius: 5*@rem;
+            line-height: 25*@rem;
+            text-align: center;
+            color: rgba(71, 168, 58, 1);
+            border: 1px solid rgba(71, 168, 58, 1);
+            font-size: 12*@rem;
+          }
+          a.get-account{
+            box-sizing: border-box;
+            position: absolute;
+            right: 10*@rem;
+            top: 43*@rem;
+            display: block;
+            width: 50*@rem;
+            height: 25*@rem;
+            border-radius: 5*@rem;
+            line-height: 25*@rem;
+            text-align: center;
+            color: rgba(71, 168, 58, 1);
+            border: 1px solid rgba(71, 168, 58, 1);
+            font-size: 12*@rem;
+          }
+    }
+    .gift-section{
+        border-bottom: 1px solid #eee;
+        padding: 8*@rem 10*@rem 12*@rem;
+        font-size: 12*@rem;
+        .section-title{
+            color: #4FD03EFF;
+            margin-bottom:5*@rem;
+        }
+        p{
+            color: #333;
+            line-height: 16*@rem;
+        }
+    }
+}

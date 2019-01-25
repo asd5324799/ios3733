@@ -1,0 +1,71 @@
+/* game-info */
+.game-info {
+  position: relative;
+  border-bottom: 1px solid #eeeeee;
+  background: #fff;
+}
+.game-info .big-img {
+  display: block;
+  width: 100%;
+}
+.game-info .container {
+  display: flex;
+  padding: 0.267rem 0.3738rem;
+  overflow: hidden;
+}
+.game-info .container .game-number {
+  margin-right: 0.3738rem;
+  margin-top: 0.801rem;
+  font-size: 0.4005rem;
+}
+.game-info .container .game-img {
+  flex: 0 0 1.7355rem;
+  width: 1.7355rem;
+  height: 1.7355rem;
+  background-color: #eeeeee;
+  border-radius: 15px;
+  overflow: hidden;
+}
+.game-info .container .game-content {
+  flex: 1;
+  margin-left: 0.4005rem;
+  overflow: hidden;
+}
+.game-info .container .game-content .game-name {
+  font-size: 0.4005rem;
+}
+.game-info .container .game-content .game-name .game-district {
+  margin-left: 0.1335rem;
+  font-size: 0.3204rem;
+  color: #999999;
+}
+.game-info .container .game-content .game-type {
+  margin: 0.2136rem 0;
+}
+.game-info .container .game-content .game-type .type {
+  margin-right: 0.0801rem;
+  padding: 0 0.0801rem;
+  color: #ffffff;
+}
+.game-info .container .game-content .game-type .size {
+  color: #999999;
+}
+.game-info .container .game-content .game-boon {
+  color: #999999;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.game-info .game-download {
+  position: absolute;
+  top: 0.801rem;
+  right: 0.3738rem;
+  width: 1.602rem;
+  height: 0.801rem;
+  text-align: center;
+  line-height: 0.801rem;
+  background-color: #47a83a;
+  border-radius: 3px;
+  font-size: 0.3738rem;
+  color: #ffffff;
+}

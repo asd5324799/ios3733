@@ -1,13 +1,8 @@
 /* nav-com */
 @rem: 0.0267rem;
-    .router-link-exact-active p{
-        display: block;
-        color: #5EB352;
-        transition: 0.3s;
-    }
     .nav-list{
         display: flex;
-        position: absolute;
+        position: fixed;
         bottom: 0;
         background: #fff;
         width: 100%;
@@ -30,38 +25,41 @@
             margin-top: 8*@rem;
             
         }
-        .recom{
+        .recom-icon{
             background: url(../../assets/images/recom.png) no-repeat;
             background-size: 18*@rem 18*@rem;
         }
-        .rank{
+        .rank-icon{
             background: url(../../assets/images/rank.png) no-repeat;
             background-size: 18*@rem 18*@rem;
         }
-        .list{
+        .list-icon{
             background: url(../../assets/images/list.png) no-repeat;
             background-size: 18*@rem 18*@rem;
         }
-        .mine{
+        .mine-icon{
             background: url(../../assets/images/mine.png) no-repeat;
             background-size: 18*@rem 18*@rem;
         }
-        .router-link-exact-active{
-            .recom{
+        .active{
+            .recom-icon{
                 background: url(../../assets/images/recom-active.png) no-repeat;
                 background-size: 18*@rem 18*@rem;
             }
-            .rank{
+            .rank-icon{
                 background: url(../../assets/images/rank-active.png) no-repeat;
                 background-size: 18*@rem 18*@rem;
             }
-            .list{
+            .list-icon{
                 background: url(../../assets/images/list-active.png) no-repeat;
                 background-size: 18*@rem 18*@rem;
             }
-            .mine{
+            .mine-icon{
                 background: url(../../assets/images/mine-active.png) no-repeat;
                 background-size: 18*@rem 18*@rem;
+            }
+            p{
+                color: #5EB352;
             }
         }
     } 
@@ -74,7 +72,4 @@
         color: #919191;
         transition: 0.3s;
         
-    }
-    .active{
-        color: #5EB352;
     }

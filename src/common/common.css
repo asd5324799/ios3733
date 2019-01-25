@@ -1,0 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: none;
+  line-height: 1.2;
+}
+html,
+body {
+  height: 100%;
+}
+#app {
+  height: 100%;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+a,
+input,
+button {
+  outline: 0 none !important;
+}
+li {
+  list-style: none;
+}
+._v-container > ._v-content {
+  background: url(http://img.zcool.cn/community/0189035940dc89a8012193a3f2a65e.gif) no-repeat;
+  background-size: 10.0125rem;
+  background-position: center -0.6675rem;
+}

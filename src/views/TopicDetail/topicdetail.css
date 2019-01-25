@@ -1,0 +1,115 @@
+/* topic-detail */
+.topic-detail {
+  box-sizing: border-box;
+  height: 100%;
+}
+.topic-detail .top-transparent-bar {
+  position: fixed;
+  top: 0rem;
+  padding: 0.1602rem 0;
+  line-height: 0.6675rem;
+  height: 0.6675rem;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  font-size: 0.4272rem;
+  z-index: 10000;
+}
+.topic-detail .top-transparent-bar .back-btn {
+  display: inline-block;
+  position: absolute;
+  width: 0.5073rem;
+  height: 0.6675rem;
+  background: url(../../assets/images/back.png) center center no-repeat;
+  background-size: 0.5073rem 0.4005rem;
+  left: 0.4005rem;
+}
+.topic-detail .topic-face-pic {
+  height: 4.539rem;
+  width: 100%;
+  background-size: 10.0125rem 4.539rem;
+}
+.topic-detail .content-bg {
+  background: #7b5eb9;
+}
+.topic-detail .content-bg .topic-title {
+  font-size: 0.4272rem;
+  color: #fff;
+  line-height: 0.801rem;
+  border-bottom: 0.0534rem solid #fff;
+  padding-bottom: 0.534rem;
+  text-indent: 0.267rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.topic-detail .topic-game-list .topic-game-item {
+  position: relative;
+  border-bottom: 1px solid #fff;
+  padding: 0.2136rem 0.267rem;
+}
+.topic-detail .topic-game-list .topic-game-item .topic-game-video {
+  width: 9.4785rem;
+  height: 5.34rem;
+  position: relative;
+  overflow: hidden;
+}
+.topic-detail .topic-game-list .topic-game-item .topic-game-video .video-item {
+  width: 9.4785rem;
+  height: 5.34rem;
+  background-position: center center;
+  background-size: cover;
+  overflow: hidden;
+}
+.topic-detail .topic-game-list .topic-game-item .container {
+  display: flex;
+  margin-top: 0.1335rem;
+  overflow: hidden;
+}
+.topic-detail .topic-game-list .topic-game-item .container .game-img {
+  width: 1.1214rem;
+  height: 1.1214rem;
+  display: block;
+  background-color: #eeeeee;
+  border-radius: 0.267rem;
+  overflow: hidden;
+}
+.topic-detail .topic-game-list .topic-game-item .container .game-content {
+  flex: 1;
+  margin-left: 0.267rem;
+  overflow: hidden;
+}
+.topic-detail .topic-game-list .topic-game-item .container .game-content .game-name {
+  font-size: 0.4272rem;
+  color: #fff;
+}
+.topic-detail .topic-game-list .topic-game-item .container .game-content .game-type {
+  margin: 0.2136rem 0 0.1335rem;
+  font-size: 0.267rem;
+}
+.topic-detail .topic-game-list .topic-game-item .container .game-content .game-type .type {
+  font-size: 0.267rem;
+  margin-right: 0.0801rem;
+  padding: 0 0.0801rem;
+  color: #ffffff;
+}
+.topic-detail .topic-game-list .topic-game-item .game-boon {
+  color: #fff;
+  font-size: 0.3471rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.topic-detail .topic-game-list .topic-game-item .game-download {
+  position: absolute;
+  bottom: 0.801rem;
+  right: 0.3738rem;
+  width: 1.602rem;
+  height: 0.7209rem;
+  text-align: center;
+  line-height: 0.7209rem;
+  background-color: #47a83a;
+  border-radius: 3px;
+  font-size: 0.3738rem;
+  color: #ffffff;
+}
