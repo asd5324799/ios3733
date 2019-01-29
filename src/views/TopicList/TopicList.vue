@@ -66,8 +66,10 @@ import GameList from '@/components/gamelist/gamelist.vue';
         },
         components: {
             GameList
+        },
+        created(){
+            this.init(this.handleTopicList);
         }
-            
     }
 </script>
 <style lang="less">

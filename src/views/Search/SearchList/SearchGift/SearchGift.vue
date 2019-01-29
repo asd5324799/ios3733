@@ -13,17 +13,22 @@ export default {
     return{
       searchGiftList:[],
       page:1,
-      text:''
+      // text1:'',
     }
   },
   watch: {
       $route(to,from){
         // var fromKey = sessionStorage.getItem("REMBENBER_KEYWORD");
-        this.text = to.params.keyword;
-        if(to.params.keyword != from.params.keyword){
+        // this.text = this.$route.params.keyword;
+        // if(to.params.keyword != from.params.keyword){
           this.init(this.handleGiftList);
-        }
+        // }
         
+      }
+    },
+    computed:{
+      text:function(){
+        return this.$route.params.keyword
       }
     },
   methods:{
@@ -63,13 +68,15 @@ export default {
   created() {
     this.init(this.handleGiftList)
   },
-  mounted() {
-  },
   beforeRouteEnter(to,from,next){
-    // console.log(sessionStorage.getItem("TO_RESULT_KEY"))
-      if(!sessionStorage.searchGiftPositon || from.params.keyword != to.params.keyword && /\/giftdetail/.test(from.path) ){//判断是否有缓存
+      if(!sessionStorage.searchGiftPositon || from.params.keyword != to.params.keyword && !(/\/giftdetail/.test(from.path)) ){//判断是否有缓存
         sessionStorage.searchGiftPositon = '';
-        next();
+        console.log(123)
+        next(vm =>{
+          setTimeout(function () {
+                vm.$refs.search_gift_scroller.scrollTo(0, sessionStorage.searchGiftPositon, false);
+              },0)//同步转异步操作
+        });
       }else{
         next(vm => {
             if(vm && vm.$refs.search_gift_scroller){
@@ -81,14 +88,12 @@ export default {
       }
     },
     beforeRouteLeave(to,from,next){//记录离开时的位置
+    if(to.params.keyword != from.params.keyword && /\/searchgame/.test(to.path)){//不记录位置
+      next();
+    }else{
       sessionStorage.searchGiftPositon = this.$refs.search_gift_scroller && this.$refs.search_gift_scroller.getPosition() && this.$refs.search_gift_scroller.getPosition().top;
-      if(to.name=='GiftDetail' || to.name=='SearchGame'){
-                from.meta.keepAlive=true;//当我们进入到C时开启B的缓存
-        }else{
-            from.meta.keepAlive=true;
-            // this.$destroy();//销毁B的实例
-        }
       next()
+    }
     },
   components: {
     GiftList

@@ -4,21 +4,20 @@ import Home from './views/Home.vue'
 import Rank from './views/Rank/Rank.vue'
 import Kaifu from './views/Kaifu/Kaifu.vue'
 import Search from './views/Search/Search.vue'
-import SearchList from './views/SearchList/SearchList.vue'
-import SearchGame from './views/SearchGame/SearchGame.vue'
-import SearchGift from './views/SearchGift/SearchGift.vue'
-import NewGame from './views/NewGame/NewGame.vue'
-import SellWell from './views/SellWell/SellWell.vue'
-import Download from './views/Download/Download.vue'
-import Today from './views/Today/Today.vue'
-import Will from './views/Will/Will.vue'
-import Already from './views/Already/Already.vue'
+import SearchIndex from './views/Search/SearchIndex/SearchIndex.vue'
+import SearchList from './views/Search/SearchList/SearchList.vue'
+import SearchGame from './views/Search/SearchList/SearchGame/SearchGame.vue'
+import SearchGift from './views/Search/SearchList/SearchGift/SearchGift.vue'
+import NewGame from './views/Rank/NewGame/NewGame.vue'
+import SellWell from './views/Rank/SellWell/SellWell.vue'
+import Download from './views/Rank/Download/Download.vue'
+import Today from './views/Kaifu/Today/Today.vue'
+import Will from './views/Kaifu/Will/Will.vue'
+import Already from './views/Kaifu/Already/Already.vue'
 import Topic from './views/Topic/Topic.vue'
 import TopicDetail from './views/TopicDetail/TopicDetail.vue'
 import GiftDetail from './views/GiftDetail/GiftDetail.vue'
 import TopicList from './views/TopicList/TopicList.vue'
-// import Detail from './views/Detai.vue'
-// import DetailIndex from './views/detail-index/detail-index.vue'
 
 Vue.use(Router)
 
@@ -148,37 +147,56 @@ var router = new Router({
       meta:{
         index:0,
         keepAlive:true,
+        backGrade:0
       },
-    },
-    {
-      path:'/searchlist',
-      name: 'SearchList',
-      component: SearchList,
-      meta:{
-        index:0,
-        keepAlive:true,
-      },
+      redirect:'/search/searchindex',
       children:[
         {
-          path: 'searchgame/:keyword',
-          name: 'SearchGame',
-          component: SearchGame,
+          path: 'searchindex',
+          name: 'SearchIndex',
+          component: SearchIndex,
           meta:{
             index:0,
             keepAlive:true,
+            backGrade:0
           },
         },
         {
-          path: 'searchgift/:keyword',
-          name: 'SearchGift',
-          component: SearchGift,
+          path:'searchlist',
+          name: 'SearchList',
+          component: SearchList,
+          redirect:'searchlist/searchgame',
+          
           meta:{
             index:0,
             keepAlive:true,
+            backGrade:1
           },
-        }
-      ]
+          
+          children:[
+            {
+              path: 'searchgame/:keyword',
+              name: 'SearchGame',
+              component: SearchGame,
+              meta:{
+                index:0,
+                backGrade:2
+              },
+            },
+            {
+              path: 'searchgift/:keyword',
+              name: 'SearchGift',
+              component: SearchGift,
+              meta:{
+                index:0,
+                backGrade:2
+              },
+            }
+          ]
+        },
+      ],
     },
+    
     {
       path: '/topic',
       name: 'Topic',

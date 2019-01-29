@@ -86,7 +86,7 @@
         },
         created(){
             this.init();
-        }
+        },
             
     }
 </script>

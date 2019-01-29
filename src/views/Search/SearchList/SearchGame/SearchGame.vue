@@ -12,21 +12,20 @@
     data() {
       return {
         listType: 1,
-        text: '',//测试
         searchGameList: [],//搜索结果列表
-        page: 1 //初始页码
+        page: 1, //初始页码
+        // text1:'',
+      }
+    },
+    computed:{
+      text:function(){
+        return this.$route.params.keyword;
       }
     },
     watch: {
       $route(to,from){
-        // var fromKey = sessionStorage.getItem("REMBENBER_KEYWORD");
-        this.text = to.params.keyword;
-        //如果离开的params不同,初始化axios
-        if(to.params.keyword != from.params.keyword){
-          this.init();
-          sessionStorage.searchGamePositon=""
-          sessionStorage.searchGiftPositon=""
-        }
+        // this.text = this.$route.params.keyword;
+        this.init(this.handleGameList)
         
       }
     },
@@ -69,40 +68,38 @@
     created() {
       this.init(this.handleGameList);
     },
-    mounted() {
-    },
     beforeRouteUpdate(to,from,next){
-      if(!localStorage.searchGamePositon || from.params.keyword != to.params.keyword){//判断是否有缓存
-        localStorage.searchGamePositon = '';
-        // localStorage.setItem("TO_RESULT_KEY",to.params.keyword)
+      if(!sessionStorage.searchGamePositon || from.params.keyword != to.params.keyword){//判断是否有缓存
+        sessionStorage.searchGamePositon = 0;
+        this.$refs.search_game_scroller.scrollTo(0, 0, false);
         next();
       }else{
         next(vm => {
             if(vm && vm.$refs.search_game_scroller){
               setTimeout(function () {
-                vm.$refs.search_game_scroller.scrollTo(0, localStorage.searchGamePositon, false);
+                vm.$refs.search_game_scroller.scrollTo(0, sessionStorage.searchGamePositon, false);
               },0)//同步转异步操作
             }
         })
       }
     },
     beforeRouteEnter(to,from,next){
-      if(!localStorage.searchGamePositon || from.params.keyword != to.params.keyword && !(/^\/detail/.test(from.path))){//判断是否有缓存
-        localStorage.searchGamePositon = '';
-        // localStorage.setItem("TO_RESULT_KEY",to.params.keyword)
+      if(!sessionStorage.searchGamePositon || from.params.keyword != to.params.keyword && !(/^\/detail/.test(from.path))){//判断是否有缓存
+        sessionStorage.searchGamePositon = '';
+        // sessionStorage.setItem("TO_RESULT_KEY",to.params.keyword)
         next();
       }else{
         next(vm => {
             if(vm && vm.$refs.search_game_scroller){
               setTimeout(function () {
-                vm.$refs.search_game_scroller.scrollTo(0, localStorage.searchGamePositon, false);
+                vm.$refs.search_game_scroller.scrollTo(0, sessionStorage.searchGamePositon, false);
               },0)//同步转异步操作
             }
         })
       }
     },
     beforeRouteLeave(to,from,next){//记录离开时的位置
-      localStorage.searchGamePositon = this.$refs.search_game_scroller && this.$refs.search_game_scroller.getPosition() && this.$refs.search_game_scroller.getPosition().top;
+      sessionStorage.searchGamePositon = this.$refs.search_game_scroller && this.$refs.search_game_scroller.getPosition() && this.$refs.search_game_scroller.getPosition().top;
       next()
     },
     components: {

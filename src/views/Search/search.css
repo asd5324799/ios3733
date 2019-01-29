@@ -1,6 +1,8 @@
 /* search */
 .search {
+  box-sizing: border-box;
   padding-top: 0.9879rem;
+  height: 100%;
 }
 .search .top-search {
   position: fixed;

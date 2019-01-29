@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <TopBar />
-    <GameList :list="qualityFirstList"/>
     <NewsList :list="newsList"/>
     <NavCom :pageIndex="index" />
   </div>
@@ -143,13 +142,13 @@ export default {
   },
   methods: {
     handleGameList(res) {
-      this.qualityRecommendList = res.data.game_list[0].game_list;
-      this.qualityFirstList = res.data.game_list;
+      // this.qualityRecommendList = res.data.game_list[0].game_list;
+      // this.qualityFirstList = res.data.game_list;
     }
   },
   mounted() {
-    this.$axios.post('/api/index/index')
-    .then(this.handleGameList)
+    // this.$axios.post('/api/index/index')
+    // .then(this.handleGameList)
   },
   components: {
     GameList,
