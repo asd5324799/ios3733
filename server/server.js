@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
 const app = express(); 
 
 app.use(bodyParser.json());
@@ -5888,7 +5887,7 @@ app.post('/api/comment/comments', (req, res) => {
                 "hot": 2,
                 "reward_rule_id": 0,
                 "is_read": 0,
-                "create_time": 1548063747,
+                "create_time": 1548031674,
                 "update_time": 1548177672,
                 "update_by": "wuzongwei",
                 "update_from": 0,
@@ -5924,7 +5923,7 @@ app.post('/api/comment/comments', (req, res) => {
                             "nickname": "玩家F0A8U6TM",
                             "avatar": null,
                             "avatar_review": 0,
-                            "is_official": false,
+                            "is_official": true,
                             "user_id": 2237607,
                             "user_from": 1,
                             "is_svip": false,
@@ -6086,7 +6085,7 @@ app.post('/api/comment/comments', (req, res) => {
                     "nickname": "小金金",
                     "avatar": "http://pic5.3733.com/avatar/201804/u_1503525_8650ed3d6416f2128acf0f1f809a76e9.jpeg",
                     "avatar_review": 0,
-                    "is_official": false,
+                    "is_official": true,
                     "user_id": 1503525,
                     "user_from": 1,
                     "is_svip": false,
@@ -6100,7 +6099,7 @@ app.post('/api/comment/comments', (req, res) => {
                     "pay_level_img": null
                 },
                 "reply_user": null,
-                "gold_url": ""
+                "gold_url": "http://pic5.3733.com/icon/201808/6dd8056b8a27a79274dcd60fcd230ad0.png"
             },
             {
                 "comment_id": 1528734156,
@@ -6125,7 +6124,7 @@ app.post('/api/comment/comments', (req, res) => {
                 "hot": 0,
                 "reward_rule_id": 0,
                 "is_read": 0,
-                "create_time": 1548063571,
+                "create_time": 1548752442,
                 "update_time": 1548064126,
                 "update_by": "wuzongwei",
                 "update_from": 0,
@@ -6268,7 +6267,7 @@ app.post('/api/comment/comments', (req, res) => {
                 "hot": 0,
                 "reward_rule_id": 0,
                 "is_read": 0,
-                "create_time": 1548062260,
+                "create_time": 1548727242,
                 "update_time": 1548064126,
                 "update_by": "wuzongwei",
                 "update_from": 0,
@@ -6364,7 +6363,7 @@ app.post('/api/comment/comments', (req, res) => {
                 "hot": 0,
                 "reward_rule_id": 0,
                 "is_read": 0,
-                "create_time": 1548060888,
+                "create_time": 1548640842,
                 "update_time": 1548064126,
                 "update_by": "wuzongwei",
                 "update_from": 0,
@@ -6412,7 +6411,7 @@ app.post('/api/comment/comments', (req, res) => {
                 "hot": 0,
                 "reward_rule_id": 0,
                 "is_read": 0,
-                "create_time": 1548056922,
+                "create_time": 1547776842,
                 "update_time": 1548064126,
                 "update_by": "wuzongwei",
                 "update_from": 0,
@@ -7228,7 +7227,7 @@ app.post('/api/comment/comments', (req, res) => {
                 "hot": 0,
                 "reward_rule_id": 0,
                 "is_read": 0,
-                "create_time": 1548031674,
+                "create_time": 1548754681,
                 "update_time": 1548064126,
                 "update_by": "wuzongwei",
                 "update_from": 0,
@@ -7267,8 +7266,9 @@ app.post('/api/comment/comments', (req, res) => {
 })
 });
 app.get('/', (req, res) => {
-  res.send("<h2>It's port 9093</h2>")
+  res.send('<h2>hello 9093</h2>');
 });
+app.use(express.static('../dist/index.html'));
 app.listen(9093, () => {
   console.log('Node app start at port 9093');
 });

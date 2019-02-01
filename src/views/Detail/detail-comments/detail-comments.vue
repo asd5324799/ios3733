@@ -1,5 +1,5 @@
 <template>
-  <div class="detail-comments" v-if="comments.rating">
+  <div class="detail-comments" v-if="comments.cmt_sum">
     <div class="comment-scores">
       <div class="left-wrapper">
         <div class="scores">{{comments.rating.rating}}</div>
@@ -55,49 +55,16 @@
         </div>
       </div>
       <div class="tab-content">
-        <ul class="comments-list" v-show="tabNow === 0">
-          <li 
-            class="comments-item"
-            v-for="(item, index) in comments.comments">
-            <div class="comments-header">
-              <div class="user-info">
-                <img :src="item.user.avatar" class="user-avatar">
-                <div class="user-content">
-                  <div class="user-name">
-                    {{item.user.nickname}}
-                    <div class="vip">
-                      
-                    </div>
-                  </div>
-                  <div class="time">刚刚</div>
-                </div>
-              </div>
-              <div class="report">举报</div>
-            </div>
-            <div class="comments-detail">
-              {{item.content}}
-            </div>
-            <div class="comments-footer">
-              <div class="left-wrapper">
-                <i class="icon"></i>
-                <div class="text">{{item.model}}</div>
-              </div>
-              <div class="right-wrapper">
-                <i class="good"></i>
-                <div class="text">{{item.support_count}}</div>
-                <i class="reply"></i>
-                <div class="text">{{item.reply_count}}</div>
-              </div>
-            </div>
-          </li>
-        </ul>
-        <ul class="content-list" v-show="tabNow === 1">2</ul>
-        <ul class="content-list" v-show="tabNow === 2">3</ul>
+        <CommentsList v-show="tabNow === 0" :list="defaultCommentsList"></CommentsList>
+        <CommentsList v-show="tabNow === 1" :list="newCommentsList"></CommentsList>
+        <CommentsList v-show="tabNow === 2" :list="hotCommentsList"></CommentsList>
       </div>
     </main>
   </div>
 </template>
 <script>
+import CommentsList from '@/components/commentsList/commentsList.vue'
+
 export default {
   name: 'detailComment',
   props: {
@@ -134,9 +101,57 @@ export default {
     },
     tabChange(index) {
       this.tabNow = index;
+    },
+    handleInitData() {
+      let list = [];
+      for(let i of this.comments.tops) {
+        list.push(i);
+      }
+      for(let i of this.comments.hots) {
+        list.push(i);
+      }
+      for(let i of this.comments.comments) {
+        list.push(i);
+      }
+      return list
     }
   },
+  computed: {
+    defaultCommentsList() {
+      let defaultList = this.handleInitData();
+      return defaultList
+    },
+    newCommentsList() {
+      let newList = this.handleInitData();
+      for(let i = newList.length; i > 0; i--) {
+        for(let j = 0; j < i - 1; j++) {
+          if(newList[j].create_time > newList[j+1].create_time) {
+            [newList[j], newList[j+1]] = [newList[j+1], newList[j]];
+          }
+        }
+      }
+      return newList
+    },
+    hotCommentsList() {
+      let hotList = [];
+      for(let i of this.comments.hots) {
+        hotList.push(i);
+      }
+      for(let i of this.comments.tops) {
+        hotList.push(i);
+      }
+      for(let i of this.comments.comments) {
+        hotList.push(i);
+      }
+      hotList.reverse();
+      return hotList
+    }
+  },
+  components: {
+    CommentsList,
+  }
 }
+
 </script>
 <style lang="less" scoped>
   @import './detail-comments.less';

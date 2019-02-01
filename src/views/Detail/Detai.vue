@@ -58,7 +58,7 @@
       <!-- download -->
       <div class="game-download">
         <div class="left"><i class="icon icon-left"></i><div class="text">收藏</div></div> 
-        <a :href="detail.down_ip" class="download">下载</a>
+        <a :href="detail.down_ip" class="download">下载《{{detail.title}}》</a>
         <div class="right"><i class="icon icon-right"></i><div class="text">分享</div></div> 
       </div>
     </div>
@@ -71,7 +71,7 @@ export default {
     return {
       detail: {},
       liked: [],
-      comments: {}
+      comments: {},
     }
   },
   methods: {
