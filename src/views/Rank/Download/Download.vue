@@ -25,12 +25,14 @@
         methods: {
             init(theMethod){
                 this.$axios({
-                    method: "post",
-                    url: "/api/newgame/index",
+                    method:"POST",
+                    url:"http://api2.c3733.com/api/game/index",
                     data:this.$qs.stringify({
+                        uuid: "ffffffff-1234-1234-1234-123456789012",
+                        from: "212",
                         page:this.page,
                         keyword:this.$route.params.keyword,
-                        order:101
+                        order:103
                     })
                 }).then(theMethod)
             },
@@ -53,7 +55,7 @@
                 this.init(this.addGameList)
                 setTimeout(() =>{
                 this.$refs.download_scroller.finishInfinite(2);
-                },1000);
+                },500);
             }
         },
         created() {

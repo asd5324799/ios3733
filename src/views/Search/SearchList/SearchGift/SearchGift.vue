@@ -1,7 +1,7 @@
 <template>
   <div class="search-gift">
     <scroller :on-infinite="infinite" :on-refresh="refresh" ref="search_gift_scroller" refreshText="刷新">
-      {{text}}<GiftList :giftList="searchGiftList"/>
+      <GiftList :giftList="searchGiftList"/>
     </scroller>
   </div>
 </template>
@@ -13,33 +13,21 @@ export default {
     return{
       searchGiftList:[],
       page:1,
-      // text1:'',
     }
   },
-  watch: {
-      $route(to,from){
-        // var fromKey = sessionStorage.getItem("REMBENBER_KEYWORD");
-        // this.text = this.$route.params.keyword;
-        // if(to.params.keyword != from.params.keyword){
-          this.init(this.handleGiftList);
-        // }
-        
-      }
-    },
-    computed:{
-      text:function(){
-        return this.$route.params.keyword
-      }
-    },
   methods:{
     init(method){
         this.$axios({
             method: "post",
-            url: "/api/search/index",
+            url: "http://api2.c3733.com/api/search/index",
             data:this.$qs.stringify({
-              page:this.page,
-              keyword:this.$route.params.keyword
-          })
+              from: 777,
+              uuid: "ffffffff-1234-1234-1234-123456789012",
+              page: 1,
+              keyword: this.$route.params.keyword,
+              fromAction: 1,
+              type: 101
+            })
           }).then(method)
       },
     handleGiftList(res){
@@ -60,7 +48,7 @@ export default {
         this.init(this.addGiftList);
         setTimeout(() =>{
           this.$refs.search_gift_scroller.finishInfinite(2);
-        },1000);
+        },500);
         
         
       }
@@ -71,14 +59,15 @@ export default {
   beforeRouteEnter(to,from,next){
       if(!sessionStorage.searchGiftPositon || from.params.keyword != to.params.keyword && !(/\/giftdetail/.test(from.path)) ){//判断是否有缓存
         sessionStorage.searchGiftPositon = '';
-        console.log(123)
         next(vm =>{
+          vm.init(vm.handleGiftList);
           setTimeout(function () {
                 vm.$refs.search_gift_scroller.scrollTo(0, sessionStorage.searchGiftPositon, false);
               },0)//同步转异步操作
         });
       }else{
         next(vm => {
+          vm.init(vm.handleGiftList);
             if(vm && vm.$refs.search_gift_scroller){
               setTimeout(function () {
                 vm.$refs.search_gift_scroller.scrollTo(0, sessionStorage.searchGiftPositon, false);

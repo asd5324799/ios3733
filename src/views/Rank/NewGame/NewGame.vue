@@ -2,7 +2,7 @@
     <div class="new-game">
         <scroller :on-infinite="infinite" :on-refresh="refresh" ref="new_game_scroller" refreshText="">
             <Billboard :top3="newGameTop3" :billboardTitle="newGameTitle" :bgClass="newGameBg"></Billboard>
-            <GameList :list="newGameList" :type="listType" />
+            <GameList :list="newGameList" :type="listType"/>
         </scroller>
     </div>
 </template>
@@ -18,14 +18,17 @@
                 listType:2,
                 newGameList: [],
                 newGameTop3:[],
+                page:1
             }
         },
         methods: {
             init(theMethod){
                 this.$axios({
-                    method:"post",
-                    url:"/api/newgame/index",
+                    method:"POST",
+                    url:"/api/game/index",
                     data:this.$qs.stringify({
+                        uuid: "ffffffff-1234-1234-1234-123456789012",
+                        from: "212",
                         page:this.page,
                         keyword:this.$route.params.keyword,
                         order:101
@@ -40,20 +43,19 @@
                 this.newGameList = this.newGameList.concat(res.data.list);
             },
             refresh() {
-                
-        setTimeout(() => {
-          this.page = 1;
-          this.init(this.handleGameList);
-          this.$refs.new_game_scroller.finishPullToRefresh();
-        }, 1000)
-      },
-      infinite() {
-        this.page++;
-        this.init(this.addGameList);
-        setTimeout(() =>{
-          this.$refs.new_game_scroller.finishInfinite(2);
-        },1000);
-      }
+                setTimeout(() => {
+                this.page = 1;
+                this.init(this.handleGameList);
+                this.$refs.new_game_scroller.finishPullToRefresh();
+                }, 1000)
+            },
+          infinite() {
+            this.page++;
+            this.init(this.addGameList);
+            setTimeout(() =>{
+              this.$refs.new_game_scroller.finishInfinite(2);
+            },500);
+          }
         },
         created() {
             this.init(this.handleGameList)

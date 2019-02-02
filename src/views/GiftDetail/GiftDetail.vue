@@ -62,8 +62,6 @@ import GameList from '@/components/gamelist/gamelist.vue'
                 h = h < 10 ? ('0' + h) : h;
                 let m = date.getMinutes();
                 m = m < 10 ? ('0' + m) : m;
-                let s = date.getSeconds();
-                s = s < 10 ? ('0' + s) : s;
                 return y + '年' + MM + '月' + d + '日 ' + h + '时' + m + '分';
             },
         },
@@ -74,7 +72,7 @@ import GameList from '@/components/gamelist/gamelist.vue'
             gameRelated(gameTitle){
                 this.$axios({
                     method:"post",
-                    url:"/api/game/read",
+                    url:"http://api2.c3733.com/api/game/read",
                     data:{
                         uuid: "ffffffff-1234-1234-1234-123456789012",
                         from: "212",
@@ -85,29 +83,31 @@ import GameList from '@/components/gamelist/gamelist.vue'
             init(){
                 this.$axios({
                     method: "post",
-                    url:"/api/card/read",
+                    url:"http://api2.c3733.com/api/card/read",
                     data:{
                         uuid: "ffffffff-1234-1234-1234-123456789012",
-                        from: "777",
-                        cardId: this.carId
+                        from: "212",
+                        cardId: this.$route.params.id
                     }
                 }).then(this.handleGameGift)
             },
             handleGameGift(res){
                 this.giftData = res.data;
                 this.giftData.notes = this.giftData.notes.replace(/\r\n/g,"<br/>");
-                this.gameRelated(this.giftData.title);
+                this.gameRelated(this.giftData.titlegame);
             },
             handleGiftGame(res){
-                this.giftGame.push(res.data.detail)
+                this.giftGame = [];
+                this.giftGame.push(res.data.detail);
             }
         },
         created(){
             this.init();
         },
         beforeRouteEnter(to, from, next){
-            console.log(from.meta);
-            next()
+            next(vm =>{
+                vm.init();
+            })
         },
         components:{
             GameList,

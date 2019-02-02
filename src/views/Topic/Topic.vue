@@ -23,6 +23,7 @@
         data() {
             return {
                 topicList:[],
+                page:0
             }
         },
         methods: {
@@ -34,7 +35,10 @@
                     method: "post",
                     url: "/api/subject/index",
                     data: this.$qs.stringify({
-                        page: this.page
+                        uuid: "ffffffff-1234-1234-1234-123456789012",
+                        from: "212",
+                        page: this.page,
+                        listRows: "20"
                     })
                 }).then(theMethod)
             },
@@ -65,10 +69,8 @@
         beforeRouteEnter(to, from, next) {
             if (!sessionStorage.topicPositon) { //当前页面刷新不需要切换位置
                 sessionStorage.topicPositon = '';
-                console.log(123)
                 next();
             } else {
-                console.log(456)
                 next(vm => {
                 if (vm && vm.$refs.topic_scroller) {
                     setTimeout(function() {

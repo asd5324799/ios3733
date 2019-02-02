@@ -9,13 +9,17 @@
 <script>
 import TopBar from '@/components/topbar/topbar.vue';
 import NavCom from '@/components/navcom/navcom.vue';
-import GameList from '@/components/gamelist/gamelist.vue';
 import NewsList from '@/components/newslist/newslist.vue';
+import NewGame from '@/views/Rank/NewGame/NewGame.vue';
+import SellWell from '@/views/Rank/SellWell/SellWell.vue';
 
 
 export default {
   data() {
     return {
+      routeList:[
+        {name: 'NewGame', component: NewGame}, {name: 'SellWell', component: SellWell}
+      ],
       index:0,
       qualityRecommendList: [],
       qualityFirstList: [],
@@ -141,17 +145,12 @@ export default {
     }
   },
   methods: {
-    handleGameList(res) {
-      // this.qualityRecommendList = res.data.game_list[0].game_list;
-      // this.qualityFirstList = res.data.game_list;
-    }
   },
   mounted() {
     // this.$axios.post('/api/index/index')
     // .then(this.handleGameList)
   },
   components: {
-    GameList,
     TopBar,
     NavCom,
     NewsList

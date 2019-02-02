@@ -1,5 +1,5 @@
 <template>
-  <div class="billboard" :class="bgClass">
+  <div class="billboard" :class="bgClass" v-if="top3.length">
       <div class="title"><h3><i class="left-ico"></i>{{billboardTitle}}<i class="right-ico"></i></h3></div>
       <div class="game-box">
           <ul class="game-list">

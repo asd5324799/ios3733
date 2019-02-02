@@ -82,7 +82,7 @@
   line-height: 0.801rem;
   font-size: 0.3738rem;
 }
-.search-list .page-nav .nav-item.router-link-exact-active {
+.search-list .page-nav .active {
   border-bottom: 1px solid #47A83A;
   color: #47A83A;
 }

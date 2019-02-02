@@ -20,20 +20,29 @@
         methods: {
             init(theMethod){
                 this.$axios({
-                    method: "post",
-                    url: "/api/newgame/index",
-                    data:{
+                    method: "POST",
+                    url: "/api/server/index",
+                    data:this.$qs.stringify({
+                        uuid: "ffffffff-1234-1234-1234-123456789012",
+                        from: "212",
                         page:this.page,
-                        keyword:this.$route.params.keyword,
-                        order:101
-                    }
+                        type:3
+                    })
                 }).then(theMethod)
             },
             handleGameList(res) {
-                this.alreadyList = res.data.list;
+                var arr = [];
+                for(let item of res.data){
+                    arr.push(item.game);
+                }
+                this.alreadyList = arr;
             },
             addGameList(res) {
-                this.alreadyList = this.alreadyList.concat(res.data.list);
+                var arr = [];
+                for(let item of res.data){
+                    arr.push(item.game);
+                }
+                this.alreadyList = this.alreadyList.concat(arr);
             },
             refresh() {
         setTimeout(() => {
@@ -47,7 +56,7 @@
         this.init(this.addGameList)
         setTimeout(() =>{
           this.$refs.already_scroller.finishInfinite(2);
-        },1000);
+        },500);
       }
         },
         mounted() {

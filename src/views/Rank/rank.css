@@ -52,59 +52,6 @@
   left: 50%;
   transform: translateX(-50%);
 }
-#rank-swiper {
-  box-sizing: border-box;
-  overflow: hidden;
-  height: 100%;
-  padding-bottom: 1.3083rem;
-}
-#rank-swiper .swiper-slide {
-  overflow: auto;
-}
-#rank-pag {
-  top: 1.2282rem;
-  position: absolute;
-  display: flex;
-  border-bottom: 1px solid #eee;
-  width: 100%;
-}
-#rank-pag .swiper-pagination-bullet {
-  box-sizing: border-box;
-  position: relative;
-  display: block;
-  width: 33.3%;
-  height: 0.8811rem;
-  line-height: 0.801rem;
-  color: #666666;
-  flex: 1;
-  font-size: 0.4272rem;
-  border-radius: 0;
-  background: #fff;
-  opacity: 1;
-  transition: 1s;
-  outline: none;
-}
-#rank-pag .swiper-pagination-bullet span {
-  position: absolute;
-  left: 0;
-  display: block;
-  height: 2px;
-  transition: width 0.3s;
-  width: 0rem;
-}
-#rank-pag .swiper-pagination-bullet-active {
-  display: block;
-  color: #47A83A;
-  outline: none;
-}
-#rank-pag .swiper-pagination-bullet-active span {
-  transition: width 0.3s;
-  border-bottom: 0.0534rem solid #47A83A;
-  width: 1.2549rem;
-  bottom: 0.0267rem;
-  left: 50%;
-  transform: translateX(-50%);
-}
 .newgame-billboard {
   background: url(../../assets/images/bg-newgame.jpeg) center center no-repeat;
   background-size: 10.0125rem 5.9808rem;

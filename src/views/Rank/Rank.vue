@@ -13,6 +13,11 @@
         </keep-alive>
         <router-view v-if="!$route.meta.keepAlive" class="appView" />
         </transition>
+        <!-- <keep-alive>
+            <tab-slider v-if="$route.meta.keepAlive" :comp="routeList" class="setHeight" />
+        </keep-alive> -->
+        <!-- <tab-slider :comp="routeList" class="setHeight" /> -->
+        
         </div>
         <NavCom :pageIndex="index" />
     </div>
@@ -20,11 +25,12 @@
 <script>
     import TopBar from '@/components/topbar/topbar.vue';
     import NavCom from '@/components/navcom/navcom.vue';
+    // import TabSlider from 'tab-slider'
     export default {
         data() {
             return {
                 index:1,
-                transitionName: 'slide-left'
+                transitionName: 'slide-left',
             }
         },
         watch: {
@@ -39,44 +45,21 @@
         },
         components: {
             NavCom,
-            TopBar
+            TopBar,
         }
     }
 </script>
 <style lang="less">
     @import './rank.less';
+    // .setHeight{
+    //     position: absolute;
+    //     height: 100%;
+    // }
     .main{
         position: relative;
         height: 100%;
         overflow: hidden;
         background: #fff;
     }
-    .appView{
-        background: #fff;
-    }
-    /*路由切换动画*/
-    .slide-right-enter-active,
-    .slide-right-leave-active,
-    .slide-left-enter-active,
-    .slide-left-leave-active {
-    will-change: transform;
-    transition: all 300ms ease-out;
-    position: absolute;
-    }
-    .slide-right-enter {
-    //   opacity: 0;
-    transform: translate3d(-100%, 0, 0);
-    }
-    .slide-right-leave-active {
-    //   opacity: 0.5;
-    transform: translate3d(60%, 0, 0);
-    }
-    .slide-left-enter {
-    //   opacity: 0;
-    transform: translate3d(100%, 0, 0);
-    }
-    .slide-left-leave-active {
-    //   opacity: 0.5;
-    transform: translate3d(-60%, 0, 0);
-    }
+    
 </style>

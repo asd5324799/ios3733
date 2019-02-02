@@ -1,8 +1,8 @@
 <template>
     <div class="search-list">
         <div class="page-nav">
-            <div class="nav-item" @click="toGame" exact :to="{name:'SearchGame',params:{keyword:searchKey}}">游戏</div>
-            <div class="nav-item" @click="toGift" exact :to="{name:'SearchGift',params:{keyword:searchKey}}">礼包</div>
+            <div class="nav-item" :class="isCurrent?'active':''" @click="toGame">游戏</div>
+            <div class="nav-item" :class="!isCurrent?'active':''" @click="toGift">礼包</div>
         </div>
         <keep-alive>
             <router-view v-if="$route.meta.keepAlive" />
@@ -16,11 +16,19 @@
         data() {
             return {
                 clearKeyShow:false,
+                // isCurrent:true,
             }
         },
         computed:{
             searchKey:function(){
                 return this.$route.params.keyword;
+            },
+            isCurrent:function(){
+                if (/\/searchgame/.test(this.$route.path)) {
+                    return true;
+                }else if(/\/searchgift/.test(this.$route.path)){
+                    return false;
+                }
             }
         },
         methods: {
@@ -28,11 +36,13 @@
                 this.$router.push({name:"Search"});
             },
             toGame(){
+                // this.isCurrent = !this.isCurrent;
                 this.$router.replace(
                     {name:"SearchGame",params:{keyword:this.searchKey}}
                 )
             },
             toGift(){
+                // this.isCurrent = !this.isCurrent;
                 this.$router.replace(
                     {name:"SearchGift",params:{keyword:this.searchKey}}
                 )

@@ -1,23 +1,26 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
-import Rank from './views/Rank/Rank.vue'
-import Kaifu from './views/Kaifu/Kaifu.vue'
-import Search from './views/Search/Search.vue'
-import SearchIndex from './views/Search/SearchIndex/SearchIndex.vue'
-import SearchList from './views/Search/SearchList/SearchList.vue'
-import SearchGame from './views/Search/SearchList/SearchGame/SearchGame.vue'
-import SearchGift from './views/Search/SearchList/SearchGift/SearchGift.vue'
-import NewGame from './views/Rank/NewGame/NewGame.vue'
-import SellWell from './views/Rank/SellWell/SellWell.vue'
-import Download from './views/Rank/Download/Download.vue'
-import Today from './views/Kaifu/Today/Today.vue'
-import Will from './views/Kaifu/Will/Will.vue'
-import Already from './views/Kaifu/Already/Already.vue'
-import Topic from './views/Topic/Topic.vue'
-import TopicDetail from './views/TopicDetail/TopicDetail.vue'
-import GiftDetail from './views/GiftDetail/GiftDetail.vue'
-import TopicList from './views/TopicList/TopicList.vue'
+import Home from './home';
+import Detail from './detail';
+// import Home from '../views/Home.vue'
+import Rank from '../views/Rank/Rank.vue'
+import Kaifu from '../views/Kaifu/Kaifu.vue'
+import Mine from '../views/Mine/Mine.vue'
+import Search from '../views/Search/Search.vue'
+import SearchIndex from '../views/Search/SearchIndex/SearchIndex.vue'
+import SearchList from '../views/Search/SearchList/SearchList.vue'
+import SearchGame from '../views/Search/SearchList/SearchGame/SearchGame.vue'
+import SearchGift from '../views/Search/SearchList/SearchGift/SearchGift.vue'
+import NewGame from '../views/Rank/NewGame/NewGame.vue'
+import SellWell from '../views/Rank/SellWell/SellWell.vue'
+import Download from '../views/Rank/Download/Download.vue'
+import Today from '../views/Kaifu/Today/Today.vue'
+import Will from '../views/Kaifu/Will/Will.vue'
+import Already from '../views/Kaifu/Already/Already.vue'
+import Topic from '../views/Topic/Topic.vue'
+import TopicDetail from '../views/TopicDetail/TopicDetail.vue'
+import GiftDetail from '../views/GiftDetail/GiftDetail.vue'
+import TopicList from '../views/TopicList/TopicList.vue'
 
 Vue.use(Router)
 
@@ -34,17 +37,19 @@ var router = new Router({
   routes: [
     {
       path:'/',
-      redirect:'/home'
+      redirect:{name:'Home'}
     },
-    {
-      path: '/home',
-      name: 'home',
-      meta:{
-        index:0,
-        keepAlive:true,
-      },
-      component: Home,
-      children:[
+    Home, 
+    Detail,
+    // {
+    //   path: '/home',
+    //   name: 'home',
+    //   meta:{
+    //     index:0,
+    //     keepAlive:true,
+    //   },
+    //   component: Home,
+    //   children:[
         // {
         //   path: 'quality',
         //   name: 'Quality',
@@ -60,8 +65,8 @@ var router = new Router({
         //   name: 'Category',
         //   component:Category
         // }
-      ]
-    },
+      // ]
+    // },
     {
       path: '/rank',
       name: 'Rank',
@@ -125,7 +130,7 @@ var router = new Router({
           name: 'Will',
           component: Will,
           meta:{
-            index:0,
+            index:1,
             keepAlive:true,
           },
         },
@@ -134,11 +139,16 @@ var router = new Router({
           name: 'Already',
           component: Already,
           meta:{
-            index:0,
+            index:2,
             keepAlive:true,
           },
         }
       ]
+    },
+    {
+      path: '/mine',
+      name: 'Mine',
+      component: Mine,
     },
     {
       path: '/search',
@@ -237,20 +247,24 @@ var router = new Router({
   ]
 })
 router.beforeEach((to, from, next) => {
+  //记录非搜索页path
   if(!(/\/search/.test(from.path)) && !(/\/giftdetail/.test(from.path)) && !(/^\/detail/.test(from.path))){
     sessionStorage.setItem("NO_SEARCH_PATH",from.path)
   }
+  //记录排行榜页path
   if(/\/rank/.test(from.path)){
     sessionStorage.setItem("RANK_PATH",from.path)
   }
+  //记录开服表页path
   if(/\/kaifu/.test(from.path)){
     sessionStorage.setItem("KAIFU_PATH",from.path)
   }
+  // 记录搜索页path
   if(/\/search/.test(from.path)){
     sessionStorage.setItem("SEARCH_PATH",from.path)
   }
-  from.meta.keepAlive = true;
-  to.meta.keepAlive = true;
+  // from.meta.keepAlive = true;
+  // to.meta.keepAlive = true;
   next()
   
 })

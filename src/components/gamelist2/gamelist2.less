@@ -1,0 +1,52 @@
+@rem: 0.0267rem;
+.game-list2 {
+  .list {
+    display: flex;
+    margin: 15*@rem 0;
+    padding: 0 14*@rem;
+    box-sizing: border-box;
+    .game-item {
+      flex: 0 0 25%;
+      overflow: hidden;
+      .container {
+        .game-img {
+          display: block;
+          width: 60*@rem;
+          height: 60*@rem;
+          margin: 0 auto;
+          background-color: rgba(238, 238, 238, 1);
+          border-radius: 15px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .game-name {
+          margin: 5*@rem 0;
+          padding: 0 5*@rem;
+          text-align: center;
+          font-size: 14*@rem;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        .game-type {
+          margin-bottom: 5*@rem;
+          text-align: center;
+          font-size: 12*@rem;
+          color: rgba(102, 102, 102, 1);
+        }
+      }
+    }
+    .button {
+      display: block;
+      width: 55*@rem;
+      height: 25*@rem;
+      margin: 0 auto;
+      text-align: center;
+      line-height: 25*@rem;
+      background-color: rgba(71, 168, 58, 1);
+      border-radius: 3px;
+      font-size: 12*@rem;
+      color: rgba(255, 255, 255, 1);
+    }
+  }
+}

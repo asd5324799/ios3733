@@ -1,6 +1,6 @@
 <template>
     <div class="will">
-        <scroller :on-infinite="infinite" :on-refresh="refresh" ref="will_scroller" refreshText="3733盒子刷新">
+        <scroller :on-infinite="infinite" :on-refresh="refresh" ref="will_scroller" refreshText="">
             <GameList :list="willList" :type="listType" />
         </scroller>
     </div>
@@ -18,20 +18,29 @@
         methods: {
             init(theMethod){
                 this.$axios({
-                    method: "post",
-                    url: "/api/newgame/index",
-                    data:{
+                    method: "POST",
+                    url: "/api/server/index",
+                    data:this.$qs.stringify({
+                        uuid: "ffffffff-1234-1234-1234-123456789012",
+                        from: "212",
                         page:this.page,
-                        keyword:this.$route.params.keyword,
-                        order:101
-                    }
+                        type:2
+                    })
                 }).then(theMethod)
             },
             handleGameList(res) {
-                this.willList = res.data.list;
+                var arr = [];
+                for(let item of res.data){
+                    arr.push(item.game);
+                }
+                this.willList = arr;
             },
             addGameList(res) {
-                this.willList = this.willList.concat(res.data.list);
+                var arr = [];
+                for(let item of res.data){
+                    arr.push(item.game);
+                }
+                this.willList = this.willList.concat(arr);
             },
             refresh() {
                 setTimeout(() => {
@@ -45,7 +54,7 @@
                 this.init(this.addGameList)
                 setTimeout(() =>{
                 this.$refs.will_scroller.finishInfinite(2);
-                },1000);
+                },500);
             }
         },
         created() {

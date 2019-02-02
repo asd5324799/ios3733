@@ -19,20 +19,29 @@
         methods: {
             init(theMethod){
                 this.$axios({
-                    method: "post",
-                    url: "/api/newgame/index",
+                    method: "POST",
+                    url: "http://api2.c3733.com/api/server/index",
                     data:this.$qs.stringify({
+                        uuid: "ffffffff-1234-1234-1234-123456789012",
+                        from: "212",
                         page:this.page,
-                        keyword:this.$route.params.keyword,
-                        order:101
+                        type:1
                     })
                 }).then(theMethod)
             },
             handleGameList(res) {
-                this.todayList = res.data.list;
+                var arr = [];
+                for(let item of res.data){
+                    arr.push(item.game);
+                }
+                this.todayList = arr;
             },
             addGameList(res) {
-                this.todayList = this.todayList.concat(res.data.list);
+                var arr = [];
+                for(let item of res.data){
+                    arr.push(item.game);
+                }
+                this.todayList = this.todayList.concat(arr);
             },
             refresh() {
         setTimeout(() => {
@@ -46,7 +55,7 @@
         this.init(this.addGameList)
         setTimeout(() =>{
           this.$refs.today_scroller.finishInfinite(2);
-        },1000);
+        },500);
       }
         },
         created() {

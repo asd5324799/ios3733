@@ -62,6 +62,7 @@
   right: 0;
   top: -0.2136rem;
   z-index: 2;
+  background-size: 0.6675rem 0.534rem;
 }
 .billboard .game-box .game-list .game-item .game-pic .no-ico {
   display: block;
@@ -72,6 +73,7 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
+  background-size: 1.9758rem 0.4272rem;
 }
 .billboard .game-box .game-list .game-item .game-title {
   font-size: 0.3204rem;

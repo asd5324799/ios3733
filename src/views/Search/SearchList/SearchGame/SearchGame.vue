@@ -1,7 +1,7 @@
 <template>
   <div class="search-game">
     <scroller :on-infinite="infinite" :on-refresh="refresh" ref="search_game_scroller" refreshText="刷新">
-      {{text}}<GameList :list="searchGameList" :type="listType" /> 
+      <GameList :list="searchGameList" :type="listType" /> 
     </scroller>
   </div>
 </template>
@@ -14,30 +14,24 @@
         listType: 1,
         searchGameList: [],//搜索结果列表
         page: 1, //初始页码
-        // text1:'',
       }
     },
     computed:{
-      text:function(){
-        return this.$route.params.keyword;
-      }
     },
     watch: {
       $route(to,from){
-        // this.text = this.$route.params.keyword;
         this.init(this.handleGameList)
-        
       }
     },
     methods: {
       init(method){
         this.$axios({
             method: "post",
-            url: "/api/game/index",
+            url: "http://api2.c3733.com/api/search/index",
             data:this.$qs.stringify({
-              from: 777,
+              from: 212,
               uuid: "ffffffff-1234-1234-1234-123456789012",
-              page: this.page,
+              page: 1,
               keyword: this.$route.params.keyword,
               fromAction: 1,
               type: 1
@@ -45,10 +39,13 @@
           }).then(method)
       },
       handleGameList(res) {
-        this.searchGameList = res.data.list;
+        this.searchGameList = res.data.game_list;
       },
       addGameList(res) {
-        this.searchGameList = this.searchGameList.concat(res.data.list);//上拉加载数据数组拼接
+        if(res){
+          this.searchGameList = this.searchGameList.concat(res.data.list);//上拉加载数据数组拼接
+        }
+        
       },
       refresh() {
         setTimeout(() => {
@@ -62,7 +59,7 @@
         this.init(this.addGameList)
         setTimeout(() => {
           this.$refs.search_game_scroller.finishInfinite(2);
-        }, 1000);
+        }, 500);
       }
     },
     created() {
@@ -84,8 +81,9 @@
       }
     },
     beforeRouteEnter(to,from,next){
-      if(!sessionStorage.searchGamePositon || from.params.keyword != to.params.keyword && !(/^\/detail/.test(from.path))){//判断是否有缓存
-        sessionStorage.searchGamePositon = '';
+      if(!sessionStorage.searchGamePositon || /\/searchindex/.test(from.path) || from.params.keyword != to.params.keyword && !(/^\/detail/.test(from.path))){//判断是否有缓存
+        sessionStorage.searchGamePositon = 0;
+        sessionStorage.searchGiftPositon = 0;
         // sessionStorage.setItem("TO_RESULT_KEY",to.params.keyword)
         next();
       }else{
