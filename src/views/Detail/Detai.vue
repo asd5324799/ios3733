@@ -72,6 +72,7 @@ export default {
       detail: {},
       liked: [],
       comments: {},
+      id: Number
     }
   },
   methods: {
@@ -84,9 +85,26 @@ export default {
     }
   },
   created() {
-    this.$axios.post('/api/game/read')
+    this.id = this.$route.params.gameId;
+    this.$axios({
+      method: 'post',
+      url: '/api/game/read',
+      data: {
+        id: this.id,
+      }
+    })
     .then(this.handleInitData);
-    this.$axios.post('/api/comment/comments')
+    this.$axios({
+      method: 'post',
+      url: '/api/comment/comments',
+      data: {
+        page: 1,
+        listRows: 20,
+        classId: 103,
+        sourceId: this.id,
+        order: 0
+      }
+    })
     .then((res) => {
       this.comments = res.data;
     })

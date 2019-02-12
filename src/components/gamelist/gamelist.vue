@@ -5,7 +5,7 @@
       :key="index"
       class="game-info">
       <router-link
-        :to="{name: 'Detail'}"
+        :to="{name: 'Detail', params: {gameId: item.id}}"
         tag="div">
         <img class="big-img" v-if="showBigImg(index)" :src="BigImgSrc(index)">
         <div class="container" v-if="!showBigImg(index)">

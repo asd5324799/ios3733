@@ -2,13 +2,14 @@
 @rem: 0.0267rem;
 .top-bar{
     box-sizing: border-box;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
+    z-index: 10000;
+    background: #fff;
     padding: 8*@rem 0;
-    justify-content: space-between;
-    .search{
+    .search-button{
         box-sizing: border-box;
         color: #888888;
         display: block;
@@ -20,7 +21,7 @@
         padding-left: 33*@rem;
         font-size:14*@rem;
         letter-spacing: 2*@rem;
-        font-family:PingFang-SC-Regular;
+        font-style:PingFang-SC-Regular;
         font-weight:400;
         background: url(../../assets/images/search.png) 10*@rem center no-repeat #F5F5F5;
         background-size: 15*@rem 15*@rem;
@@ -28,7 +29,8 @@
         object{
             position: absolute;
             right: 0;
-            top: 9*@rem;
+            top: 50%;
+            transform: translateY(-50%);
             width: 28*@rem;
             height: 12*@rem;
             border-left: 1px solid #E5E5E5;

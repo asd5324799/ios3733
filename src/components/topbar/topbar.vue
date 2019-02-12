@@ -1,6 +1,6 @@
 <template>
   <div class="top-bar">
-     <router-link class="search" to="/search" >搜索
+     <router-link class="search-button" to="/search" >搜索
         <object>
           <router-link class="qrcode" to="/qrcode">
             <i class="code-icon"></i>
@@ -20,6 +20,6 @@ export default {
   },
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   @import './topbar.less';
 </style>

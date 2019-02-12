@@ -2,7 +2,7 @@
   <div class="nav-com">
       <ul class="nav-list">
           <li class="nav-item" v-for="(item,index) in navList" :key="index">
-                <router-link :to="item.src">
+                <router-link :to="item.src" :class="index==pageIndex?'active':''">
                     <i :class="item.desc"></i>
                     <p>{{item.title}}</p>
                 </router-link>
@@ -18,36 +18,54 @@ export default {
             navList:[
                 {
                     title:"推荐",
-                    desc:"recom",
-                    src:"./",
+                    desc:"recom-icon",
+                    src:"/",
                     icon:"../../assets/images/recom.png",
                     activeSrc:"../../assets/images/recom-active.png"
                 },
                 {
                     title:"排行榜",
-                    desc:"rank",
-                    src:"./rank",
+                    desc:"rank-icon",
+                    src:"/rank",
                     icon:"../../assets/images/rank.png",
                     activeSrc:"../../assets/images/rank-active.png"
                 },
                 {
                     title:"开服",
-                    desc:"list",
-                    src:"./kaifu",
+                    desc:"list-icon",
+                    src:"/kaifu",
                     icon:"../../assets/images/list.png",
                     activeSrc:"../../assets/images/list-active.png"
                 },
                 {
                     title:"我的",
-                    desc:"mine",
-                    src:"./mine",
+                    desc:"mine-icon",
+                    src:"/mine",
                     icon:"../../assets/images/mine.png",
                     activeSrc:"../../assets/images/mine-active.png"
                 }
             ]
         }
   },
+  props:['pageIndex'],
+  watch:{
+    $route(){
+        var homeUrl = sessionStorage.getItem("HOME_PATH");
+        if(homeUrl){
+            this.navList[1].src = homeUrl;
+        }
+        var rankUrl = sessionStorage.getItem("RANK_PATH");
+        if(rankUrl){
+            this.navList[1].src = rankUrl;
+        }
+        var kaifuUrl = sessionStorage.getItem("KAIFU_PATH");
+        if(kaifuUrl){
+            this.navList[2].src = kaifuUrl;
+        }
+    }
+  },
   mounted() {
+      
   },
 }
 </script>

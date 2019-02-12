@@ -5,7 +5,9 @@
       v-for="(item, index) in list" 
       :key="index"
       class="game-item">
-        <router-link class="container" to="/detail">
+        <router-link 
+          class="container" 
+          :to="{name: 'Detail', params: {gameId: item.id}}">
           <img :src="item.titlepic" class="game-img">
           <div class="game-name">{{item.title}}</div>
           <div class="game-type" v-if="type === '3'">{{item.totaldown}}人在玩</div>

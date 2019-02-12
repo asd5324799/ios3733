@@ -34,16 +34,46 @@
         </router-link>
       </ul>
     </header>
-    <keep-alive>
-      <router-view class="content"></router-view>
-    </keep-alive>
+    <TabSlider 
+      :comp="slider">
+    </TabSlider>
+    <!-- <router-view></router-view> -->
     <!-- footer -->
+    <NavCom :pageIndex="index" />
   </div>
 </template>
 
 <script>
+import NavCom from '@/components/navcom/navcom.vue';
+import TabSlider from '@/components/tabslider/tabslider';
+import QualitySelect from './qualityselect/qualityselect';
+import NewGame from './newgame/newgame';
+import CateGory from './category/category';
+
 export default {
   name: 'Home',
+  data(){
+    return{
+      index:0,
+      slider: [{
+        name: 'QualitySelect', 
+        component: QualitySelect
+      }, {
+        name: 'NewGame',
+        component: NewGame
+      }, {
+        name: 'CateGory',
+        component: CateGory
+      }]
+    }
+  },
+  components: {
+    NavCom,
+    TabSlider,
+    QualitySelect,
+    NewGame,
+    CateGory
+  }
 }
 </script>
 <style lang="less" scoped>

@@ -1,5 +1,8 @@
 <template>
-  <transition name="move">
+  <scroller 
+    :on-refresh="refresh" 
+    :on-infinite="infinite"
+    ref="qualityselect">
     <div class="qualityselect">
       <!-- swiper -->
       <div class="swiper">
@@ -59,7 +62,7 @@
       >
       </GameList>
     </div>
-  </transition>
+  </scroller>
 </template>
 <script>
 import GameList from '@/components/gamelist/gamelist.vue';
@@ -85,15 +88,12 @@ export default {
         },
         loop : true,
       },
-      touch: {},
-      touchStartTime: 0,
-      touchEndTime: 0,
-      currentDistance: 0,
-      totalDiff: 0,
+      newGamePage : 1,
     }
   },
   methods: {
-    handleInitData(res) {   
+    // 数据初始化
+    handleInitData() {  
       this.bannerList = res.data.banner;
       this.navList = res.data.tab_action;
       let temp = 0;
@@ -112,14 +112,63 @@ export default {
         }
       });
     },
-    touchStart(ev) {
-      let touch = ev.changedTouches[0];
-      this.touch.x1 = touch.pageX
+    // 下拉刷新
+    refresh() {
+      setTimeout(() => {
+        this.$axios({
+          method: 'post',
+          url: '/api/index/index',
+          header: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "User-Agent": "postman",
+          },
+          data: {
+            token: '0f955a36d0b3e252e34254f79ac76026'
+          },
+        })
+        .then(res => {
+          this.handleInitData();
+          this.$refs.qualityselect.finishPullToRefresh();
+          console.log(res);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      }, 1000);
+    },
+    // 上拉加载
+    infinite() {
+      setTimeout(() => {
+        this.$axios({
+          method: 'post',
+          url: '/api/game/index',
+          data: {
+            order: 7,
+            page: this.newGamePage
+          }
+        })
+        .then(res => {
+          this.newGamePage++;
+          this.newGameFirstList = [...this.newGameFirstList, ...res.data.list]
+          this.$refs.qualityselect.finishInfinite();
+        })
+      }, 1000);
     }
   },
   created() {
-    this.$axios.post('/api/index/index')
-    .then(this.handleInitData);    
+    this.$axios({
+        method: 'post',
+        url: '/api/index/index',
+        data: {
+          token: '0f955a36d0b3e252e34254f79ac76026'
+        },
+      })
+      .then(res => {
+        this.handleInitData();
+      })
+      .catch(e => {
+        console.log(e);
+      });
   },
   components: {
     GameList,

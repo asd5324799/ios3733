@@ -6,6 +6,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 // 首页
 app.post('/api/index/index', (req, res) =>{
+  console.log(req.body);
   res.json(
     {
       "log": {

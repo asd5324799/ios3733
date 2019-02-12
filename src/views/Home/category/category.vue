@@ -1,39 +1,37 @@
 <template>
-  <transition name="move">
-    <div class="category">
-      <div class="filter-list">
-        <ul 
-          class="list"
-          v-for="(list, index) in lists"
-          :key="index">
-          <li 
-            class="item"
-            v-for="(item, itemIndex) in lists[index]"
-            :key="itemIndex"
-            :class="{'active': selectedList[index]===itemIndex}"
-            @click="changeSelectList(index, itemIndex)">
-            {{item.title}}
-          </li>
-        </ul>
-      </div>
-      <div class="tab-list">
-        <span 
-          class="tab-item" 
-          @click="changeSelectTab(0)"
-          :class="{active: selectedTab === 0}">推荐</span>
-        <span 
-          class="tab-item"
-          @click="changeSelectTab(1)"
-          :class="{active: selectedTab === 1}">最新</span>
-        <span 
-          class="tab-item"
-          @click="changeSelectTab(2)"
-          :class="{active: selectedTab === 2}">最热</span>
-      </div>
-      <div class="tab-content">
-      </div>
+  <div class="category">
+    <div class="filter-list">
+      <ul 
+        class="list"
+        v-for="(list, index) in lists"
+        :key="index">
+        <li 
+          class="item"
+          v-for="(item, itemIndex) in lists[index]"
+          :key="itemIndex"
+          :class="{'active': selectedList[index]===itemIndex}"
+          @click="changeSelectList(index, itemIndex)">
+          {{item.title}}
+        </li>
+      </ul>
     </div>
-  </transition>
+    <div class="tab-list">
+      <span 
+        class="tab-item" 
+        @click="changeSelectTab(0)"
+        :class="{active: selectedTab === 0}">推荐</span>
+      <span 
+        class="tab-item"
+        @click="changeSelectTab(1)"
+        :class="{active: selectedTab === 1}">最新</span>
+      <span 
+        class="tab-item"
+        @click="changeSelectTab(2)"
+        :class="{active: selectedTab === 2}">最热</span>
+    </div>
+    <div class="tab-content">
+    </div>
+  </div>
 </template>
 <script>
 import GameList from '@/components/gamelist/gamelist.vue';

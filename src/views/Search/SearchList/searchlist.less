@@ -1,0 +1,90 @@
+/* searchlist */
+@rem: 0.0267rem;
+.search-list{
+    box-sizing: border-box;
+    padding-top:30*@rem;
+    height: 100%;
+    overflow: hidden;
+    .top-search{
+        position: fixed;
+        top: 0;
+        background: #47A83A;
+        display: flex;
+        padding: 6*@rem 0;
+        line-height: 25*@rem;
+        height: 25*@rem;
+        width: 100%;
+        z-index: 1000;
+        .back-btn{
+            display: inline-block;
+            width: 19*@rem;
+            height: 25*@rem;
+            background: url(../../../assets/images/back.png) center center no-repeat;
+            background-size: 19*@rem 15*@rem;
+            margin-left: 15*@rem;
+            
+        }
+        .search-board{
+            position: relative;
+            background: #F5F5F5;
+            width: 270*@rem;
+            height: 25*@rem;
+            border-radius: 4*@rem;
+            margin: 0 auto;
+            .search-icon{
+                display: inline-block;
+                width: 25*@rem;
+                height: 25*@rem;
+                background: url(../../../assets/images/search.png) center center no-repeat;
+                background-size: 15*@rem 15*@rem;
+                vertical-align: 2*@rem;
+            }
+            input{
+                background: rgba(0, 0, 0, 0);
+                vertical-align: 10*@rem;
+                width: 200*@rem;
+                font-size: 12*@rem;
+            }
+            .clear-key{
+                position: absolute;
+                width: 13*@rem;
+                height: 13*@rem;
+                background: url(../../../assets/images/clear-key.png) no-repeat;
+                background-size: 13*@rem 13*@rem;
+                right: 7*@rem;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
+        .search-btn{
+            display: inline-block;
+            color: #fff;
+            font-size: 14*@rem;
+            height: 25*@rem;
+            line-height: 25*@rem;
+            margin-right: 15*@rem;
+        }
+    }
+    .page-nav{
+        display: flex;
+        border-bottom: 1px solid #E5E5E5;
+        position: fixed;
+        width: 100%;
+        top: 37*@rem;
+        z-index: 1000;
+        background: #fff;
+        .nav-item{
+            box-sizing: border-box;
+            display: block;
+            width: 50%;
+            text-align: center;
+            height: 30*@rem;
+            line-height: 30*@rem;
+            font-size: 14*@rem;
+        }
+        .active{
+            border-bottom: 1px solid #47A83A;
+            color: #47A83A;
+        }
+    }
+}

@@ -1,5 +1,8 @@
 <template>
-  <transition name="move">
+  <scroller
+    :on-refresh="refresh"
+    :on-infinite="infinite"
+    ref="newgame">
     <div class="newgame">
       <!-- today-newgame -->
       <div class="today-newgame">
@@ -29,7 +32,7 @@
         ></GameList>
       </div>
     </div>
-  </transition>
+  </scroller>
 </template>
 <script>
 import GameList from '@/components/gamelist/gamelist.vue';
@@ -43,37 +46,81 @@ export default {
       todayNewGameList: [],
       appointmentList: [],
       originalGameList: [],
-      sortGameObject: {}
+      sortGameObject: {},
+      newGamePage: 2,
     }
   },
   methods: {
+    // 数据初始化
     handleInitData(res) {
       this.todayNewGameList = res.data.today_list;
       this.appointmentList = res.data.subscribe_list.slice(0, 4);
       this.originalGameList = res.data.list;
-    this.handleListSort(this.originalGameList);
+      this.handleListSort(this.originalGameList);
     },
+    // 处理游戏排序
     handleListSort(list) {
       for(let ele of list) {
         ele.newstime = this.handleTimestamp(ele.newstime);
         if(this.sortGameObject.hasOwnProperty(ele.newstime)) {
           this.sortGameObject[ele.newstime].push(ele);
         } else {
-          this.sortGameObject[ele.newstime] = [];
+          this.$set(this.sortGameObject, ele.newstime, []);
           this.sortGameObject[ele.newstime].push(ele);
         }    
       }
     },
+    // 处理时间戳
     handleTimestamp(ts) {
       let temp = new Date(ts*1000),
           y = temp.getFullYear(),
           m = temp.getMonth() + 1,
           d = temp.getDate();
       return `${y}-${m}-${d}`;
-    }
+    },
+    // 下拉刷新
+    refresh() {
+      setTimeout(() => {
+        this.$axios({
+          method: 'post',
+          url: '/api/game/newList',
+          data: {
+
+          }
+        }).then(res => {
+          this.handleInitData(res);
+          this.$refs.newgame.finishPullToRefresh();
+          console.log(1);
+          console.log(res);
+        })
+      }, 1000);
+    },
+    // 上拉加载
+    infinite() {
+      setTimeout(() => {
+        this.$axios({
+          method: 'post',
+          url: '/api/game/newList',
+          data: {
+            page: this.newGamePage
+          }
+        })
+        .then(res => {
+          console.log(2);
+          console.log(res);
+          this.newGamePage++;
+          this.handleListSort(res.data.list); 
+          this.$refs.newgame.finishInfinite();
+        })
+      }, 1000);
+    },
   },
   created() {
-    this.$axios.post('/api/game/newList')
+    this.$axios({
+      method: 'post',
+      url: '/api/game/newList',
+      data: {}
+    })
     .then(this.handleInitData);
   },
   components: {

@@ -1,0 +1,64 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: none;
+  line-height: 1.2;
+}
+html,
+body {
+  height: 100%;
+}
+#app {
+  height: 100%;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+a,
+input,
+button {
+  outline: 0 none !important;
+}
+li {
+  list-style: none;
+}
+/*修改下拉刷新样式*/
+._v-container > ._v-content > .pull-to-refresh-layer {
+  background: url(../assets/images/loading.gif) no-repeat;
+  background-size: auto 1.602rem;
+  background-position: center bottom;
+  height: 1.602rem !important;
+  margin-top: -1.602rem !important;
+  font-size: 0.4272rem !important;
+  color: rgba(0, 0, 0, 0) !important;
+}
+._v-container > ._v-content > .pull-to-refresh-layer .text {
+  color: rgba(0, 0, 0, 0) !important;
+}
+.appView {
+  background: #fff;
+}
+/*界面切换过渡动画*/
+.slide-right-enter-active,
+.slide-right-leave-active,
+.slide-left-enter-active,
+.slide-left-leave-active {
+  will-change: transform;
+  transition: all 500ms;
+  position: absolute;
+}
+.slide-right-enter {
+  transform: translate3d(-100%, 0, 0);
+}
+.slide-right-leave-active {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+.slide-left-enter {
+  transform: translate3d(100%, 0, 0);
+}
+.slide-left-leave-active {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
+}
