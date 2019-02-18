@@ -1,78 +1,79 @@
 <template>
   <div class="home">
     <!-- header -->
-    <header>
-      <div class="search">
-        <div class="ewm"></div>
-        <router-link
-          :to="{name: 'Search'}"
-          tag="div"
-          class="search-container"
-        >搜索</router-link>
-      </div>
-      <ul class="tab-list">
-        <router-link 
-          :to="{name: 'HomeQualitySelect'}" 
-          tag="li" 
-          class="tab-item"
-        >
-        <span class="text">精选</span>
-        </router-link>
-        <router-link 
-          :to="{name: 'HomeNewGame'}" 
-          tag="li" 
-          class="tab-item"
-        >
-        <span class="text">新游</span>
-        </router-link>
-        <router-link 
-          :to="{name: 'HomeCategory'}" 
-          tag="li"
-          class="tab-item"
-        >
-          <span class="text">分类</span>
-        </router-link>
-      </ul>
-    </header>
-    <TabSlider 
-      :comp="slider">
-    </TabSlider>
-    <!-- <router-view></router-view> -->
+    <TopBar :list="tabList" :currentTab="currentTab" @changeSlide="changeSlide"></TopBar>
+    <main>
+      <Swiper :options="swiperOption" class="swiper" ref="Swiper">
+        <SwiperSlide>
+            <QualitySelect @toTypePage="toTypePage" @toNewGame="toNewGame"/>
+        </SwiperSlide>
+        <SwiperSlide><NewGame /></SwiperSlide>
+        <SwiperSlide><CateGory :selectedList="selectedList" @changeSelectedList="changeSelectedList"/></SwiperSlide>
+      </Swiper>
+    </main>
     <!-- footer -->
-    <NavCom :pageIndex="index" />
+    <NavCom :pageIndex="0" />
   </div>
 </template>
 
 <script>
+import TopBar from '@/components/topbar/topbar.vue';
 import NavCom from '@/components/navcom/navcom.vue';
-import TabSlider from '@/components/tabslider/tabslider';
 import QualitySelect from './qualityselect/qualityselect';
 import NewGame from './newgame/newgame';
 import CateGory from './category/category';
+import {swiper as Swiper, swiperSlide as SwiperSlide} from 'vue-awesome-swiper';
 
 export default {
   name: 'Home',
   data(){
     return{
-      index:0,
-      slider: [{
-        name: 'QualitySelect', 
-        component: QualitySelect
-      }, {
-        name: 'NewGame',
-        component: NewGame
-      }, {
-        name: 'CateGory',
-        component: CateGory
-      }]
+      tabList: ['精选', '新游', '分类'],
+      currentTab: 0,
+      selectedList: [0, 0, 0, 0],
+      swiperOption: {
+        on: {
+          slideChange: () => {
+            this.currentTab = this.swiper.activeIndex;
+          }
+        }
+      },
     }
   },
+  computed: {
+    swiper() {
+      return this.$refs.Swiper.swiper
+    }
+  },
+  methods: {
+    changeSlide(index) {
+      this.swiper.slideTo(index);
+      this.currentTab = index;
+    },
+    changeSelectedList(number, index) {
+      this.selectedList.splice(number, 1, index);
+    },
+    toTypePage(data) {
+      if(data !== 3) {
+        this.swiper.slideTo(2);
+        data++;
+        this.selectedList.splice(0, 1, data);
+      } else {
+        this.$router.push({name: 'Topic'})
+      }
+    },
+    toNewGame() {
+      this.swiper.slideTo(1);
+    },
+  },
   components: {
+    TopBar,
     NavCom,
-    TabSlider,
     QualitySelect,
     NewGame,
-    CateGory
+    CateGory,
+    Swiper,
+    SwiperSlide
   }
 }
 </script>

@@ -4,8 +4,10 @@ import qs from 'qs'
 
 // 拦截请求
 axios.interceptors.request.use(res => {
+  res.method = 'post';
   res.data.uuid = 'ffffffff-1234-1234-1234-123456789012';
   res.data.from = '212';
+  res.data.build = '30';
   return res;
 })
 

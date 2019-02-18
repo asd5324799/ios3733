@@ -2,23 +2,18 @@
     <div class="mine">
         <TopBar />
         <div class="mine-content">敬请期待</div>
-        <NavCom :pageIndex="index" />
+        <NavCom :pageIndex="3" />
     </div>
 </template>
 <script>
-    import TopBar from '@/components/topbar/topbar.vue';
     import NavCom from '@/components/navcom/navcom.vue';
-    // import TabSlider from 'tab-slider'
     export default {
         data() {
             return {
-                index:3,
             }
         },
         components: {
             NavCom,
-            TopBar,
-            // TabSlider
         }
     }
 </script>

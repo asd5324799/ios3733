@@ -1,9 +1,9 @@
 <template>
-  <div class="billboard" :class="bgClass" v-if="top3.length">
-      <div class="title"><h3><i class="left-ico"></i>{{billboardTitle}}<i class="right-ico"></i></h3></div>
+  <div class="billboard" :class="bg">
+      <div class="title"><h3><i class="left-ico"></i>{{title}}<i class="right-ico"></i></h3></div>
       <div class="game-box">
           <ul class="game-list">
-              <li class="game-item" v-for="(item,index) of top3" :key="index">
+              <li class="game-item" v-for="(item,index) of gameTop" :key="index">
                   <div class="game-pic">
                       <router-link to="/detail"><img :src="item.titlepic" alt=""></router-link>
                       <i class="cap-ico"></i>
@@ -19,9 +19,20 @@
 <script>
 export default {
   name: 'Billboard',
-  props: ['top3','billboardTitle','bgClass'],
-  mounted() {
-  },
+  props: {
+    gameTop: {
+      type: Array,
+      default: []
+    },
+    title: {
+      type: String,
+      default: '新游榜'
+    },
+    bg: {
+      type: String,
+      default: 'newgame-billboard'
+    }
+  }
 }
 </script>
 <style lang="less" scoped>

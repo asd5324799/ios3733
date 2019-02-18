@@ -4,11 +4,9 @@
       v-for="(item, index) of list"
       :key="index"
       class="game-info">
-      <router-link
-        :to="{name: 'Detail', params: {gameId: item.id}}"
-        tag="div">
+      <div @click="toDetail(item)">
         <img class="big-img" v-if="showBigImg(index)" :src="BigImgSrc(index)">
-        <div class="container" v-if="!showBigImg(index)">
+        <div class="container" v-else>
           <div class="game-number" v-if="type === 2 ? true : false">{{index + 4}}</div>
           <img 
             :src="item.titlepic"
@@ -16,10 +14,6 @@
           <div class="game-content">
             <div class="game-name">
               {{item.title}}
-              <span 
-                class="game-district" 
-                v-if="type === 3 ? ture : false"
-              >{{item.state}}</span>
             </div>
             <div class="game-type">
               <span 
@@ -30,20 +24,46 @@
               </span>
               <span class="size">{{item.size_ip}}</span>
             </div>
-            <div class="game-boon">{{type === 3 ? handleTimestamp() : item.yxftitle}}</div>
+            <div class="game-boon">
+              <div class="text" v-if="type != 3">{{item.yxftitle}}</div>
+              <div class="text" v-else>
+                <span class="red">{{handleTimestamp(item)}}</span>
+                <span>{{item.kaifuState}}</span>
+              </div>
+            </div>
           </div>
         </div>
-      </router-link>
-      <a :href="item.down_ip" class="game-download" v-if="!showBigImg(index)">{{'下载'}}</a>
+      </div>
+      <a :href="item.down_ip" class="game-download" :class="{orange: type === 4}" v-if="!showBigImg(index)">{{text}}</a>
     </div>
   </div>
 </template>
 <script>
+/**
+ * @param type 1正常列表 2带序号列表 3显示开服表时间,否则显示游戏福利 4下载还是预约
+ */
 export default {
   name: 'GameList',
   props: {
-    list: Array,
-    type: Number,
+    list: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    type: {
+      type: Number,
+      default : 1
+    },
+  },
+  computed: {
+    text() {
+      if(this.type === 4) {
+        return '预约';
+      } else {
+        return '下载';
+      }
+    }
   },
   methods: {
     showBigImg(index) {
@@ -61,10 +81,30 @@ export default {
         return this.list[index].thumb;
       }
     },
-    handleTimestamp() {
-      
+    handleTimestamp(item) {
+      let time = new Date(item.kaifuNewstime*1000),
+          m = time.getMonth() + 1,
+          d = time. getDate(),
+          h = time.getHours(),
+          min = time.getMinutes();
+      h = h < 10 ? `0${h}` : h;
+      min = min < 10 ? `0${min}` : min;
+      return `${m}-${d} ${h}: ${min}`;
+    },
+    toDetail(item) {
+      this.$router.push({ 
+        name: 'Detail', 
+        query: {
+          id: JSON.stringify(item.id), 
+          app_tag: JSON.stringify(item.app_tag), 
+          titlepic: JSON.stringify(item.titlepic), 
+          title: JSON.stringify(item.title), 
+          totaldown: JSON.stringify(item.totaldown),
+          down_ip: JSON.stringify(item.down_ip),
+        }
+      })
     }
-  },
+  }
 }
 </script>
 <style lang="less" scoped>

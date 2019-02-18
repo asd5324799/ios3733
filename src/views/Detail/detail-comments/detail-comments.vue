@@ -67,12 +67,10 @@ import CommentsList from '@/components/commentsList/commentsList.vue'
 
 export default {
   name: 'detailComment',
-  props: {
-    comments: Object
-  },
   data() {
     return {
       tabNow: 0,
+      comments: {}
     }
   },
   methods: {

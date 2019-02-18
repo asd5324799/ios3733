@@ -19,7 +19,7 @@ export default {
                 {
                     title:"推荐",
                     desc:"recom-icon",
-                    src:"/",
+                    src:"/home",
                     icon:"../../assets/images/recom.png",
                     activeSrc:"../../assets/images/recom-active.png"
                 },

@@ -1,17 +1,18 @@
 @rem: 0.0267rem;
 .game-detail {
+  height: 100%;
   .background-image {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    padding-top: 100%;
+    height: 100%;
     background-color: #000000;
     background-size: 110%;
     background-position: 80% 50%;
     background-repeat: no-repeat;
     filter: blur(10px) brightness(50%);
-    z-index: 0;
+    z-index: 1;
   }
   .detail-header {
     position: fixed;
@@ -42,13 +43,17 @@
     }
   }
   .container {
+    box-sizing: border-box;
     position: relative;
     margin-top: 45*@rem;
     overflow: hidden;
     z-index: 2;
     .game-info {
+      position: relative;
+      z-index: 3;
       display: flex;
-      margin: 10*@rem 14*@rem;
+      height: 90*@rem;
+      padding: 10*@rem 14*@rem;
       .game-img {
         display: block;
         width: 90*@rem;
@@ -86,21 +91,49 @@
         }
       }
     }
-    .detail-tab {
+    .tab-list {
+      position: relative;
+      z-index: 3;
       display: flex;
-      height: 44*@rem;
-      background: #ffffff;
+      flex: 0 0 40*@rem;
+      height: 40*@rem;
+      background-color: #ffffff;
       border-bottom: 1px solid rgba(238, 238, 238, 1);
       .tab-item {
         flex: 0 0 25%;
+        height: 30*@rem;
+        line-height: 40*@rem;
         text-align: center;
-        line-height: 44*@rem;
-        font-size: 14*@rem;
-        font-weight: bold;
-        &.router-link-exact-active {
-          color: rgba(72, 168, 58, 1);
+        font-size: 16*@rem;
+        color: #333333;
+        .text {
+          display: inline-block;
+          line-height: 28*@rem;
+          height: 28*@rem;
+        }
+        &.current {
+          .text {
+            color: #47a83a;
+            border-bottom: 2px solid #47a83a;
+          }
         }
       }
+    }
+  }
+  main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding-top: 196*@rem;
+    padding-bottom: 60*@rem;
+    background-color: #ffffff;
+    .swiper-container {
+      width: 100%;
+      height: 100%;
     }
   }
   .game-download {

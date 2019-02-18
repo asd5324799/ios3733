@@ -1,21 +1,32 @@
 <template>
   <div class="game-title">
     {{headerTitle}}
-    <router-link 
-    :to="{name: router}"
-    tag="span"
-    class="more">更多</router-link>
+    <span
+    v-if="type"
+    @click="clickDo"
+    class="more">更多</span>
   </div>
 </template>
 <script>
 export default {
   name: 'GameTitle',
   props: {
-    headerTitle: String,
-    router: String
-  }
+    headerTitle: {
+      type: String,
+      default: '精品推荐'
+    },
+    type: {
+      type: Boolean,
+      default: true,
+    }
+  },
+  methods: {
+    clickDo() {
+      this.$emit('clickDo')
+    }
+  },
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   @import './gametitle.less';
 </style>
