@@ -2,8 +2,7 @@
   <div class="detail-index">
     <Loading :loading="loading" @refresh="createdMethod">
       <Scroll
-        :pullDown="pullDownState"
-        @pullingDown="pullDown"
+        :able="able"
         slot="loading-content">
         <div class="content" slot="content">
           <!-- qq-group -->
@@ -154,6 +153,10 @@ export default {
     id: {
       type: Number,
       default: 0,
+    },
+    able: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

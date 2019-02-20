@@ -1,56 +1,57 @@
 <template>
   <div class="game-detail">
+    <!-- background-image -->
+    <div class="background-image"
+      :style="{backgroundImage: `url(${titlepic})`}">
+    </div>
     <!-- header -->
     <div class="detail-header">
       <i class="back-icon" @click="goback"></i>
       <div class="title">{{title}}</div>
     </div>
     <!-- container -->
-    <div class="container">
-    <!-- background-image -->
-    <!-- 动态改container的margin-top和 main的 padding-top-->
-    <div class="background-image"
-      :style="{backgroundImage: `url(${titlepic})`}">
-    </div>
-      <!-- game-info -->
-      <div class="game-info">
-        <img 
-        :src="titlepic"
-        class="game-img">
-        <div class="game-container">
-          <div class="game-name">{{title}}</div>
-          <div class="game-number">{{totaldown}}人在玩</div>
-          <div class="game-type" v-if="app_tag !== []">
-            <div class="type-item"
-              v-for="(item, index) in app_tag"
-              :key="index">
-              <img 
-                :src="item.icon"
-                class="icon">
-              <span class="text">{{item.name}}</span>
+    <div class="container" ref="wrapper">
+      <div class="content">
+        <!-- game-info -->
+        <div class="game-info" ref="gameInfo">
+          <img 
+          :src="titlepic"
+          class="game-img">
+          <div class="game-container">
+            <div class="game-name">{{title}}</div>
+            <div class="game-number">{{totaldown}}人在玩</div>
+            <div class="game-type" v-if="app_tag !== []">
+              <div class="type-item"
+                v-for="(item, index) in app_tag"
+                :key="index">
+                <img 
+                  :src="item.icon"
+                  class="icon">
+                <span class="text">{{item.name}}</span>
+              </div>
             </div>
           </div>
         </div>
+        <!-- tab-list -->
+        <ul class="tab-list">
+          <li 
+            class="tab-item"
+            v-for="(item, index) in tabList"
+            :key="index"
+            :class="{current: currentTab === index}"
+            @click="changeSlide(index)"><div class="text">{{item}}</div></li>
+        </ul>
+        <!-- main -->
+        <main>
+          <Swiper :options="swiperOption" class="swiper" ref="Swiper">
+            <SwiperSlide><DetailIndex :id="id" :able="able" /></SwiperSlide>
+            <SwiperSlide><DetailComment :id="id" :able="able" /></SwiperSlide>
+            <SwiperSlide><DetailGift :id="id" able="able" /></SwiperSlide>
+            <SwiperSlide><DetailNews :id="id" able="able" /></SwiperSlide>
+          </Swiper>
+        </main>
       </div>
-      <!-- tab-list -->
-      <ul class="tab-list">
-        <li 
-          class="tab-item"
-          v-for="(item, index) in tabList"
-          :key="index"
-          :class="{current: currentTab === index}"
-          @click="changeSlide(index)"><div class="text">{{item}}</div></li>
-      </ul>
     </div>
-    <!-- main -->
-    <main>
-      <Swiper :options="swiperOption" class="swiper" ref="Swiper">
-        <SwiperSlide><DetailIndex :id="id"  /></SwiperSlide>
-        <SwiperSlide><DetailComment :id="id" /></SwiperSlide>
-        <SwiperSlide><DetailGift :id="id" /></SwiperSlide>
-        <SwiperSlide><DetailNews :id="id" /></SwiperSlide>
-      </Swiper>
-    </main>
     <!-- download -->
     <div class="game-download">
       <div class="left"><i class="icon icon-left"></i><div class="text">收藏</div></div> 
@@ -65,6 +66,7 @@ import DetailIndex from './detail-index/detail-index';
 import DetailComment from './detail-comments/detail-comments';
 import DetailGift from './detail-gift/detail-gift';
 import DetailNews from './detail-news/detail-news';
+import BScroll from 'better-scroll';
 
 export default {
   name: 'Detail',
@@ -86,6 +88,7 @@ export default {
           }
         }
       },
+      able: false,
     }
   },
   computed: {
@@ -115,13 +118,25 @@ export default {
       this.comments = res.data;
     })
   },
-  beforeRouteEnter(to, from, next) {
-      next(vm => {
-        // 通过 `vm` 访问组件实例
-        if(vm.id !== JSON.parse(vm.$route.query.id)) {
-          vm.des
-        }
+  mounted() {
+    setTimeout(() => {
+      this.scroll = new BScroll(this.$refs.wrapper, {click: true, probeType: 2,});
+      let height = this.$refs.gameInfo.offsetHeight;
+      this.scroll.on('scroll', (pos) => {
+        if(pos.y <= -(height)) {
+          this.able = true;
+          this.scroll.disable();
+        } 
       })
+    }, 20);
+    // 
+    // let scrollTop;
+    // window.addEventListener('scroll', () => {
+    //   scrollTop = document.body.scrollTop !== 0 ? document.body.scrollTop : document.documentElement.scrollTop;
+    //   if(scrollTop >= height) { 
+    //     this.able = true;
+    //   }
+    // })
   },
   methods: {
     goback() {
@@ -138,7 +153,7 @@ export default {
     DetailIndex,
     DetailComment,
     DetailGift,
-    DetailNews
+    DetailNews,
   }
 }
 </script>

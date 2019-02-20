@@ -73,7 +73,6 @@
         </div>
       </Scroll>
     </Loading>
-    </div>
   </div>
 </template>
 <script>

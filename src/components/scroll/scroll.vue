@@ -19,6 +19,7 @@
  * @param pullDown 下拉刷新的状态，false,ready,success,fail
  * @param pullUp 上拉刷新的状态，false,ready,success,nomore,fail
  * @param pullDownY 实时记录下拉的距离px
+ * @param able 是否开启滚动
  */
 import BScroll from 'better-scroll';
 import Bubble from './bubble/bubble';
@@ -37,6 +38,10 @@ export default {
     scrollRefresh: {
       type: Boolean,
       default: false
+    },
+    able: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -53,16 +58,6 @@ export default {
   mounted() {
     setTimeout(() => {
         this.initScroll();
-        if(this.pullDown !== 'false') {
-          this.scroll.on('pullingDown', this.pullDownMethod);
-        }
-        if(this.pullUp !== 'false') {
-          this.scroll.on('pullingUp', this.pullUpMethod);
-        }
-        if(this.pullDown !== 'false' || this.pullUp !== 'false') {
-          this.scroll.on('scroll', this.scrollMethod);
-          this.scroll.on('touchEnd', this.touchEndMethod);
-        }
     }, 20)
   },
   watch: {
@@ -114,9 +109,13 @@ export default {
         setTimeout(() => {
         this.scroll.autoPullDownRefresh();
         },1000)
-
       }
     },
+    able() {
+      if(this.able) {
+        this.scroll.enable();
+      }
+    }
   },
   methods: {
     initScroll() {
@@ -137,6 +136,17 @@ export default {
         pullUpLoad
       }
       this.scroll = new BScroll(this.$refs.wrapper, option);
+      if(this.pullDown !== 'false') {
+        this.scroll.on('pullingDown', this.pullDownMethod);
+      }
+      if(this.pullUp !== 'false') {
+        this.scroll.on('pullingUp', this.pullUpMethod);
+      }
+      if(this.pullDown !== 'false' || this.pullUp !== 'false') {
+        this.scroll.on('scroll', this.scrollMethod);
+        this.scroll.on('touchEnd', this.touchEndMethod);
+      }
+      this.scroll.disable();
     },
     pullDownMethod() {
       this.$emit('pullingDown');
@@ -152,6 +162,9 @@ export default {
         this.$emit('pullDownY', true);
       } else {
         this.$emit('pullDownY', false);
+      }
+      if(pos.y >= 0 && this.able === true) {
+        
       }
     },
     touchEndMethod(pos) {
