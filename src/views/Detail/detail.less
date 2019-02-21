@@ -1,19 +1,6 @@
 @rem: 0.0267rem;
 .game-detail {
   height: 100%;
-  .background-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding-top: 100%;
-    background-color: #000000;
-    background-size: 110%;
-    background-position: 80% 50%;
-    background-repeat: no-repeat;
-    filter: blur(10px) brightness(50%);
-    z-index: 2;
-  }
   .detail-header {
     position: fixed;
     top: 0;
@@ -46,58 +33,14 @@
     box-sizing: border-box;
     position: relative;
     width: 100%;
-    height: calc(100% - 105*@rem);
-    margin-top: 45*@rem;
+    height: 100%;
+    padding: 45*@rem 0 60*@rem;
     overflow: hidden;
     z-index: 2;
     .content {
       display: flex;
       flex-direction: column;
-      height: calc(100% + 110*@rem);
-      .game-info {
-        position: relative;
-        z-index: 3;
-        display: flex;
-        flex: 0 0 90*@rem;
-        height: 90*@rem;
-        padding: 10*@rem 14*@rem;
-        .game-img {
-          display: block;
-          width: 90*@rem;
-          height: 90*@rem;
-          border-radius: 15px;
-          overflow: hidden;
-          background-color: rgba(238, 238, 238, 1);
-        }
-        .game-container {
-          margin-left: 14*@rem;
-          color: rgba(255, 255, 255, 1);
-          .game-name {
-            margin-top: 6*@rem;
-            font-size: 18*@rem;
-          }
-          .game-number {
-            margin: 10*@rem 0;
-            font-size: 14*@rem;
-          }
-          .game-type {
-            .type-item {
-              display: inline-block;
-              margin-right: 14*@rem;
-              .icon {
-                width: 16*@rem;
-                height: 16*@rem;
-                margin-right: 4*@rem;
-                vertical-align: middle;
-              }
-              .text {
-                vertical-align: middle;
-                font-size: 14*@rem;
-              }
-            }
-          }
-        }
-      }
+      height: 100%;
       .tab-list {
         position: relative;
         z-index: 3;

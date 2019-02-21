@@ -32,10 +32,7 @@ export default {
         name: 'Detail', 
         query: {
           id: JSON.stringify(item.id), 
-          app_tag: JSON.stringify(item.app_tag), 
-          titlepic: JSON.stringify(item.titlepic), 
           title: JSON.stringify(item.title), 
-          totaldown: JSON.stringify(item.totaldown),
           down_ip: JSON.stringify(item.down_ip),
         }
       })

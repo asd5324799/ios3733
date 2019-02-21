@@ -2,9 +2,34 @@
   <div class="detail-index">
     <Loading :loading="loading" @refresh="createdMethod">
       <Scroll
-        :able="able"
         slot="loading-content">
         <div class="content" slot="content">
+          <!-- background-image -->
+          <div class="background-image"
+            :style="{backgroundImage: `url(${detail.titlepic})`}">
+          </div>
+          <!-- game-info -->
+          <div 
+            class="game-info" 
+            ref="gameInfo">
+            <img 
+            :src="detail.titlepic"
+            class="game-img">
+            <div class="game-container">
+              <div class="game-name">{{detail.title}}</div>
+              <div class="game-number">{{detail.totaldown}}人在玩</div>
+              <div class="game-type" v-if="detail.app_tag !== []">
+                <div class="type-item"
+                  v-for="(item, index) in detail.app_tag"
+                  :key="index">
+                  <img 
+                    :src="item.icon"
+                    class="icon">
+                  <span class="text">{{item.name}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- qq-group -->
           <div class="qq-group">
             <div class="big-text">加入QQ群：{{detail.qq_qun}}领取礼包</div>
@@ -151,8 +176,10 @@ export default {
   name: 'DetailIndex',
   props: {
     id: {
-      type: Number,
-      default: 0,
+      type: String,
+      default() {
+        return '0'
+      }
     },
     able: {
       type: Boolean,
@@ -254,31 +281,6 @@ export default {
         return 'today'
       } else {
         return 'after'
-      }
-    },
-    pullDown() {
-      if(this.ajaxSwitch) {
-        this.ajaxSwitch = false;
-        this.$axios({
-          url: '/api/index/index',
-          data: {
-            token: '0f955a36d0b3e252e34254f79ac76026',
-          }
-        })
-        .then(() => {
-          this.pullDownState = 'success';
-          this.ajaxSwitch = true;
-          setTimeout(()=> {
-            this.pullDownState = 'ready';
-          }, 20)
-        })
-        .catch(() => {
-          this.pullDownState = 'fail';
-          this.ajaxSwitch = true;
-          setTimeout(()=> {
-            this.pullDownState = 'ready';
-          }, 20)
-        })
       }
     }
   },

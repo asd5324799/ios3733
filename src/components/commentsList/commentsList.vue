@@ -4,7 +4,8 @@
       class="comments-item"
       v-for="(item, index) in list"
       :key="index"
-      :style="{backgroundImage: `url(${item.gold_url})`}">
+      :style="{backgroundImage: `url(${item.gold_url})`}"
+      @click="toCommentDetail(item)">
       <div class="comments-header">
         <div class="user-info">
           <div class="avatar">
@@ -19,13 +20,13 @@
           </div>
           <div class="user-content">
             <div 
-              class="user-name"
+              class="user-name" 
               :class="{'svip-name': item.user.is_svip, 'gm-name': item.user.is_official}">
               {{item.user.nickname}}
               <div class="vip">
-                <div class="level exp-level-name">{{item.user.exp_level_name}}</div>
+                <div class="level exp-level-name">{{item.user.exp_level_name}}</div>
                 <div 
-                  class="level vip-level-name"
+                  class="level vip-level-name" 
                   :style="{backgroundColor: item.user.pay_level_color}">{{item.user.pay_level_name}}</div>
               </div>
             </div>
@@ -97,6 +98,15 @@ export default {
           return `${y}-${m}-${d}`;
         }
       }   
+    },
+    toCommentDetail(item) {
+      this.$router.push({
+        name: 'CommentDetail',
+        query: {
+          comment_id: JSON.stringify(item.comment_id),
+          source_id: JSON.stringify(item.source_id),
+        }
+      })
     }
   },
 }

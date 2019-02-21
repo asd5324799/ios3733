@@ -3,11 +3,70 @@
   .wrapper {
     overflow: hidden;
     .content {
-      padding-top: 14*@rem;
       padding-bottom: 20*@rem;
+      overflow: hidden;
+      .background-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding-top: 110*@rem;
+        background-color: #000000;
+        background-size: 110%;
+        background-position: 80% 50%;
+        background-repeat: no-repeat;
+        filter: blur(10px) brightness(50%);
+        z-index: 2;
+      }
+      .game-info {
+        position: relative;
+        z-index: 3;
+        display: flex;
+        flex: 0 0 90*@rem;
+        height: 90*@rem;
+        padding: 10*@rem 14*@rem;
+        .game-img {
+          display: block;
+          width: 90*@rem;
+          height: 90*@rem;
+          border-radius: 22px;
+          overflow: hidden;
+          background-color: rgba(238, 238, 238, 1);
+        }
+        .game-container {
+          margin-left: 14*@rem;
+          color: rgba(255, 255, 255, 1);
+          .game-name {
+            margin-top: 6*@rem;
+            font-size: 18*@rem;
+          }
+          .game-number {
+            margin: 10*@rem 0;
+            font-size: 14*@rem;
+          }
+          .game-type {
+            .type-item {
+              display: inline-block;
+              margin-right: 4*@rem;
+              .icon {
+                width: 12*@rem;
+                height: 12*@rem;
+                margin-right: 4*@rem;
+                vertical-align: middle;
+              }
+              .text {
+                vertical-align: middle;
+                font-size: 12*@rem;
+              }
+            }
+          }
+        }
+      }
       .qq-group {
         position: relative;
-        padding: 0 14*@rem;
+        padding: 14*@rem 14*@rem 0;
+        background-color: #ffffff;
+        z-index: 3;
         .big-text {
           line-height: 24*@rem;
           font-size: 15*@rem;
@@ -21,7 +80,7 @@
         .button {
           position: absolute;
           right: 14*@rem;
-          top: 10*@rem;
+          top: 24*@rem;
           width: 50*@rem;
           height: 25*@rem;
           line-height: 25*@rem;
