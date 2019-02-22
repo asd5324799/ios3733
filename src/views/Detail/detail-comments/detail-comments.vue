@@ -54,8 +54,18 @@
               </div>
             </div>
             <div class="tab-content">
-              <CommentsList v-show="tabNow === 0" :list="handleList()"></CommentsList>
-              <CommentsList v-show="tabNow === 1" :list="newCommentsList"></CommentsList>
+              <ul v-show="tabNow === 0">
+                <CommentItem
+                  v-for="(item, index) in handleList()"
+                  :key="index"
+                  :item="item"/>
+              </ul>
+              <ul v-show="tabNow === 1">
+                <CommentItem
+                  v-for="(item, index) in newCommentsList"
+                  :key="index"
+                  :item="item"/>       
+              </ul>
             </div>
           </main>
         </div>
@@ -64,22 +74,15 @@
   </div>
 </template>
 <script>
-import CommentsList from '@/components/commentsList/commentsList.vue';
+import CommentItem from '@/components/comment-item/comment-item.vue';
 import Loading from '@/components/loading/loading.vue';
 import Scroll from '@/components/scroll/scroll.vue';
 
 export default {
   name: 'detailComment',
-  props: {
-    id: {
-      type: String,
-      default() {
-        return ''
-      }
-    }
-  },
   data() {
     return {
+      id: '',
       tabNow: 0,
       comments: {
         rating: {},
@@ -107,6 +110,11 @@ export default {
   },
   created() {
     this.createdMethod();
+  },
+  activated() {
+    if(this.id !== JSON.parse(this.$route.query.id)) {
+      this.createdMethod();
+    }
   },
   methods: {
     handleStar() {
@@ -152,6 +160,8 @@ export default {
       return temp
     },
     createdMethod() {
+      this.loading = 'ready';
+      this.id = JSON.parse(this.$route.query.id);
       this.$axios({
         url: '/api/comment/comments',
         data: {
@@ -172,7 +182,7 @@ export default {
     }
   },
   components: {
-    CommentsList,
+    CommentItem,
     Loading,
     Scroll,
   }

@@ -20,10 +20,10 @@
         <!-- main -->
         <main>
           <Swiper :options="swiperOption" class="swiper" ref="Swiper">
-            <SwiperSlide><DetailIndex :id="id" /></SwiperSlide>
-            <SwiperSlide><DetailComment :id="id" /></SwiperSlide>
-            <SwiperSlide><DetailGift :id="id" /></SwiperSlide>
-            <SwiperSlide><DetailNews :id="id" /></SwiperSlide>
+            <SwiperSlide><DetailIndex /></SwiperSlide>
+            <SwiperSlide><DetailComment /></SwiperSlide>
+            <SwiperSlide><DetailGift /></SwiperSlide>
+            <SwiperSlide><DetailNews /></SwiperSlide>
           </Swiper>
         </main>
       </div>
@@ -48,7 +48,6 @@ export default {
   data() {
     return {
       detail: {},
-      id: '',
       title: '',
       down_ip: '',
       tabList: ['详情', '评论', '礼包', '资讯'],
@@ -68,25 +67,20 @@ export default {
     }
   },
   created() {
-    this.id = JSON.parse(this.$route.query.id);
-    this.title = JSON.parse(this.$route.query.title);
-    this.down_ip = JSON.parse(this.$route.query.down_ip);
-    this.$axios({
-      method: 'post',
-      url: '/api/comment/comments',
-      data: {
-        page: 1,
-        listRows: 20,
-        classId: 103,
-        sourceId: this.id,
-        order: 0
-      }
-    })
-    .then((res) => {
-      this.comments = res.data;
-    })
+    this.createdMethod();
+  },
+  activated() {
+    if(this.id !== JSON.parse(this.$route.query.id)) {
+      this.swiper.slideTo(0);
+      this.createdMethod();
+    }
   },
   methods: {
+    createdMethod() {
+      this.id = JSON.parse(this.$route.query.id);
+      this.title = JSON.parse(this.$route.query.title);
+      this.down_ip = JSON.parse(this.$route.query.down_ip);
+    },
     goback() {
       this.$router.back();
     },

@@ -174,20 +174,9 @@ import {swiper as Swiper, swiperSlide as SwiperSlide} from 'vue-awesome-swiper';
 
 export default {
   name: 'DetailIndex',
-  props: {
-    id: {
-      type: String,
-      default() {
-        return '0'
-      }
-    },
-    able: {
-      type: Boolean,
-      default: false
-    }
-  },
   data() {
     return {
+      id: '',
       openList: [],
       detail: {},
       liked: [],
@@ -204,8 +193,14 @@ export default {
   created() {
     this.createdMethod();
   },
+  activated() {
+    if(this.id !== JSON.parse(this.$route.query.id)) {
+      this.createdMethod();
+    }
+  },
   methods: {
     createdMethod() {
+      this.id = JSON.parse(this.$route.query.id);
       this.loading = 'ready';
       this.$axios.all([
         this.$axios({

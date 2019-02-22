@@ -18,9 +18,9 @@
                 v-for="(item, index) in bannerList"
                 :key="index" 
                 class="swiper-slide">
-                <router-link to="/detail">
+                <div @click="toDetail(item)">
                   <img :src="item.titleimg" alt="">
-                </router-link>
+                </div>
               </SwiperSlide>
               <div class="swiper-pagination"  slot="pagination"></div>
             </Swiper>
@@ -160,6 +160,16 @@ export default {
     },
     toRankSellWell() {
       this.$router.push({name: 'Rank', query: {page: 'sellwell'}})
+    },
+    toDetail(item) {
+      this.$router.push({ 
+        name: 'Detail', 
+        query: {
+          id: JSON.stringify(item.id), 
+          title: JSON.stringify(item.title), 
+          down_ip: JSON.stringify(item.down_ip),
+        }
+      })
     },
     pullDown() {
       if(this.ajaxSwitch) {

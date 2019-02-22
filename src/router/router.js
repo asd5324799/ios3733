@@ -16,6 +16,7 @@ import GiftDetail from '../views/GiftDetail/GiftDetail.vue'
 import TopicList from '../views/TopicList/TopicList.vue'
 import Subscribe from '../views/Subscribe/subscribe.vue';
 import CommentDetail from '../views/Detail/comment-detail/comment-detail.vue';
+import ReplyPage from '../views/Detail/reply-page/reply-page.vue';
 
 Vue.use(Router)
 
@@ -119,6 +120,10 @@ var router = new Router({
       path: '/comment-detail',
       name: 'CommentDetail',
       component: CommentDetail
+    }, {
+      path: '/reply-page',
+      name: 'ReplyPage',
+      component: ReplyPage
     },
     {
       path: '/topic',
