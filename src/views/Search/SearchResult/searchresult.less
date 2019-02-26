@@ -1,0 +1,46 @@
+/* searchlist */
+@rem: 0.0267rem;
+.search-list{
+  height: 100%;
+  .tab-list {
+    display: flex;
+    height: 30*@rem;
+    border-bottom: 1px solid rgba(238, 238, 238, 1);
+    overflow: hidden;
+    .tab-item {
+      flex: 0 0 50%;
+      height: 30*@rem;
+      text-align: center;
+      font-size: 16*@rem;
+      color: #333333;
+      .text {
+        display: inline-block;
+        line-height: 28*@rem;
+        height: 28*@rem;
+      }
+      &.current {
+        .text {
+          color: #47a83a;
+          border-bottom: 2px solid #47a83a;
+        }
+      }
+    }
+  }
+  .swiper {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    .empty {
+      height: 30*@rem;
+      text-align: center;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      margin: auto;
+      font-size: 16*@rem;
+    }
+  }
+}

@@ -6,10 +6,8 @@ import Rank from '../views/Rank/Rank.vue'
 import Kaifu from '../views/Kaifu/Kaifu.vue'
 import Mine from '../views/Mine/Mine.vue'
 import Search from '../views/Search/Search.vue'
-import SearchIndex from '../views/Search/SearchIndex/SearchIndex.vue'
-import SearchList from '../views/Search/SearchList/SearchList.vue'
-import SearchGame from '../views/Search/SearchList/SearchGame/SearchGame.vue'
-import SearchGift from '../views/Search/SearchList/SearchGift/SearchGift.vue'
+import SearchIndex from '../views/Search/SearchIndex/SearchIndex.vue';
+import SearchResult from '../views/Search/SearchResult/SearchResult.vue';
 import Topic from '../views/Topic/Topic.vue'
 import TopicDetail from '../views/TopicDetail/TopicDetail.vue'
 import GiftDetail from '../views/GiftDetail/GiftDetail.vue'
@@ -60,57 +58,16 @@ var router = new Router({
       path: '/search',
       name: 'Search',
       component: Search,
-      meta:{
-        index:0,
-        keepAlive:true,
-        backGrade:0
-      },
-      redirect:'/search/searchindex',
-      children:[
-        {
-          path: 'searchindex',
-          name: 'SearchIndex',
-          component: SearchIndex,
-          meta:{
-            index:0,
-            keepAlive:true,
-            backGrade:0
-          },
-        },
-        {
-          path:'searchlist',
-          name: 'SearchList',
-          component: SearchList,
-          redirect:'searchlist/searchgame',
-          
-          meta:{
-            index:0,
-            keepAlive:true,
-            backGrade:1
-          },
-          
-          children:[
-            {
-              path: 'searchgame/:keyword',
-              name: 'SearchGame',
-              component: SearchGame,
-              meta:{
-                index:0,
-                backGrade:2
-              },
-            },
-            {
-              path: 'searchgift/:keyword',
-              name: 'SearchGift',
-              component: SearchGift,
-              meta:{
-                index:0,
-                backGrade:2
-              },
-            }
-          ]
-        },
-      ],
+      redirect: {name: 'SearchIndex'},
+      children: [{
+        path: '/search/searchindex',
+        name: 'SearchIndex',
+        component: SearchIndex,
+      }, {
+        path: '/search/searchresult',
+        name: 'SearchResult',
+        component: SearchResult
+      }]
     },
     {
       path: '/subscribe',
@@ -181,8 +138,6 @@ router.beforeEach((to, from, next) => {
   if(/\/search/.test(from.path)){
     sessionStorage.setItem("SEARCH_PATH",from.path)
   }
-  // from.meta.keepAlive = true;
-  // to.meta.keepAlive = true;
   next()
   
 })
