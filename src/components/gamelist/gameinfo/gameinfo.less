@@ -1,0 +1,83 @@
+/* game-info */
+@rem: 0.0267rem;
+.game-info {
+  position: relative;
+  border-bottom: 1px solid rgba(238, 238, 238, 1);
+  .big-img {
+    display: block;
+    width: 100%;
+  }
+  .container {
+    display: flex;
+    padding: 10*@rem 14*@rem;
+    overflow: hidden;
+    .game-number {
+      margin-right: 14*@rem;
+      margin-top: 30*@rem;
+      font-size: 15*@rem;
+    }
+    .game-img {
+      flex: 0 0 65*@rem;
+      width: 65*@rem;
+      height: 65*@rem;
+      background-color: rgba(238, 238, 238, 1);
+      border-radius: 15px;
+      overflow: hidden;
+    }
+    .game-content {
+      flex: 1;
+      margin-left: 10*@rem;
+      overflow: hidden;
+      .game-name {
+        font-size: 15*@rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .game-type {
+        margin: 8*@rem 0;
+        font-size: 12*@rem;
+        .type {
+          margin-right: 3*@rem;
+          padding: 0 1*@rem;
+          color: rgba(255, 255, 255, 1);
+        }
+        .size {
+          color: #999999;
+        }
+      }
+      .game-boon {
+        font-size: 12*@rem;
+        color: #999999;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        .text {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          .red {
+            margin-right: 10*@rem;
+            color: rgba(255, 0, 0, 1);
+          }
+        }
+      }
+    }
+  }
+  .game-download {
+    position: absolute;
+    top: 27*@rem;
+    right: 14*@rem;
+    width: 60*@rem;
+    height: 30*@rem;
+    text-align: center;
+    line-height: 30*@rem;
+    background-color: rgba(71, 168, 58, 1);
+    border-radius: 3px;
+    font-size: 14*@rem;
+    color: rgba(255, 255, 255, 1);
+    &.orange {
+      background-color: rgba(255, 157, 2, 1);
+    }
+  }
+}

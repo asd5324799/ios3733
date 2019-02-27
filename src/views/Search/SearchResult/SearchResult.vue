@@ -12,11 +12,11 @@
       </div>
       <Swiper :options="swiperOption" class="swiper" ref="Swiper">
         <SwiperSlide>
-          <SearchGame v-if="resultGameList.length !== 0" :list="resultGameList" />
+          <SearchGame v-if="resultGameList.length !== 0" :list="resultGameList" :searchKey="searchKey" />
           <div v-else class="empty">没有找到相关游戏</div>
         </SwiperSlide>
         <SwiperSlide>
-          <SearchGift v-if="resultGiftList.length !== 0" :list="resultGiftList"/>
+          <SearchGift v-if="resultGiftList.length !== 0" :list="resultGiftList" :searchKey="searchKey"/>
           <div v-else class="empty">没有找到相关礼包</div>
         </SwiperSlide>
       </Swiper>
@@ -39,6 +39,12 @@ export default {
       type: Array,
       default() {
         return []
+      }
+    },
+    searchKey: {
+      type: String,
+      default() {
+        return ''
       }
     }
   },

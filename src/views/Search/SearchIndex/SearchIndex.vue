@@ -38,6 +38,14 @@
   import Loading from '@/components/loading/loading.vue';
   export default {
     name:"SearchIndex",
+    props: {
+      searchKey: {
+        type: String,
+        default() {
+          return ''
+        }
+      }
+    },
     data() {
       return {
         hotSearchGame: [],
@@ -79,7 +87,13 @@
         })
       },
       toSearchResult(keyword) {
-        this.$emit('toSearchResult', keyword)
+        if(this.searchKey === keyword) {
+          this.$router.push({
+            name: 'SearchResult'
+          })
+        } else {
+          this.$emit('toSearchResult', keyword);
+        }
       },
     },
     components: {

@@ -1,43 +1,43 @@
 <template>
-    <div class="gift-detail">
-        <!-- 顶部标题栏 -->
-        <div class="top-green-bar">
-            <span class="back-btn" @click="back"></span>
-            礼包详情
-        </div>
-        <!-- game -->
-        <GameList :list="giftGame" :type="listType" />
-        <!-- gift -->
-        <div class="gift-info gift-section">
-                <h4>{{giftData.title}}</h4>
-                <div class="gift-remain"><b><i :style="{width:giftData.remain+'%'}"></i></b><span>(剩余{{giftData.remain}}%)</span></div>
-                <span class="get-number">已有{{giftData.yi_ling_qu}}人领取</span>
-                <a href="/" class="get-gift">领取</a>
-                <router-link to="/getaccount" class="get-account">淘号</router-link>
-        </div>
-        <!-- gift-detail -->
-        <div class="gift-con gift-section">
-            <div class="section-title">礼包内容</div>
-            <P>{{giftData.cardbody}}</P>
-        </div>
-        <div class="gift-range gift-section">
-            <div class="section-title">使用范围</div>
-            <p>全场通用</p>
-        </div>
-        <div class="gift-method gift-section">
-            <div class="section-title">兑换方式</div>
-            <p>{{giftData.cardtext}}</p>
-        </div>
-        <div class="gift-notice gift-section">
-            <div class="section-title">注意事项</div>
-            <p v-html="giftData.notes"></p>
-        </div>
-        <div class="gift-date gift-section">
-            <div class="section-title">礼包时间</div>
-            <p>开始时间:{{giftData.starttime | formatDate}}</p>
-            <p>结束时间:{{giftData.endtime | formatDate}}</p>
-        </div>
+  <div class="gift-detail">
+    <!-- 顶部标题栏 -->
+    <div class="detail-header">
+      <i class="back-icon" @click="back"></i>
+      <div class="title">礼包详情</div>
     </div>
+    <!-- game -->
+    <GameList :list="giftGame" :type="listType" />
+    <!-- gift -->
+    <div class="gift-info gift-section">
+            <h4>{{giftData.title}}</h4>
+            <div class="gift-remain"><b><i :style="{width:giftData.remain+'%'}"></i></b><span>(剩余{{giftData.remain}}%)</span></div>
+            <span class="get-number">已有{{giftData.yi_ling_qu}}人领取</span>
+            <a href="/" class="get-gift">领取</a>
+            <router-link to="/getaccount" class="get-account">淘号</router-link>
+    </div>
+    <!-- gift-detail -->
+    <div class="gift-con gift-section">
+        <div class="section-title">礼包内容</div>
+        <P>{{giftData.cardbody}}</P>
+    </div>
+    <div class="gift-range gift-section">
+        <div class="section-title">使用范围</div>
+        <p>全场通用</p>
+    </div>
+    <div class="gift-method gift-section">
+        <div class="section-title">兑换方式</div>
+        <p>{{giftData.cardtext}}</p>
+    </div>
+    <div class="gift-notice gift-section">
+        <div class="section-title">注意事项</div>
+        <p v-html="giftData.notes"></p>
+    </div>
+    <div class="gift-date gift-section">
+        <div class="section-title">礼包时间</div>
+        <p>开始时间:{{giftData.starttime | formatDate}}</p>
+        <p>结束时间:{{giftData.endtime | formatDate}}</p>
+    </div>
+  </div>
 </template>
 <script>
 import GameList from '@/components/gamelist/gamelist.vue'

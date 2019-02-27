@@ -3,7 +3,7 @@
     <Scroll
       :pullUp="pullUpState"
       @pullingUp="pullUp">
-      <GameList :list="list" :type="1" slot="content"/> 
+      <GameList class="content" :list="gameList" :type="1" slot="content"/> 
     </Scroll>
   </div>
 </template>
@@ -19,7 +19,7 @@
           return []
         }
       },
-      keyword: {
+      searchKey: {
         type: String,
         default() {
           return ''
@@ -35,9 +35,12 @@
       }
     },
     watch: {
-      keyword() {
-        this.page = 2;
+      list() {
+        this.handleInitData();
       }
+    },
+    mounted() {
+      this.handleInitData();
     },
     methods: {
       pullUp() {
@@ -47,11 +50,11 @@
             url: '/api/search/index',
             data: {
               page: this.page,
-              keyword: this.keyword,
+              keyword: this.searchKey,
               fromAction: 1,
               type: 1
             }
-          }).then((res) => {
+          }).then(res => {
             this.gameList.push(...res.data.game_list);
             if(res.data.game_list.length < 20) {
               this.pullUpState = 'nomore';
@@ -63,13 +66,21 @@
               }, 1000)
             }
           }).catch((e) => {
-            console.log(e);
             this.pullUpState = 'fail';
             setTimeout(() => {
               this.pullUpState = 'ready';
               this.ajaxSwitch = true;
             }, 1000)          
           })
+        }
+      },
+      handleInitData() {
+        this.page = 2;
+        this.ajaxSwitch = true;
+        this.gameList = this.list;
+        if(this.gameList.length < 20) {
+          this.pullUpState = 'nomore';
+        } else {
 
         }
       }

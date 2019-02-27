@@ -3,28 +3,34 @@
 .gift-detail{
     box-sizing: border-box;
     height: 100%;
-    padding-top: 37*@rem;
-    .top-green-bar{
-        position: fixed;
+    padding-top: 45*@rem;
+    .detail-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 10;
+      .back-icon {
+        position: absolute;
         top: 0;
-        background: #47A83A;
-        padding: 6*@rem 0;
-        line-height: 25*@rem;
-        height: 25*@rem;
-        width: 100%;
+        left: 0;
+        display: inline-block;
+        width: 19*@rem;
+        height: 15*@rem;
+        padding: 15*@rem 14*@rem;
+        background-size: 19*@rem 15*@rem;
+        background-repeat: no-repeat;
+        background-position: 14*@rem 15*@rem;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADkAAAAtCAYAAAAUX8MIAAACeElEQVRoQ92auYsUQRSHv5/+CSYigngguHiABx6BYGRisAaaiWBsoGBiIgjmph6LiSB4RsuqgauZR6yRgQaiooKYmHg8eUON9LLd0zPVBVPVldfr93V9vKn3ekTCZWYCNgI3gA3AeUk3Ez4iKpQnlWQFwL3AdWBrCPodWCXJkjwkMkhKyE3AHWAHsCLk81rStsjckm3rDFlR9HFQ1JPzk/sAHJP0Mlm2kYE6QTYo6qm8B04DDyX9jcwt2baukHWKfgaOAq9yAPQ3FQXZouhxSS+SHUOCQLGQu8PPRLWoZKVo9d1MDGlm64DbwJ5KFc1O0WjIALgAzIQgwyqanaJRkGa2C7gG7KwEyFbRiSFLVHQiyFIVHRuyZEXHgixd0VbIPig6ErIvijZC9knRWsi+KboMso+KLoFsUPQ3cMHbJWDq/WCHRsTHL29kZovAoQ6Bct7qB3TRIf3UVuacacfc3jnkI+Bwx0A5b59zyNXAXeBApT/0pOeBZ8CfnAlG5OZtoPe584Om2cy2AFeAg5VN34BzwC1JvwoFHaT9fzJQqbI+IB6wA1+AU5K8US52LRl/NKj7E5gFFiUVqe6yGY+Z+WhjDtjfF3VrB1lm5h9t7oeRf/HqNk7rzGwt8ADw2c7w20aR6o4cSZrZduAqsK+i7lfgjH/ckeQXiexX69y1Qd2PwElJT7InHPczQYO6P4AjwPPcq27rSQ5PqkFdv1GcBe7lrO7YkOFmVFd1s1d3IsgAWld1s1Z3YsgAWld1s1U3CrI0daMhS1K3E2Qp6naGbFH3hKSn074wJIEcoe5bSZt7A9mg7idJa3oFWVH3MrAeuCTJ/18w1fUPYqwuNX8snQAAAAAASUVORK5CYII=);
+      }
+      .title {
+        height: 45*@rem;
+        line-height: 45*@rem;
+        font-size: 18*@rem;
         text-align: center;
-        color: #fff;
-        font-size: 16*@rem;
-        z-index: 10000;
-        .back-btn{
-            display: inline-block;
-            position: absolute;
-            width: 19*@rem;
-            height: 25*@rem;
-            background: url(../../assets/images/back.png) center center no-repeat;
-            background-size: 19*@rem 15*@rem;
-            left: 15*@rem;
-        }
+        background-color: rgba(72, 168, 58, 1);
+        color: rgba(255, 255, 255, 1);
+      }
     }
     .gift-info{
         position: relative;

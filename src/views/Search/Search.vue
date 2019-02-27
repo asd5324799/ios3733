@@ -11,7 +11,7 @@
       <router-view 
         :resultGameList="resultGameList"
         :resultGiftList="resultGiftList"
-        :keyword="searchKey"
+        :searchKey="searchKey"
         @toSearchResult="toSearchResult"></router-view>
     </main>
   </div>
