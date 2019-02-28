@@ -47,7 +47,6 @@ export default {
   name: 'Detail',
   data() {
     return {
-      detail: {},
       title: '',
       down_ip: '',
       tabList: ['详情', '评论', '礼包', '资讯'],

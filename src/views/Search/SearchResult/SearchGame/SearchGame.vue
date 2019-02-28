@@ -29,8 +29,8 @@
     data() {
       return {
         page: 2, //初始页码
-        gameList: [],
         ajaxSwitch: true,
+        gameList: [],
         pullUpState: 'ready'
       }
     },
@@ -60,12 +60,13 @@
               this.pullUpState = 'nomore';
             } else {
               this.pullUpState = 'success';
+              this.page++;
               setTimeout(() => {
                 this.pullUpState = 'ready';
                 this.ajaxSwitch = true;
               }, 1000)
             }
-          }).catch((e) => {
+          }).catch(() => {
             this.pullUpState = 'fail';
             setTimeout(() => {
               this.pullUpState = 'ready';
@@ -77,11 +78,11 @@
       handleInitData() {
         this.page = 2;
         this.ajaxSwitch = true;
-        this.gameList = this.list;
+        this.gameList = JSON.parse(JSON.stringify(this.list)); 
         if(this.gameList.length < 20) {
           this.pullUpState = 'nomore';
         } else {
-
+          this.pullUpState = 'ready';
         }
       }
     },

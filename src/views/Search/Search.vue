@@ -59,9 +59,7 @@ export default {
         ]).then(this.$axios.spread((res, res2) => {
           this.resultGameList = res.data.game_list;
           this.resultGiftList = res2.data.card_list;
-        })).catch((e) => {
-          console.log(e);
-        })
+        }))
       }
     }
   },

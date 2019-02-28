@@ -20,9 +20,6 @@ export default {
   props: {
     giftList: Array
   },
-  methods: {
-    
-  },
 }
 </script>
 <style lang="less" scoped>

@@ -1,5 +1,7 @@
 <template>
-  <div class="detail-gift">this is detail-gift page</div>
+  <div class="detail-gift">
+    
+  </div>
 </template>
 <script>
 export default {

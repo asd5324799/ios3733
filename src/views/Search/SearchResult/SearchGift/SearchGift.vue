@@ -3,7 +3,7 @@
     <Scroll
       :pullUp="pullUpState"
       @pullingUp="pullUp">
-      <GiftList class="content" :giftList="list" slot="content"/>
+      <GiftList class="content" :giftList="giftList" slot="content"/>
     </Scroll>
   </div>
 </template>
@@ -55,6 +55,7 @@ export default {
             type: 101
           }
         }).then(res => {
+          this.page++;
           this.giftList.push(...res.data.card_list);
           if(res.data.card_list.length < 20) {
             this.pullUpState = 'nomore';
@@ -65,7 +66,7 @@ export default {
               this.ajaxSwitch = true;
             }, 1000)
           }
-        }).catch((e) => {
+        }).catch(() => {
           this.pullUpState = 'fail';
           setTimeout(() => {
             this.pullUpState = 'ready';
@@ -77,11 +78,11 @@ export default {
     handleInitData() {
       this.page = 2;
       this.ajaxSwitch = true;
-      this.giftList = this.list;
+      this.giftList = JSON.parse(JSON.stringify(this.list));
       if(this.giftList.length < 20) {
         this.pullUpState = 'nomore';
       } else {
-
+        this.pullUpState = 'ready';
       }
     }
   },

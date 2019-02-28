@@ -6,13 +6,13 @@
       <div class="title">礼包详情</div>
     </div>
     <!-- game -->
-    <GameList :list="giftGame" :type="listType" />
+    <GameInfo :item="giftGame" />
     <!-- gift -->
     <div class="gift-info gift-section">
             <h4>{{giftData.title}}</h4>
             <div class="gift-remain"><b><i :style="{width:giftData.remain+'%'}"></i></b><span>(剩余{{giftData.remain}}%)</span></div>
             <span class="get-number">已有{{giftData.yi_ling_qu}}人领取</span>
-            <a href="/" class="get-gift">领取</a>
+            <span href="/" class="get-gift">领取</span>
             <router-link to="/getaccount" class="get-account">淘号</router-link>
     </div>
     <!-- gift-detail -->
@@ -40,14 +40,13 @@
   </div>
 </template>
 <script>
-import GameList from '@/components/gamelist/gamelist.vue'
+import GameInfo from '@/components/gamelist/gameinfo/gameinfo.vue';
     export default {
         name:"Search",
         data() {
             return {
                 giftData:{},
-                listType:1,
-                giftGame:[],
+                giftGame:{},
             }
         },
         filters: {
@@ -71,22 +70,18 @@ import GameList from '@/components/gamelist/gamelist.vue'
             },
             gameRelated(gameTitle){
                 this.$axios({
-                    method:"post",
-                    url:"http://api2.c3733.com/api/game/read",
+                    url:"/api/game/read",
                     data:{
-                        uuid: "ffffffff-1234-1234-1234-123456789012",
-                        from: "212",
                         title: gameTitle
                     }
-                }).then(this.handleGiftGame)
+                }).then(res => {
+                  this.giftGame = res.data.detail;
+                })
             },
             init(){
                 this.$axios({
-                    method: "post",
-                    url:"http://api2.c3733.com/api/card/read",
+                    url:"/api/card/read",
                     data:{
-                        uuid: "ffffffff-1234-1234-1234-123456789012",
-                        from: "212",
                         cardId: this.$route.params.id
                     }
                 }).then(this.handleGameGift)
@@ -96,10 +91,6 @@ import GameList from '@/components/gamelist/gamelist.vue'
                 this.giftData.notes = this.giftData.notes.replace(/\r\n/g,"<br/>");
                 this.gameRelated(this.giftData.titlegame);
             },
-            handleGiftGame(res){
-                this.giftGame = [];
-                this.giftGame.push(res.data.detail);
-            }
         },
         created(){
             this.init();
@@ -110,7 +101,7 @@ import GameList from '@/components/gamelist/gamelist.vue'
             })
         },
         components:{
-            GameList,
+            GameInfo,
         }
     }
 </script>

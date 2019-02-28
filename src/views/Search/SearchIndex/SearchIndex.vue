@@ -35,7 +35,6 @@
   </div>
 </template>
 <script>
-  import Loading from '@/components/loading/loading.vue';
   export default {
     name:"SearchIndex",
     props: {
@@ -96,9 +95,6 @@
         }
       },
     },
-    components: {
-      Loading,
-    }
   }
 </script>
 <style lang="less" scoped>
