@@ -45,9 +45,25 @@ export default {
       top: '0px', 
       isPullingDown: 1,
       isPullingUp: 1,
-      pullDownText: '刷新成功',
-      pullUpText: '下拉加载更多',
       pullDownHeight: 50,
+    }
+  },
+  computed: {
+    pullDownText() {
+      if (this.pullDown === 'fail') {
+        return '刷新失败,请重试';
+      } else {
+        return '刷新成功';
+      } 
+    },
+    pullUpText() {
+      if (this.pullUp === 'success') {
+        return '加载成功';
+      } else if (this.pullUp === 'nomore') {
+        return '已完成全部召唤';
+      } else {
+        return '上拉加载更多';
+      }
     }
   },
   mounted() {
@@ -57,45 +73,20 @@ export default {
   },
   watch: {
     pullDown() {
-      if(this.pullDown === 'success') {
-        this.isPullingDown = 3;
-        this.pullDownText = '刷新成功';
+      this.isPullingDown = 3;
+      setTimeout(() => {
+        this.scroll.finishPullDown();
+        this.scroll.refresh();
         setTimeout(() => {
-          this.scroll.finishPullDown();
-          this.scroll.refresh();
-          setTimeout(() => {
-            this.isPullingDown = 1;
-          }, 1000)
-        }, 20);
-      } else if (this.pullDown === 'fail') {
-        this.isPullingDown = 3;
-        this.pullDownText = '刷新失败,请重试';
-        setTimeout(() => {
-          this.scroll.finishPullDown();
-          this.scroll.refresh();
-          setTimeout(() => {
-            this.isPullingDown = 1;
-          }, 1000)
-        }, 20);
-      }
+          this.isPullingDown = 1;
+        }, 1000)
+      }, 20);
     },
     pullUp() {
-      if(this.pullUp === 'success') {
-        this.pullUpText = '加载成功'
-        setTimeout(() => {
-          this.scroll.finishPullUp();
-          this.scroll.refresh();
-          setTimeout(() => {
-            this.pullUpText = '上拉加载更多';
-          }, 1000)
-        }, 20);
-      } else if(this.pullUp === 'nomore') {
-        this.pullUpText = "已完成全部召唤";
-        setTimeout(() => {
-          this.scroll.finishPullUp();
-          this.scroll.refresh();
-        }, 20);
-      }
+      setTimeout(() => {
+        this.scroll.finishPullUp();
+        this.scroll.refresh();
+      }, 20);
     },
     scrollRefresh() {
       if(this.scrollRefresh === true) {

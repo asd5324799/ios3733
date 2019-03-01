@@ -1,7 +1,7 @@
 <template>
   <li 
     class="comments-item"
-    :style="{backgroundImage: `url(${item.gold_url})`}"
+    :style="styleObject(item)"
     @click="toCommentDetail(item)">
     <div class="comments-header" v-if="item.user">
       <div class="user-info">
@@ -103,6 +103,7 @@ export default {
           return `${y}-${m}-${d}`;
         }
       }   
+      return 1
     },
     toCommentDetail(item) {
       if(this.type === 2) {
@@ -120,6 +121,13 @@ export default {
             source_id: JSON.stringify(item.source_id),
           }
         })
+      }
+    },
+    styleObject(item) {
+      if(item.gold_url !== '') {
+        return {backgroundImage: `url(${item.gold_url})`};
+      } else {
+        return {}
       }
     }
   },

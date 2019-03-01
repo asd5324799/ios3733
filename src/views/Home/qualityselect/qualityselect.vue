@@ -180,7 +180,8 @@ export default {
             token: '0f955a36d0b3e252e34254f79ac76026',
           }
         })
-        .then(() => {
+        .then((res) => {
+          this.handleInitData(res);
           this.pullDownState = 'success';
           this.ajaxSwitch = true;
           setTimeout(()=> {
@@ -197,7 +198,7 @@ export default {
       }
     },
     pullUp() {
-      if(this.ajaxSwitch) {
+      if(this.ajaxSwitch && this.pullUpState !== 'nomore') {
         this.ajaxSwitch = false;
         this.$axios({
           url: '/api/game/index',
@@ -206,7 +207,7 @@ export default {
             page: this.page
           }
         }).then(res => {
-          if(res.data.list === []) {
+          if(res.data.list.length < 20) {
             this.pullUpState = 'nomore';
             this.ajaxSwitch = true;
           } else {

@@ -1,5 +1,5 @@
 <template>
-  <div class="topic">
+  <div class="topiclist">
     <Navigation :title="'游戏专题'" />
     <Loading class="wrapper" :loading="loading">
       <Scroll 
@@ -9,11 +9,11 @@
         @pullingUp="pullUp"
         slot="loading-content">
         <div class="topic-box content" slot="content">
-          <ul class="topic-list">
-            <li class="topic-item" v-for="(item,index) of topicList" :key="index">
-              <img :src="item.info.titlepic" @click="toTopicList(item.info.id)">
-            </li>
-          </ul>
+          <div class="top-pic">
+            <img :src="titlePic" alt="">
+          </div>
+          <p class="topic-desc">{{topicDesc}}</p>
+          <GameList :list="topicList" />
         </div>
       </Scroll>
     </Loading>
@@ -23,12 +23,14 @@
 import Navigation from  '@/components/navigation/navigation.vue';
 import Loading from '@/components/loading/loading.vue';
 import Scroll from '@/components/scroll/scroll.vue';
+import GameList from '@/components/gamelist/gamelist.vue';
 export default {
-  name:"Topic",
+  name:"TopicList",
   data() {
     return {
       topicList:[],
-      page:2,
+      titlePic:'',
+      topicDesc:'',
       loading: 'ready',
       pullDownState: 'ready',
       pullUpState: 'ready',
@@ -39,40 +41,42 @@ export default {
     this.createdMethod();
   },
   methods: {
-    createdMethod(){
+    createdMethod() {
       this.$axios({
-        url: "/api/subject/index",
-        data: {
-            page: 1,
-            listRows: "20"
+        url: "/api/subject/items",
+        data:{
+          id: JSON.parse(this.$route.query.topicId),
+          page: 1,
+          listRow: 20
         }
-      })
-      .then(res => {
-        this.hadnleInitData(res);
+      }).then(res => {
+        this.handleInitData(res);
         this.loading = 'success';
-      })
-      .catch(() => {
+      }).catch(() => {
         this.loading = 'fail';
       })
     },
-    hadnleInitData(res) {
-      this.topicList = res.data;
+    handleInitData(res){
+      this.topicList = res.data.games;
+      this.titlePic = res.data.info.titlepic;
+      this.topicDesc = res.data.info.subject_desc;
       if(this.topicList.length < 20) {
-        this.pullUpState = 'nomore';
+        this.pullUpState === 'nomore';
       }
     },
     pullDown() {
       if(this.ajaxSwitch) {
         this.ajaxSwitch = false;
         this.$axios({
-          url: "/api/subject/index",
-          data: {
+          url: "/api/subject/items",
+          data:{
+            id: JSON.parse(this.$route.query.topicId),
             page: 1,
-            listRows: "20"
+            listRow: 20
           }
         })
         .then(res => {
-          this.hadnleInitData(res);
+          this.handleInitData(res);
           this.pullDownState = 'success';
           setTimeout(()=> {
             this.pullDownState = 'ready';
@@ -92,10 +96,11 @@ export default {
       if(this.ajaxSwitch && this.pullUpState !== 'nomore') {
         this.ajaxSwitch = false;
         this.$axios({
-          url: "/api/subject/index",
-          data: {
-            page: this.page,  
-            listRows: "20"
+          url: "/api/subject/items",
+          data:{
+            id: JSON.parse(this.$route.query.topicId),
+            page: this.page,
+            listRow: 200
           }
         })
         .then(res => {
@@ -120,22 +125,15 @@ export default {
         })
       }
     },
-    toTopicList(id) {
-      this.$router.push({
-        name: 'TopicList',
-        query: {
-          topicId: JSON.stringify(id),
-        }
-      })
-    }
   },
   components: {
-    Navigation,
     Loading,
     Scroll,
+    Navigation,
+    GameList
   }
 }
 </script>
 <style lang="less" scoped>
-  @import './topic.less';
+  @import './topiclist.less';
 </style>

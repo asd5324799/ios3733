@@ -9,12 +9,11 @@ import Search from '../views/Search/Search.vue'
 import SearchIndex from '../views/Search/SearchIndex/SearchIndex.vue';
 import SearchResult from '../views/Search/SearchResult/SearchResult.vue';
 import Topic from '../views/Topic/Topic.vue'
-import TopicDetail from '../views/TopicDetail/TopicDetail.vue'
+import TopicList from '../views/Topic/TopicList/TopicList.vue'
 import GiftDetail from '../views/GiftDetail/GiftDetail.vue'
-import TopicList from '../views/TopicList/TopicList.vue'
-import Subscribe from '../views/Subscribe/subscribe.vue';
 import CommentDetail from '../views/Detail/comment-detail/comment-detail.vue';
 import ReplyPage from '../views/Detail/reply-page/reply-page.vue';
+import Subscribe from '../views/Subscribe/subscribe.vue';
 
 Vue.use(Router)
 
@@ -85,28 +84,11 @@ var router = new Router({
     {
       path: '/topic',
       name: 'Topic',
-      meta:{
-        index:0,
-        keepAlive:true,
-      },
       component: Topic,
-    },
-    {
-      path: '/topicdetail',
-      name: 'TopicDetail',
-      meta:{
-        index:0,
-        keepAlive:true,
-      },
-      component: TopicDetail,
     },
     {
       path: '/topiclist',
       name: 'TopicList',
-      meta:{
-        index:0,
-        keepAlive:false,
-      },
       component: TopicList,
     },
     {

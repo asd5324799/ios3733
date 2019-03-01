@@ -9,7 +9,7 @@
           <div class="gift-remain"><b><i :style="{width:item.remain+'%'}"></i></b><span>剩余{{item.remain}}%</span></div>
           <span class="get-number">已有{{item.yi_ling_qu}}人领取</span>
         </router-link>
-        <a href="/" class="get-gift">领取</a>
+        <span href="/" class="get-gift">领取</span>
       </li>
     </ul>
   </div>
