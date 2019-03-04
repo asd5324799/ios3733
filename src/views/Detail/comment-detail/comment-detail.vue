@@ -4,24 +4,18 @@
     <Loading :loading="loading">
       <Scroll slot="loading-content">
         <div class="content" slot="content">
-          <Loading :loading="loading">
-            <Scroll slot="loading-content">
-              <div class="content" slot="content">
-                <CommentItem :item="commentDetail" :type="2"/>
-                <div class="tab-wrapper">
-                  <div class="left-wrapper">全部回复({{replyCount}})</div>
-                  <div class="right-wrapper" @click="listReverse">{{replySort}}</div>
-                </div>
-                <ul>
-                  <CommentItem 
-                    v-for="(item, index) in replyList"
-                    :key="index"
-                    :item="item"
-                    :type="2" />
-                </ul>
-              </div>
-            </Scroll>
-          </Loading>
+          <CommentItem :item="commentDetail" :type="2"/>
+          <div class="tab-wrapper">
+            <div class="left-wrapper">全部回复({{replyCount}})</div>
+            <div class="right-wrapper" @click="listReverse">{{replySort}}</div>
+          </div>
+          <ul>
+            <CommentItem 
+              v-for="(item, index) in replyList"
+              :key="index"
+              :item="item"
+              :type="2" />
+          </ul>
         </div>
       </Scroll>
     </Loading>

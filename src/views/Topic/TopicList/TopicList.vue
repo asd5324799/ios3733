@@ -34,11 +34,18 @@ export default {
       loading: 'ready',
       pullDownState: 'ready',
       pullUpState: 'ready',
-      ajaxSwitch: true
+      ajaxSwitch: true,
+      page: 1,
+      id: ''
     }
   },
   created(){
     this.createdMethod();
+  },
+  activated() {
+    if(this.id !== JSON.parse(this.$route.query.topicId)) {
+      this.createdMethod();
+    }
   },
   methods: {
     createdMethod() {
@@ -50,6 +57,7 @@ export default {
           listRow: 20
         }
       }).then(res => {
+        this.id = JSON.parse(this.$route.query.topicId);
         this.handleInitData(res);
         this.loading = 'success';
       }).catch(() => {
@@ -61,7 +69,7 @@ export default {
       this.titlePic = res.data.info.titlepic;
       this.topicDesc = res.data.info.subject_desc;
       if(this.topicList.length < 20) {
-        this.pullUpState === 'nomore';
+        this.pullUpState = 'nomore';
       }
     },
     pullDown() {

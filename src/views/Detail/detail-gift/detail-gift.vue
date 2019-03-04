@@ -1,19 +1,17 @@
 <template>
   <div class="detail-gift">
     <Loading :loading="loading">
-      <div slot="loading-content">
-        <div class="nomore" v-if="list.length === 0">该游戏暂无礼包</div>
-        <Scroll
-          v-else
-          :pullDown="pullDownState"
-          :pullUp="pullUpState"
-          @pullingDown="pullDown"
-          @pullingUp="pullUp">
-          <div class="content" slot="content">
-            <GiftList :giftList="list"></GiftList>
-          </div>
-        </Scroll>
-      </div>
+      <Scroll
+        slot="loading-content"
+        :pullDown="pullDownState"
+        :pullUp="pullUpState"
+        @pullingDown="pullDown"
+        @pullingUp="pullUp">
+        <div class="nomore" slot="content" v-if="list.length === 0">该游戏暂无礼包</div>
+        <div class="content" slot="content" v-else>
+          <GiftList :giftList="list"></GiftList>
+        </div>
+      </Scroll>
     </Loading>
   </div>
 </template>
@@ -30,7 +28,8 @@ export default {
       pullUpState: 'ready',
       pullDownState: 'ready',
       page: 1,
-      ajaxSwitch: true
+      ajaxSwitch: true,
+      id: 0
     }
   },
   created() {
@@ -43,11 +42,12 @@ export default {
   },
   methods: {
     createdMethod() {
+      this.id = JSON.parse(this.$route.query.id);
       this.page = 1;
       this.$axios({
         url: '/api/card/index',
         data: {
-          gameId: JSON.parse(this.$route.query.id),
+          gameId: this.id,
           page: this.page
         }
       }).then(res => {
@@ -76,11 +76,12 @@ export default {
         this.$axios({
           url: '/api/card/index',
           data: {
-            gameId: JSON.parse(this.$route.query.id),
+            gameId: this.id,
             page: this.page
           }
         })
-        .then(() => {
+        .then((res) => {
+          this.handleInitData(res);
           this.pullDownState = 'success';
           this.ajaxSwitch = true;
           setTimeout(()=> {
@@ -102,7 +103,7 @@ export default {
         this.$axios({
           url: '/api/card/index',
           data: {
-            gameId: JSON.parse(this.$route.query.id),
+            gameId: this.id,
             page: this.page
           }
         }).then(res => {

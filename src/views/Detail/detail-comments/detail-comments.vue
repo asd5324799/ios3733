@@ -82,7 +82,7 @@ export default {
   name: 'detailComment',
   data() {
     return {
-      id: '',
+      id: 0,
       tabNow: 0,
       comments: {
         rating: {},
