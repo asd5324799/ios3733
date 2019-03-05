@@ -1,16 +1,21 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
 import Home from '../views/Home/Home.vue';
 import Detail from '../views/Detail/Detail.vue';
-import Rank from '../views/Rank/Rank.vue'
-import Kaifu from '../views/Kaifu/Kaifu.vue'
-import Mine from '../views/Mine/Mine.vue'
-import Search from '../views/Search/Search.vue'
+import Rank from '../views/Rank/Rank.vue';
+import Kaifu from '../views/Kaifu/Kaifu.vue';
+import Mine from '../views/Mine/Mine.vue';
+import MyGame from '../views/Mine/MyGame/MyGame.vue';
+import MyGift from '../views/Mine/MyGift/MyGift.vue';
+import Login from '../views/Login/Login.vue';
+import PhoneRegister from '../views/PhoneRegister/PhoneRegister.vue';
+import UserInfo from '../views/UserInfo/UserInfo.vue';
+import Search from '../views/Search/Search.vue';
 import SearchIndex from '../views/Search/SearchIndex/SearchIndex.vue';
 import SearchResult from '../views/Search/SearchResult/SearchResult.vue';
-import Topic from '../views/Topic/Topic.vue'
-import TopicList from '../views/Topic/TopicList/TopicList.vue'
-import GiftDetail from '../views/GiftDetail/GiftDetail.vue'
+import Topic from '../views/Topic/Topic.vue';
+import TopicList from '../views/Topic/TopicList/TopicList.vue';
+import GiftDetail from '../views/GiftDetail/GiftDetail.vue';
 import CommentDetail from '../views/Detail/comment-detail/comment-detail.vue';
 import ReplyPage from '../views/Detail/reply-page/reply-page.vue';
 import Subscribe from '../views/Subscribe/subscribe.vue';
@@ -99,8 +104,39 @@ var router = new Router({
         keepAlive:false,
       },
       component: GiftDetail,
-    }
-
+    },
+    {
+      path:'/mygame',
+      name: 'MyGame',
+      component: MyGame,
+      meta: {  
+        requiresAuth: true    
+      }
+    },
+    {
+      path:'/mygift',
+      name: 'MyGift',
+      component: MyGift,
+      meta: {  
+        requiresAuth: true    
+      }
+    }, {
+      path:'/login',
+      name: 'Login',
+      component: Login,
+      meta: {  
+        requiresAuth: true    
+      }
+    },
+    {
+      path:'/phoneregister',
+      name: 'PhoneRegister',
+      component: PhoneRegister
+    }, {
+      path:'/userinfo',
+      name: 'userinfo',
+      component: UserInfo
+    },
   ]
 })
 router.beforeEach((to, from, next) => {

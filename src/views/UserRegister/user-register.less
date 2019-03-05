@@ -1,0 +1,137 @@
+/*mine*/
+@rem: 0.0267rem;
+main{
+    padding: 20*@rem;
+    padding-top: 60*@rem;
+    .regis-title{
+        width: 100%;
+        text-align: center;
+        font-size: 16*@rem;
+    }
+    form{
+        div{
+            position: relative;
+        }
+        input[type=password],input[type=text]{
+            border: none;
+            width: 100%;
+            caret-color:#48a83a;
+            height: 30*@rem;
+            font-size: 16*@rem;
+            background: rgba(0, 0, 0, 0);
+            
+        }
+        span{
+            position: absolute;
+            font-size: 15*@rem;
+            color: #959595;
+            left: 0;
+            top: 0;
+            transition: 0.2s;
+        }
+        .cur{
+            top: -15*@rem;
+            color: #48a83a;
+            font-size: 10*@rem;
+        }
+        .nocur{
+            top: 5*@rem;
+            font-size: 15*@rem;
+            color: #aaa;
+            z-index: -1;
+        }
+        .username{
+            border-bottom: 1px solid #6e6e6e;
+            margin-top: 30*@rem;
+            height: 30*@rem;
+            line-height: 30*@rem;
+            .clear{
+                position: absolute;
+                right: 3*@rem;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 12*@rem;
+                height: 12*@rem;
+                display: block;
+                background: url(../../assets/images/clear-key.png);
+                background-size: 12*@rem 12*@rem;
+            }
+        }
+        .code-container{
+            display: flex;
+            .identify-code{
+                flex: 1;
+                border-bottom: 1px solid #6e6e6e;
+                margin-top: 20*@rem;
+                height: 30*@rem;
+                line-height: 30*@rem;
+            }
+            .get-code{
+                width: 150*@rem;
+                height: 35*@rem;
+                background: #48a83a;
+                color: #fff;
+                line-height: 35*@rem;
+                text-align: center;
+                margin-top: 16*@rem;
+                font-size: 15*@rem;
+                &.bgGreen{
+                    background: #48a83a;
+                }
+                &.bgGrey{
+                    background: #aaa;
+                }
+            }
+        }
+        
+        .password{
+            border-bottom: 1px solid #6e6e6e;
+            margin-top: 20*@rem;
+            height: 30*@rem;
+            line-height: 30*@rem;
+            .show-pwd{
+                position: absolute;
+                display: block;
+                width: 16*@rem;
+                height: 16*@rem;
+                background: url(../../assets/images/showPwd.png)no-repeat;
+                background-size: 16*@rem 16*@rem;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            .hide-pwd{
+                background: url(../../assets/images/hidePwd.png) no-repeat;
+                background-size: 16*@rem 16*@rem;
+            }
+        }
+        .linegreen{
+            border-bottom: 1px solid #48a83a !important;
+        }
+        .regis-btn{
+            width: 330*@rem;
+            height: 30*@rem;
+            line-height: 30*@rem;
+            text-align: center;
+            background: #48a83a;
+            margin: 0 auto;
+            color: #fff;
+            font-size: 15*@rem;
+            margin-top: 20*@rem;
+        }
+    }
+    .register-bottom{
+        display: flex;
+        line-height: 50*@rem;
+        text-align: center;
+        justify-content: space-between;
+        margin-top: 10*@rem;
+        font-size: 12*@rem;
+        a{
+            color: #48a83a;
+            height: 20*@rem;
+            line-height: 20*@rem;
+        }
+    }
+}
+

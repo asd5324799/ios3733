@@ -1,0 +1,84 @@
+/* user-info*/
+@rem: 0.0267rem;
+main{
+    padding-top: 60*@rem;
+    
+}
+.func{
+    background: #fff;
+    .func-list{
+        .func-item{
+            &:nth-of-type(1) .item-content{
+                border-top: 0;
+                height: 60*@rem;
+            }
+            .item-content{
+                border-bottom: 1px solid #eee;
+                padding: 0 14*@rem;
+                height: 45*@rem;
+                line-height: 45*@rem;
+                display: flex;
+                justify-content: space-between;
+                &.userNum{
+                    border-top: 10*@rem solid #f5f5f5;
+                }
+                &.userSex{
+                    border-top: 10*@rem solid #f5f5f5;
+                }
+                .func-left{
+                    display: flex;
+                    height: 45*@rem;
+                    line-height: 45*@rem;
+                    .func-name{
+                        font-size: 15*@rem;
+                        color: #000;
+                        height: 45*@rem;
+                        line-height: 45*@rem;
+                    }
+                }
+                .func-right{
+                    height: 45*@rem;
+                    line-height: 45*@rem;
+                    display: flex;
+                    .right-text{
+                        line-height: 45*@rem;
+                        font-size: 10*@rem;
+                        color: #666;
+                    }
+                    .right-arrow{
+                        display: block;
+                        margin-top: 17*@rem;
+                        width: 7*@rem;
+                        height: 12*@rem;
+                        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAkCAYAAACJ8xqgAAAC60lEQVRIS62WTWgTURSFzx2GpE36AxZcFBcKCu5cu3Mjom4EBUFBqD/zXkyNGGgtUu1olRKV0CaNmTGN0JqNERdd6cadO1cuXIkuk4B/EUOamMlceZKUFqttppn1nI9zZ84775JlWQeIaNxxnNlwOPwW23zItu0MgIsA3gEYFUK82Q6TMpnMnmazaRPRYQAFZj4npXztFUpKaNv2fmZOE9EhZv5AROe9Ov0DVE8qldqr6/osgOMA3jPzVS9OV4EKOj8/P6TrukVEp5i5BEBKKZc7GX8dUAkzmcwu13UfAzgC4DOAC8Vi8aVpmu5WwH8BlSidTu/WNO0hgJPM/EnTtHHDMF54BirhwsLCDsdxpokoBOCL67qjoVAovxl0Q4dtUS6XG6hWq3EVJQArzBwmomdCiMa/wP8FtsbfqWnaLQCXVU4BzAghUp6BSpjNZvubzeYkM48B+AFgSgiR2Ai6qcO2KJ/P95bL5RgzXwLQw8yRUqlkm6b5ay14y0AlWlxcHKrVatcA3GDmb0Q0UywW50zTdNrQjoBKtLS0FKzVahFmvsvMFSK6J4S47xnYFtq2PQXguhpffVOfz/dgZGSk1rHDNjCRSAz4/f4rACYBOEQ022g0Yp6BrZYKqIwSURJADUBiW8B8Pu8rl8unXdd9QkTK5SPPwK6PbNv2hIoPgD51ehzHmQmHw5WOHSYSCX9PT49k5rj6bkQUMwzjjqfYdDXY8Xi8NxgM3m6VRJCIxiqVSioaja50fPQULBAITBDRTQBVZp6WUsY8lUM6ne5efanaUn+vtQioVonW6/WnkUik3nEfplKpPl3XTQVh5p8AwlLKnKcroKuXVDKZHPb5fElmPkFEX9UlVSgUltd23v9crgt2LBbrHxwcVCvJWQBlAIYQ4vlmY24Ym66uIpZl7SOiOQBHAXwkImkYhtrAuBN36l3KZrPDjUYjQ0THmPk7gDNSyledglbPctcXTsuyDmqaprI253UnXDvNb2ewanVeMxnzAAAAAElFTkSuQmCC) center center no-repeat;
+                        background-size: 7*@rem 12*@rem;
+                        margin-left: 10*@rem;
+                    }
+                    .user-pic{
+                        width: 50*@rem;
+                        height: 50*@rem;
+                        border-radius: 50*@rem;
+                        background: #eee;
+                        img{
+                            width: 50*@rem;
+                            height: 50*@rem;
+                            border-radius: 50%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.quitBtn{
+    font-size: 14*@rem;
+    width: 330*@rem;
+    height: 35*@rem;
+    background: #e65a59;
+    margin: 20*@rem auto 0;
+    text-align: center;
+    line-height: 35*@rem;
+    box-shadow: 1px 1px 5px #aaa;
+    border-radius: 2*@rem;
+    color: #fff;
+}
