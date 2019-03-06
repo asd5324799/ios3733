@@ -4,7 +4,7 @@
     <main>
         <div class="regis-title">手机快速注册（推荐）</div>
         <form action="">
-            <div class="phone-num" :class="nameIsFocus?'linegreen':'linegrey'"><input type="text" autofocus="autofocus" v-model.trim="userAccount.userName" @focus="nameInFocus" @blur="nameOutFocus"><span :class="nameIsFocus?'cur':'nocur'">手机号</span></div>
+            <div class="phone-num" :class="nameIsFocus?'linegreen':'linegrey'"><input type="number" autofocus="autofocus" v-model.trim="userAccount.userName" @focus="nameInFocus" @blur="nameOutFocus"><span :class="nameIsFocus?'cur':'nocur'">手机号</span></div>
             <!-- 验证码 -->
             <div class="code-container">
                 <div class="identify-code" :class="codeIsFocus?'linegreen':'linegrey'">
@@ -22,7 +22,7 @@
             <router-link to="/xieyi">注册即同意《用户协议》</router-link>
         </div>
     </main>
-        
+        <Prompt :message="message" />
     </div>
 </template>
 <script>
@@ -45,7 +45,8 @@
                 passIsFocus:false,
                 checked: true,
                 pwdType: 'password',
-                showpwd:true
+                showpwd:true,
+                message:''
             }
         },
         filters: {
@@ -69,16 +70,18 @@
                 this.inputTitleChange();
             },
             getCode(){
+                if(!this.userAccount.userName){
+                    this.message = '请输入手机号'
+                    return false;
+                }else if(!(/^1[34578]\d{9}$/.test(this.userAccount.userName))){
+                    this.message = '请输入正确的中国大陆11位手机号'
+                    return false;
+                }
                 if(this.codeBtnShow){
                     this.$axios({
                         url: 'https://api2.3733.com/api/sms/send',
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded",
-                            "cache-control": "no-cache",
-                            "Postman-Token": "97b10384-a1dc-484d-b7f8-fb0184269177"
-                        },
                         data: {
-                            phone:17864216827,
+                            phone:this.userAccount.userName,
                             type:1
                         }
                     }).then(() =>{
@@ -99,17 +102,25 @@
                         }  
                     }).catch(() =>{
                     })
-                     
                 }
-               
             },
             register(){
+                if(this.userAccount.codeNum == ''){
+                    this.message = '请输入验证码'
+                    return false;
+                }else if(this.userAccount.password == ''){
+                    this.message = '请输入密码'
+                    return false;
+                }else if(this.userAccount.password.length <6){
+                     this.message = '密码密码不能小于6位'
+                    return false;
+                }
                 this.$axios({
                     url: '/api/user/register',
                     data: {
-                    phone:'18559678857',
-                    code:'715789',
-                    password:'123456789'
+                        phone:this.userAccount.userName,
+                        code:this.userAccount.codeNum,
+                        password:this.userAccount.password
                     }
                 }).then(() =>{
                 })

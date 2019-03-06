@@ -11,7 +11,7 @@
         slot="loading-content">
         <div class="content" slot="content">
           <!-- today-newgame -->
-          <div class="today-newgame">
+          <div class="today-newgame" v-if="todayNewGameList.length !== 0">
             <div class="title">今日新游</div>
             <GameList
               :list="todayNewGameList"

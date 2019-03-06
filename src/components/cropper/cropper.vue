@@ -82,7 +82,6 @@
                          formData
                      }
                  }).then(res => {
-                     console.log(res)
                      this.successCallback(res)
                      this.cancelHandle()
                  })

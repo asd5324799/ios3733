@@ -16,7 +16,7 @@
             <router-link to="/xieyi">注册即同意《用户协议》</router-link>
         </div>
     </main>
-        
+        <Prompt :message="message" />
     </div>
 </template>
 <script>
@@ -41,7 +41,8 @@
                 pwdType: 'password',
                 confirmPwdType:'password',
                 showpwd:true,
-                showconfirmpwd:true
+                showconfirmpwd:true,
+                message:''
             }
         },
         filters: {
@@ -68,6 +69,25 @@
                 }
             },
             register(){
+                if(this.userAccount.userName == ''){
+                    this.message = '请输入用户名'
+                    return false;
+                }else if(this.userAccount.userName.length <6){
+                    this.message = '用户名不能小于6位';
+                    return false;
+                }else if(this.userAccount.password == ''){
+                    this.message = '请输入密码'
+                    return false;
+                }else if(this.userAccount.password.length <6){
+                    this.message = '密码不能小于6位';
+                    return false;
+                }else if(this.userAccount.confirmPwd == ''){
+                    this.message = '请输入重复密码'
+                    return false;
+                }else if(this.userAccount.confirmPwd != this.userAccount.password){
+                    this.message = '两次输入密码不一致';
+                    return false;
+                }
                 this.$axios({
                     url: '/api/user/register',
                     data: {

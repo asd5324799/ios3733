@@ -135,28 +135,26 @@ var router = new Router({
     }, {
       path:'/userinfo',
       name: 'userinfo',
-      component: UserInfo
+      component: UserInfo,
+      meta: {  
+        requiresAuth: true    
+      }
     },
   ]
 })
+
 router.beforeEach((to, from, next) => {
-  //记录非搜索页path
-  if(!(/\/search/.test(from.path)) && !(/\/giftdetail/.test(from.path)) && !(/^\/detail/.test(from.path))){
-    sessionStorage.setItem("NO_SEARCH_PATH",from.path)
+  // localStorage.token = '1f1643d43c60f52c4960ce91122b33e2'
+  let token = window.localStorage.getItem('token')
+  if(to.path === '/login'){
+    next();
+  }else{
+    if(to.meta.requiresAuth && !token) {
+      next({ path: '/login' })
+    }else{
+      next();
+    }
   }
-  //记录排行榜页path
-  if(/\/rank/.test(from.path)){
-    sessionStorage.setItem("RANK_PATH",from.path)
-  }
-  //记录开服表页path
-  if(/\/kaifu/.test(from.path)){
-    sessionStorage.setItem("KAIFU_PATH",from.path)
-  }
-  // 记录搜索页path
-  if(/\/search/.test(from.path)){
-    sessionStorage.setItem("SEARCH_PATH",from.path)
-  }
-  next()
-  
 })
+
 export default router

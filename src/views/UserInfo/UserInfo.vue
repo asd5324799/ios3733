@@ -113,8 +113,8 @@
 </template>
 <script>
     import Navigation from '@/components/navigation/navigation.vue';
-    // import Prompt from "@/components/prompt/prompt.vue";
-    import Cropper from '@/components/cropper/cropper.vue'
+    import Prompt from "@/components/prompt/prompt.vue";
+    import Cropper from '@/components/cropper/cropper.vue';
     export default {
         data() {
             return {
@@ -159,7 +159,7 @@
             }
         },
         watch: {
-            $route(to,from){
+            $route(){
                 this.token = localStorage.token;
                 this.getUser();
                 this.getUserInfo();
@@ -297,7 +297,7 @@
                         no:"取消"
                     },
                     btnShow:true
-                }).then((res)=>{
+                }).then(()=>{
                     that.$refs['cropper'].upload()
                 }).catch(()=>{
                 })
@@ -334,7 +334,7 @@
                     type:3,
                     title:'性别选择',
                     btnShow:false
-                }).then((res)=>{
+                }).then(()=>{
                     this.$axios({
                         url:'/api/user/changeInfoEx',
                         method:'POST',
@@ -440,7 +440,7 @@
         },
         components: {
             Navigation,
-            // Prompt,
+            Prompt,
             Cropper
         }
     }
