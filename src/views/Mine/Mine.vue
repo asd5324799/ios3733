@@ -10,27 +10,31 @@
         <img :src="userPic | hasPic" alt="">
         <div class="user-name">{{userName | hasName}}</div>
       </router-link>
-      <div class="user-grade" v-if="token">
-        <router-link to="/userinfo" :class="userGrade.vip?'issvip':'nosvip'">SVIP</router-link>
-        <router-link to="/userinfo" class="user-rank">{{userGrade.rank}}</router-link>
-        <router-link to="/userinfo" class="user-fu" :style="{backgroundColor:(userGrade.fu_color||'#d3dfef')}">{{userGrade.fu}}</router-link>
+      <div class="user-grade-list" v-if="token">
+        <span  
+          class="user-grade-item"
+          :class="userGrade.vip?'issvip':'nosvip'">SVIP</span>
+        <span class="user-grade-item user-rank">{{userGrade.rank}}</span>
+        <span 
+          class="user-grade-item user-fu" 
+          :style="{backgroundColor:(userGrade.fu_color||'#d3dfef')}">{{userGrade.fu}}</span>
       </div>
       <!-- 金币游戏币 -->
-      <div class="user-gold">
-        <router-link to="/userinfo" class="gold-currency">
+      <div class="user-gold-list">
+        <div class="user-gold-item gold-currency">
             <span><b>{{userGold}}</b>个</span>
             <p>金币</p>
-        </router-link>
-        <router-link to="/userinfo" class="platform-currency">
+        </div>
+        <div class="user-gold-item platform-currency">
             <span><b>{{userPtb}}</b>个</span>
             <p>平台币</p>
-        </router-link>
-        <router-link to="/userinfo" class="recharge">充值</router-link>
+        </div>
+        <div class="user-gold-item recharge">充值</div>
       </div>
       <!-- 功能列表 -->
       <div class="func">
           <ul class="func-list">
-              <router-link to="/home" tag="li" class="func-item message">
+              <li class="func-item message">
                   <div class="item-content">
                       <div class="func-left">
                           <i class="func-icon"></i>
@@ -40,8 +44,8 @@
                           <span class="right-arrow"></span>
                       </div>
                   </div>
-              </router-link>
-              <router-link to="/home" tag="li" class="func-item kefu">
+              </li>
+              <li class="func-item kefu">
                   <div class="item-content">
                       <div class="func-left">
                           <i class="func-icon"></i>
@@ -51,7 +55,7 @@
                           <span class="right-arrow"></span>
                       </div>
                   </div>
-              </router-link>
+              </li>
               <router-link to="/mygame" tag="li" class="func-item mygame">
                   <div class="item-content">
                       <div class="func-left">
@@ -74,7 +78,7 @@
                       </div>
                   </div>
               </router-link>
-              <router-link to="/home" tag="li" class="func-item complaint">
+              <li class="func-item complaint">
                   <div class="item-content">
                       <div class="func-left">
                           <i class="func-icon"></i>
@@ -84,18 +88,7 @@
                           <span class="right-arrow"></span>
                       </div>
                   </div>
-              </router-link>
-              <router-link to="/home" tag="li" class="func-item friend-wel">
-                  <div class="item-content">
-                      <div class="func-left">
-                          <i class="func-icon"></i>
-                          <div class="func-name">邀请好友</div>
-                      </div>
-                      <div class="func-right">
-                          <span class="right-arrow"></span>
-                      </div>
-                  </div>
-              </router-link>
+              </li>
           </ul>
       </div>
     </div>
@@ -149,7 +142,7 @@
       },
       created () {
         this.token = localStorage.token;
-        this.getUserInfo()
+        this.getUserInfo();
       },
       methods: {
         getUserInfo(){

@@ -49,11 +49,11 @@
                 color: #000;
             }
         }
-        .user-grade{
+        .user-grade-list{
             text-align: center;
             font-size: 14*@rem;
             margin-top: 10*@rem;
-            a{
+            .user-grade-item{
                 display: inline-block;
                 width: 50*@rem;
                 height: 20*@rem;
@@ -63,25 +63,25 @@
                 margin: 0 5*@rem;
                 text-align: center;
                 line-height: 20*@rem;
-            }
-            a.issvip{
-                background: orange;
-            }
-            a.nosvip{
-                background: #a1a1a1;
-            }
-            a.user-rank{
-                background: #53b8fe;
-            }
-            a.user-fu{
-                color: #758386;
+                &.issvip{
+                  background: orange;
+                }
+                &.nosvip{
+                    background: #a1a1a1;
+                }
+                &.user-rank{
+                    background: #53b8fe;
+                }
+                &.user-fu{
+                    color: #758386;
+                }
             }
         }
-        .user-gold{
+        .user-gold-list{
             display: flex;
             border-top: 1px solid #E5E5E5;
             margin-top: 23*@rem;
-            a{
+            .user-gold-item {
                 box-sizing: border-box;
                 display: block;
                 width: 33.3%;
@@ -108,9 +108,6 @@
             .gold-currency{
                 border-left: 0;
             }
-            // .platform-currency{
-
-            // }
             .recharge{
                 border-left: 0;
                 line-height: 55*@rem;

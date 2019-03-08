@@ -7,7 +7,7 @@
         @pullingDown="pullDown"
         @pullingUp="pullUp"
         slot="loading-content">
-        <GameList :list="list" :type="1" slot="content" class="content"></GameList>
+        <GameList :list="list" slot="content" class="content"></GameList>
       </Scroll>
     </Loading>
   </div>

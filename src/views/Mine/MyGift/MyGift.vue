@@ -11,11 +11,10 @@
                     @pullingDown="pullDown"
                     @pullingUp="pullUp"
                     slot="loading-content">
-                    <!-- <GameList :list="list" :type="1" slot="content" class="content"></GameList> -->
+                    <div class="nomore" slot="content" v-if="giftList.length === 0">暂无礼包</div>
                     <GiftList :copyCode="copyCode" :giftList="giftList" slot="content" class="content"/>
                 </Scroll>
             </Loading>
-            
         </div>
       <div class="my-gift-list" v-else>
           <div class="content-none">{{noneText}}</div>
@@ -40,41 +39,41 @@ export default {
         pullDownState: 'ready',
         pullUpState:'ready',
         loading: 'ready',
+        ajaxSwitch: true,
         token:'',
-        page:1
-
+        page:2
     }
   },
   methods: {
       copyCode(){
       },
       createdMethod() {
-      this.loading = 'ready';
-      this.$axios({
-        url: '/api/card/mine',
-        data: {
-            token:this.token,
-            page:this.page
-        }
-      }).then(res => {
-        this.handleInitData(res);
-        this.$nextTick(() => {
-          this.loading = 'success';
+        this.loading = 'ready';
+        this.$axios({
+          url: '/api/card/mine',
+          data: {
+              token:this.token,
+              page:this.page
+          }
+        }).then(res => {
+          this.handleInitData(res);
+          this.$nextTick(() => {
+            this.loading = 'success';
+          })
+        }).catch(() => {
+          this.loading = 'fail';
         })
-      }).catch(() => {
-        this.loading = 'fail';
-      })
     },
     handleInitData(res) {
         this.giftList = this.giftList.concat(res.data.list);
     },
     pullDown() {
-      this.page = 1;
+        this.page = 2;
         this.$axios({
           url:'/api/card/mine',
           data:{
-            token:this.token,
-            page:this.page
+            token: this.token,
+            page: 1
           }
         }).then(res => {
           this.giftList = [];
@@ -93,26 +92,36 @@ export default {
         })
     },
     pullUp(){
-      this.page++;
-      this.$axios({
-        url:'/api/card/mine',
-        data:{
-          token:this.token,
-          page:this.page
-        }
-      }).then(res=>{
-        this.handleInitData(res);
-        this.pullDownState = 'success';
-          setTimeout(() => {
-            this.pullDownState = 'ready';
-            this.ajaxSwitch = true;
-          }, 1000)
-        }).catch(() => {
-          this.pullDownState = 'fail';
-          setTimeout(() => {
-            this.pullDownState = 'ready';
-          }, 1000)
-      })
+      if(this.ajaxSwitch) {
+        this.ajaxSwitch = false;
+        this.$axios({
+          url:'/api/card/mine',
+          data:{
+            token:this.token,
+            page: this.page,
+          }
+        })
+        .then(res=>{
+          this.page++;
+          this.handleInitData(res);
+          if(res.data.list.length < 20) {
+            this.pullUpState = 'nomore';
+          } else {
+            this.pullUpState = 'success';
+            setTimeout(() => {
+              this.pullUpState = 'ready';
+              this.ajaxSwitch = true;
+            }, 1000)
+          }
+        })
+        .catch(() => {
+            this.pullUpState = 'fail';
+            setTimeout(() => {
+              this.pullUpState = 'ready';
+              this.ajaxSwitch = true;
+            }, 1000)
+        })
+      }
     }
   },
   created () {
