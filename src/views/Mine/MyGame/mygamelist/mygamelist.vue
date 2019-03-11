@@ -1,5 +1,5 @@
 <template>
-  <div class="my-game-list" v-if="list.length">
+  <div class="my-game-list">
     <Loading :loading="loading" @refresh="createdMethod">
       <Scroll 
         :pullDown="pullDownState"
@@ -7,12 +7,12 @@
         @pullingDown="pullDown"
         @pullingUp="pullUp"
         slot="loading-content">
-        <GameList :list="list" slot="content" class="content"></GameList>
+        <div class="nomore" slot="content" v-if="list.length === 0">{{noneText}}</div>
+        <div class="content" slot="content" v-else>
+          <GameList :list="list"></GameList>
+        </div>
       </Scroll>
     </Loading>
-  </div>
-  <div class="my-game-list" v-else>
-      <div class="content-none">{{noneText}}</div>
   </div>
 </template>
 <script>
@@ -22,10 +22,6 @@ import GameList from '@/components/gamelist/gamelist.vue';
 export default {
   name: 'MyGameList',
   props: {
-    kaiFuType: {
-      type: Number,
-      default: 1
-    },
     requestInfo:{
         type:Object,
         default() {
@@ -39,7 +35,7 @@ export default {
       pullDownState: 'ready',
       pullUpState: 'ready',
       ajaxSwitch: true,
-      page:1,
+      page:2,
       loading: 'ready',
       token:'',
       noneText:''
@@ -52,16 +48,18 @@ export default {
   methods: {
     createdMethod() {
       this.loading = 'ready';
-      
       this.$axios({
         url: this.requestInfo.requestUrl,
         data: {
             token:this.token,
-          page:this.requestInfo.page,
-          listRows:this.requestInfo.listRows,
+            page:1,
+            listRows:this.requestInfo.listRows,
         }
       }).then(res => {
         this.handleInitData(res);
+        if(res.data.list.length < 20) {
+          this.pullUpState = 'nomore';
+        }
         this.$nextTick(() => {
           this.loading = 'success';
         })
@@ -78,18 +76,19 @@ export default {
     pullDown() {
       if(this.ajaxSwitch) {
         this.ajaxSwitch = false;
-        this.requestInfo.page = 1;
+        this.requestInfo.page = 2;
         this.$axios({
           url:this.requestInfo.requestUrl,
           data:{
             token:this.token,
-            page:this.requestInfo.page,
+            page:1,
             listRows:this.requestInfo.listRows
           }
         }).then(res => {
           this.list = [];
           this.handleInitData(res);
           this.pullDownState = 'success';
+          this.pullUpState = 'ready';
           setTimeout(() => {
             this.pullDownState = 'ready';
             this.ajaxSwitch = true;
@@ -106,7 +105,6 @@ export default {
     pullUp() {
       if(this.ajaxSwitch) {
         this.ajaxSwitch = false;
-        this.requestInfo.page++;
         this.$axios({
           url:this.requestInfo.requestUrl,
           data:{
@@ -120,6 +118,7 @@ export default {
           setTimeout(() => {
             this.pullUpState = 'ready';
             this.ajaxSwitch = true;
+            this.requestInfo.page++;
           }, 1000)
         }).catch(() => {
           this.pullUpState = 'fail';

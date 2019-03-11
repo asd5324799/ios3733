@@ -8,7 +8,6 @@ import '@/axios/axios.js'
 import Calendar from 'vue2-datepick'; 
 Vue.use(Calendar);
 
-
 import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
 
@@ -25,3 +24,5 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+

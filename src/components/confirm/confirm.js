@@ -3,7 +3,7 @@ import confirm from './confirm.vue';
 
 let confirmConstructor = Vue.extend(confirm);
 
-let theConfirm = function (text) {
+let theConfirm = function(text) {
     return new Promise((res, rej) => { //promise封装，ok执行resolve，no执行rejectlet
       let confirmDom = new confirmConstructor({   
         el: document.createElement('div')
@@ -19,7 +19,6 @@ let theConfirm = function (text) {
         rej(e)
         confirmDom.isShow = false
       }
-
     })
   }
 

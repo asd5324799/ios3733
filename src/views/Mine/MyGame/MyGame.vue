@@ -17,7 +17,6 @@
           <SwiperSlide
           v-for="(item, index) in list"
           :key="index"><MyGameList :requestInfo="item" /></SwiperSlide>
-        
       </Swiper>
     </main>
   </div>

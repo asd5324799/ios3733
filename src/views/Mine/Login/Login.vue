@@ -104,7 +104,7 @@
                 }).then(res =>{
                     // this.message = res.msg;
                     // console.log()
-                    localStorage.token = 'e5be85336ce9aa0e2c3742dc8ffead1d'
+                    localStorage.token = 'a9f0b013d6b60fac58bc6745b05bf3c2'
                     setTimeout(function(){
                         _this.$router.go(-1)
                     },1000)

@@ -1,7 +1,7 @@
 <template>
     <div class="confirm" v-if="isShow">
-        <div class="con_box">
-            <div v-if="text.type != 3" class="close-confirm" @click="close"></div>
+        <div class="con_box" :class="{bind: text.type === 5}">
+            <div v-if="text.type != 3" class="close-confirm" @click="close()"></div>
             <div class="context">
                 <h6>{{text.title}}</h6>
                 <p v-if="text.type===1">{{text.msg}}</p>
@@ -14,9 +14,18 @@
                         <i></i>
                         <div class="sex-text">我是汉纸</div>
                     </div>
-                    <div class="woman"  @click="close()">
+                    <div class="woman">
                         <i></i>
                         <div class="sex-text">我是妹纸</div>
+                    </div>
+                </div>
+                <div class="bind-phone" v-if="text.type===5">
+                    <input v-if="text.isBind" type="number" ref="phoneText" @focus="$event.target.select()" v-model.trim="text.phoneText" class="confirmInput">
+                    <input v-else type="number" ref="phoneText" @focus="$event.target.select()" v-model.trim="text.phoneText" class="confirmInput" disabled="disabled">
+
+                    <div class="code-box">
+                        <input type="number" maxlength='6' class="code-text" v-model="text.codeText">
+                        <div class="code-btn" :class="codeBtnShow?'bgGreen':'bgGrey'" @click="getCode">{{codeBtnShow?'获取验证码':'重新发送('+count+'秒)'}}</div>
                     </div>
                 </div>
                 
@@ -26,6 +35,7 @@
                 </div>
             </div>
         </div>
+        <Prompt :message="message" />
     </div>
 </template>
 <script>
@@ -43,22 +53,70 @@
                         no: '取消'
                     },
                     sex:1,
-                    btnShow:true
-                }
+                    phoneText:'',
+                    isBind:true,
+                    codeText:'',
+                    bindType:'',
+                    btnShow:true,
+                    token:''
+                },
+                message:'',
+                codeBtnShow:true,
+                codeTimer:null,
+                count:0
             }
         },
         methods: {
-            close() {
-                console.log('关闭');
-            },
-            ok() {
-                console.log('确定')
-            },
+            close() {},
             handleInput(e){
-                if(this.text.type===4){
+                if(this.text.type===4){//只能输入数字
                     this.text.inputText=e.target.value.replace(/[^\d]/g,'');
                 }
-                
+            },
+            getCode(){
+                if(!this.text.phoneText){
+                    this.message = '请输入手机号'
+                    return false;
+                }else if(!(/^1[34578]\d{9}$/.test(this.text.phoneText))){
+                    this.message = '请输入正确的中国大陆11位手机号'
+                    return false;
+                }
+                if(this.codeBtnShow){
+                    this.$axios({
+                        url: '/api/sms/send',
+                        data: {
+                          phone: this.text.phoneText,
+                          type: this.text.bindType,
+                          token: this.text.token
+                        }
+                    }).then(res =>{
+                        if(res === null && this.text.bindType === 5) {
+                          this.message = '该手机号已被注册或绑定过';
+                        } else if (res === null && this.text.bindType === 6) {
+                          this.message = '111'
+                        } else {
+                          this.message = '222';
+                          this.message = res.msg;
+                          this.codeBtnShow = false;
+                          const TIME_COUNT = 60;   
+                          if (!this.codeTimer) {    
+                              this.count = TIME_COUNT;    
+                              this.codeBtnShow = false;    
+                              this.codeTimer = setInterval(() => {    
+                                  if (this.count > 0 && this.count <= TIME_COUNT) {     
+                                      this.count--;     
+                                  } else {     
+                                      this.codeBtnShow = true;     
+                                      clearInterval(this.codeTimer);     
+                                      this.codeTimer = null;     
+                                  }    
+                              }, 1000)    
+                          }  
+                        }
+                    }).catch(err =>{
+                      console.log(err);
+                    })
+                }
             }
         }
     }
@@ -84,11 +142,14 @@
         right: 0;
         margin: auto;
         border-radius: 5*@rem;
+        &.bind {
+          height: 170*@rem;
+        }
     }
     .close-confirm{
         width: 15*@rem;
         height: 15*@rem;
-        background: url(../../assets/images/clear.png) center center no-repeat;
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAACWUlEQVRIS7WWPYvUUBSG3/dmmH+hrBbrR6G4bmGpIgiCYLWKYKkIgrowk0xSTTPcZKpFBUHWQhEEtRFEO7VbVAQbRRwWdgX/gtWQI3fJLMlsMrnJxHQhH0/uc07ec6m1XgNwRil13fO8z/h/B7XWSyQfA/hoTjZIngKwRXLV87zXAKRJfr/fV+12+xLJNZL7AHww4BMknwE4KiJ/RORuEASvGgQbxnkAjxLoiORVGoDW+jTJJwD2A/gdx/GVIAg2GoAb6DKAFyQXzMIcx7nhuu7bHXACP0fyPoDDTWjP0ftdRG77vv/e8HbBCfwkyacNaN+j13Gca91u99NkoRlwQ9oL9aZLtwc8j/YyvaXgmtpL9VqBK2q30msNttTOKIouxnH8IPlPM91b9Evm1nj6Zq11Ybdrrc8mMbgAYDTdvXOBi7Qrpf6KiAmHxXQ42ASP1YrzQkZEtknGAA4AsNJbqcbTXx9F0bKImJA5klyz1jsXOAzD4xO9yYu2RGTF9/0vNooLk2vGwwzD8AKAewAOisgPkirJ9hGAO71e750t3LrGSfeuJzXd0Tsej8eTbDdTTSl1y3XdNzZwK3Ba73T3To3UTRG57Pv+1zJ4GTijt6h7tdbpkWqlfSY4T296tKVXlQ4ZG+2F4Fl6izRW0Z4HttI7A26lPW8jYLI3071FemfAd7O9SHsGXEdvXe0T8Fx662ifbG/n1ltVOweDwTGl1Ms6o60sJFJTLb1v31RKrRjFPwEcqjPabME5O5lvBvwcwGKr1brZ6XQqTZgqYHPvcDhciuP4IYBf/wB82cDtpbsO6AAAAABJRU5ErkJggg==) center center no-repeat;
         background-size: 10*@rem 10*@rem;
         position: absolute;
         right: 5*@rem;
@@ -124,6 +185,39 @@
         color: red;
         font-size: 10*@rem;
         padding: 5*@rem 0;
+    }
+    .context .bind-phone{
+        padding: 0 20*@rem;
+        .code-box{
+            display: flex;
+            margin-top: 10*@rem;
+            height: 30*@rem;
+            justify-content: space-between;
+            margin-bottom: 10*@rem;
+            .code-text{
+                box-sizing: border-box;
+                display: block;
+                font-size: 16*@rem;
+                width: 110*@rem;
+                border: 1px solid #aaa;
+                padding: 10*@rem;
+            }
+            .code-btn{
+                background: #48a83a;
+                color:#fff;
+                font-size: 14*@rem;
+                width: 110*@rem;
+                text-align: center;
+                line-height: 30*@rem;
+                &.bgGreen{
+                    background: #48a83a;
+                }
+                &.bgGrey{
+                    background: #aaa;
+                }
+            }
+        }
+
     }
     .context .select-sex{
         display: flex;

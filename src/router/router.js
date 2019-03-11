@@ -7,9 +7,12 @@ import Kaifu from '../views/Kaifu/Kaifu.vue';
 import Mine from '../views/Mine/Mine.vue';
 import MyGame from '../views/Mine/MyGame/MyGame.vue';
 import MyGift from '../views/Mine/MyGift/MyGift.vue';
-import Login from '../views/Login/Login.vue';
-import PhoneRegister from '../views/PhoneRegister/PhoneRegister.vue';
-import UserInfo from '../views/UserInfo/UserInfo.vue';
+import Login from '../views/Mine/Login/Login.vue';
+import PhoneRegister from '../views/Mine/UserRegister/PhoneRegister/PhoneRegister.vue';
+import UserInfo from '../views/Mine/UserInfo/UserInfo.vue';
+import ChangePwd from '../views/Mine/ChangePwd/ChangePwd.vue';
+import Identity from '../views/Mine/Identity/Identity.vue';
+import ResetPwd from '../views/Mine/ResetPwd/ResetPwd.vue';
 import Search from '../views/Search/Search.vue';
 import SearchIndex from '../views/Search/SearchIndex/SearchIndex.vue';
 import SearchResult from '../views/Search/SearchResult/SearchResult.vue';
@@ -139,6 +142,27 @@ var router = new Router({
       meta: {  
         requiresAuth: true    
       }
+    },
+    {
+      path:'/changepwd',
+      name: 'ChangePwd',
+      component: ChangePwd,
+      meta: {  
+        requiresAuth: true    
+      }
+    },
+    {
+      path:'/identity',
+      name: 'Identity',
+      component: Identity,
+      meta: {  
+        requiresAuth: true    
+      }
+    },    
+    {
+      path:'/resetpwd',
+      name: 'ResetPwd',
+      component: ResetPwd
     },
   ]
 })

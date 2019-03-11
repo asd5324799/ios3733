@@ -1,0 +1,78 @@
+/*phone-register*/
+@rem: 0.0267rem;
+main{
+    padding: 20*@rem;
+    padding-top: 60*@rem;
+    .paragraph{
+        line-height: 1.8;
+        color: #666;
+        &.p1{
+            text-indent: 15*@rem;
+        }
+    }
+    form{
+        div{
+            position: relative;
+        }
+        input[type=text]{
+            border: none;
+            width: 100%;
+            caret-color:#48a83a;
+            height: 30*@rem;
+            font-size: 16*@rem;
+            background: rgba(0, 0, 0, 0);
+            
+        }
+        span{
+            position: absolute;
+            font-size: 15*@rem;
+            color: #959595;
+            left: 0;
+            top: 0;
+            transition: 0.2s;
+        }
+        .cur{
+            top: -15*@rem;
+            color: #48a83a;
+            font-size: 10*@rem;
+        }
+        .nocur{
+            top: 5*@rem;
+            font-size: 15*@rem;
+            color: #aaa;
+            z-index: -1;
+        }
+        .id-name{
+            border-bottom: 1px solid #6e6e6e;
+            margin-top: 20*@rem;
+            height: 30*@rem;
+            line-height: 30*@rem;
+        }
+        
+        .id-number{
+            border-bottom: 1px solid #6e6e6e;
+            margin-top: 20*@rem;
+            height: 30*@rem;
+            line-height: 30*@rem;
+            margin-bottom: 10*@rem;
+        }
+        .linegreen{
+            border-bottom: 1px solid #48a83a !important;
+        }
+        .submit-btn{
+            width: 330*@rem;
+            height: 30*@rem;
+            line-height: 30*@rem;
+            text-align: center;
+            background: #48a83a;
+            margin: 0 auto;
+            color: #fff;
+            font-size: 15*@rem;
+            margin-top: 20*@rem;
+            &.bgGrey{
+                background: #999;
+            }
+        }
+    }
+}
+

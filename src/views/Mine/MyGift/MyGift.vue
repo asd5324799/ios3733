@@ -45,15 +45,13 @@ export default {
     }
   },
   methods: {
-      copyCode(){
-      },
       createdMethod() {
         this.loading = 'ready';
         this.$axios({
           url: '/api/card/mine',
           data: {
               token:this.token,
-              page:this.page
+              page:1
           }
         }).then(res => {
           this.handleInitData(res);
@@ -79,6 +77,7 @@ export default {
           this.giftList = [];
           this.handleInitData(res);
           this.pullDownState = 'success';
+          this.pullUpState = 'ready';
           setTimeout(() => {
             this.pullDownState = 'ready';
             this.ajaxSwitch = true;
@@ -126,7 +125,7 @@ export default {
   },
   created () {
       this.token = localStorage.token;
-    this.createdMethod();
+      this.createdMethod();
   },
   components: {
     Navigation,

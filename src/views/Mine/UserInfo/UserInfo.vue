@@ -39,7 +39,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="func-item message">
+                    <li @click="bandPhone(userPhone)" class="func-item message">
                         <div class="item-content userPhone">
                             <div class="func-left">
                                 <div class="func-name">手机绑定</div>
@@ -50,7 +50,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="func-item message">
+                    <router-link :to="{name:'Identity',query:{name:userRealName,num:userIdNumber}}" class="func-item message" tag="li">
                         <div class="item-content userRealName">
                             <div class="func-left">
                                 <div class="func-name">实名认证</div>
@@ -60,8 +60,8 @@
                                 <span class="right-arrow"></span>
                             </div>
                         </div>
-                    </li>
-                    <li class="func-item message">
+                    </router-link>
+                   <router-link to="/changepwd" class="func-item message" tag="li">
                         <div class="item-content userChangePwd">
                             <div class="func-left">
                                 <div class="func-name">修改密码</div>
@@ -70,7 +70,7 @@
                                 <span class="right-arrow"></span>
                             </div>
                         </div>
-                    </li>
+                    </router-link>
                     <li @click="changeUserSex" class="func-item message">
                         <div class="item-content userSex">
                             <div class="func-left">
@@ -129,6 +129,7 @@
                 userRealName:'点此认证',
                 checked: true,
                 message:'',
+                userIdNumber: '',
                 uploadParam: {
                      fileType: 'recruit', // 其他上传参数 
                      uploadURL: 'http://image.3733.com/upload', // 上传地址 
@@ -209,12 +210,11 @@
                         token:this.token
                     }
                 }).then(res=>{
-                    var data = res.data;
-                    if(data){
-                        this.userPic = data.avatar;
-                        this.userName = data.nickname;
-                        this.userNum = data.username;
-                        this.userPhone = data.mobile;
+                    if(res.data){
+                        this.userPic = res.data.avatar;
+                        this.userName = res.data.nickname;
+                        this.userNum = res.data.username;
+                        this.userPhone = res.data.mobile;
                     }
                     
                 })
@@ -227,12 +227,12 @@
                         token:this.token
                     }
                 }).then(res=>{
-                    var data = res.data;
-                    if(data){
-                        this.userBirth = data.birthday;
-                        this.userQQ = data.qq;
-                        this.userSex = data.sex;
-                        this.userRealName = data.real_name;
+                    if(res.data){
+                        this.userBirth = res.data.birthday;
+                        this.userQQ = res.data.qq;
+                        this.userSex = res.data.sex;
+                        this.userRealName = res.data.real_name;
+                        this.userIdNumber = res.data.id_card;
                     }
                 })
             },
@@ -321,11 +321,12 @@
                             token:this.token,
                             nickname:res.inputText
                         }
-                    }).then(res=>{
-                        this.message = res.msg;
-                        this.getUser();
+                    }).then(res2=>{
+                        this.message = res2.msg;
+                        this.userName = res.inputText
+                    }).catch(() => {
+                      this.message = '修改失败请重试';
                     })
-                }).catch(() =>{
                 })
             },
             // 修改性别
@@ -337,48 +338,115 @@
                 }).then(()=>{
                     this.$axios({
                         url:'/api/user/changeInfoEx',
-                        method:'POST',
                         data:{
                             token:this.token,
                             sex:2
                         }
                     }).then(res=>{
-                        this.getUserInfo();
+                        this.userex = 2;
                         this.message = res.msg;
                     })
                 }).catch(()=>{
                     this.$axios({
                         url:'/api/user/changeInfoEx',
-                        method:'POST',
                         data:{
                             token:this.token,
                             sex:1
                         }
                     }).then(res=>{
-                        this.getUserInfo();
+                        this.userSex = 1;
                         this.message = res.msg;
+                    }).catch(() => {
+                      this.message = '修改失败请重试';
                     })
                 })
             },
+            //绑定手机号
+            bandPhone(phoneNum){
+                if(!phoneNum){
+                    this.$confirm({
+                        type:5,
+                        title:'绑定手机号',
+                        phoneText:'',
+                        codeText:'',
+                        bindType:5,
+                        isBind:true,
+                        btnShow:true,
+                        btn:{
+                            ok:'确定',
+                            no:'取消'
+                        },
+                        token:this.token
+                    }).then(res=>{
+                        this.$axios({
+                            url:'/api/user/bindPhone',
+                            data:{
+                                phone:res.phoneText,
+                                code:res.codeText,
+                                token:this.token
+                            }
+                        }).then(data=>{
+                            this.message = data.msg;
+                            this.getUserInfo();
+                        })
+                    }).catch(()=>{
+                    })
+                }else{
+                    this.$confirm({
+                        type:5,
+                        title:'解绑手机号',
+                        phoneText:phoneNum,
+                        codeText:'',
+                        btnShow:true,
+                        bindType:6,
+                        isBind:false,
+                        btn:{
+                            ok:'确定',
+                            no:'取消'
+                        },
+                        token:this.token
+                    }).then(res=>{
+                        if(res.codeText == ''){
+                            this.message = '请输入验证码'
+                        }else{
+                            this.$axios({
+                                url:'/api/user/unbindPhone',
+                                data:{
+                                    phone:res.phoneText,
+                                    code:res.codeText,
+                                    token:this.token
+                                }
+                            }).then(data=>{
+                                this.message = data.msg
+                                this.getUserInfo();
+                            })
+                        }
+                        
+                    }).catch(()=>{
+                    })
+                }
+                
+            },
             // 修改生日
             changeUserBirth(){
+                let date = new Date();
                 this.$picker.show({
                     type:'datePicker',
                     date:this.date,
-                    endTime:'2019-02-28',  //截至时间
+                    endTime: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,  //截至时间
                     startTime:'1970-02-11',  //开始时间
                     onOk: (date) =>{
                         this.$axios({
                             url:'/api/user/changeInfoEx',
-                            method:'POST',
                             data:{
                                 token:this.token,
-                                birthday:date
+                                birthday: date
                             }
-                        }).then(res=>{
-                            this.getUserInfo();
-                            this.date = date;
+                        }).then(res => {
+                            this.userBirth = res.data.birthday;
                             this.message = res.msg;
+                        }).catch(() => {
+                          this.message = '修改失败请重试';
                         })
                     }
                 })
@@ -407,10 +475,9 @@
                         }
                     }).then(res=>{
                         this.message = res.msg;
-                        this.getUserInfo();
+                        this.userQQ = res.data.qq;
                     })
                     }
-                    
                 }).catch(() =>{
                 })
             },
@@ -447,5 +514,11 @@
 </script>
 <style lang="less" scoped>
     @import './user-info.less';
+</style>
+<style lang="less">
+// 日期选择器的样式修正
+  .m-picker .m-picker-header {
+    align-items: center;
+  }
 </style>
 
