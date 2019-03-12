@@ -118,7 +118,6 @@
                     this.userAccount.idName = this.$route.query.name;
                     this.userAccount.idNumber = this.$route.query.num;
                 }
-                console.log(this.token)
             }
         },
         mounted () {

@@ -79,7 +79,7 @@
                             phone:this.userAccount.phoneNum,
                             type:4
                         }
-                    }).then(res =>{
+                    }).then(() =>{
                         this.codeBtnShow = false;
                         const TIME_COUNT = 60;   
                         if (!this.codeTimer) {    
@@ -95,7 +95,7 @@
                                 }    
                             }, 1000)    
                         }  
-                    }).catch(err =>{
+                    }).catch(() =>{
                         // console.log(err);
                     })
                 }

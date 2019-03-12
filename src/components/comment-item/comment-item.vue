@@ -41,10 +41,14 @@
         <div class="text">{{item.model}}</div>
       </div>
       <div class="right-wrapper">
-        <i class="good"></i>
-        <div class="text">{{item.support_count}}</div>
-        <i class="reply"></i>
-        <div class="text">{{item.reply_count}}</div>
+        <div class="right-item" :class="{red: supportColor}" @click="isGood(item.comment_id)">
+          <i class="good"></i>
+          <span class="text">{{supportCount}}</span>
+        </div>
+        <div class="right-item">
+          <i class="reply"></i>
+          <span class="text">{{item.reply_count}}</span>
+        </div>
       </div>
     </div>
     <ul class="reply-list" v-if="type === 1 && item.replies.length > 0">
@@ -57,9 +61,11 @@
       </li>
       <div class="more" v-if="item.reply_count >= 5">查看全部{{item.reply_count}}条评论</div>
     </ul>
+    <Prompt :message="message" />
   </li>
 </template>
 <script>
+import Prompt from '@/components/prompt/prompt.vue';
 export default {
   props: {
     item: {
@@ -72,6 +78,16 @@ export default {
       type: Number,
       default: 1
     }
+  },
+  data() {
+    return {
+      supportColor: false,
+      supportCount: 0,
+      message: '',
+    }
+  },
+  mounted() {
+    this.supportCount = this.item.support_count;
   },
   methods: {
     handleTimestamp(time) {
@@ -110,7 +126,11 @@ export default {
         this.$router.push({
           name: 'ReplyPage',
           query: {
-            nickname: JSON.stringify(item.user.nickname)
+            nickname: JSON.stringify(item.user.nickname),
+            source_id: JSON.stringify(item.source_id),
+            type: JSON.stringify(2),
+            reply_outer_id: JSON.stringify(item.reply_outer_id),
+            comment_id: JSON.stringify(item.comment_id),
           }
         })
       } else {
@@ -129,8 +149,35 @@ export default {
       } else {
         return {}
       }
+    },
+    isGood(commentId) {
+      event.cancelBubble = true;
+      let token = localStorage.getItem('token');
+      this.$axios({
+        url: '/api/resource/support',
+        data: {
+          token: token,
+          classId: 103,
+          sourceId: commentId,
+        }
+      })
+      .then(res => {
+        if(this.supportColor) {
+          this.supportColor = false;
+          this.supportCount--;
+        } else {
+          this.supportColor = true;
+          this.supportCount = res.data.count;
+        }
+      })
+      .catch(() => {
+        this.message = '点赞失败，请稍后重试';
+      })
     }
   },
+  components: {
+    Prompt,
+  }
 }
 </script>
 <style lang="less" scoped>

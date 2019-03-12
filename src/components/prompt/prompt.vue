@@ -3,6 +3,7 @@
 </template>
 <script>
 	export default({
+    props:['message'],
 		data(){
 			return {
 				initTop:0,
@@ -23,7 +24,6 @@
 		mounted(){
 			
 		},
-		props:['message']
 	});
 </script>
 <style lang="less" scoped>

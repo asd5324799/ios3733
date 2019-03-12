@@ -101,7 +101,7 @@
                     username:this.userAccount.userName,
                     password:this.userAccount.password,
                     }
-                }).then(res =>{
+                }).then(() =>{
                     // this.message = res.msg;
                     // console.log()
                     localStorage.token = 'a9f0b013d6b60fac58bc6745b05bf3c2'
