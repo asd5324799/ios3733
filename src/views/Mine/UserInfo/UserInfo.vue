@@ -61,7 +61,7 @@
                             </div>
                         </div>
                     </router-link>
-                   <router-link to="/changepwd" class="func-item message" tag="li">
+                   <router-link to="ChangePwd" class="func-item message" tag="li">
                         <div class="item-content userChangePwd">
                             <div class="func-left">
                                 <div class="func-name">修改密码</div>

@@ -13,15 +13,16 @@
                 <i class="clear" @click="clearBox" v-show="!isNone"></i>
             </div>
             <div class="password" :class="passIsFocus?'linegreen':'linegrey'">
-                <input :type="pwdType" v-model.trim="userAccount.password" @focus="passInFocus" @blur="passOutFocus">
+                <input :type="pwdType" v-model.trim="userAccount.password" @focus="passInFocus" @blur="passOutFocus" autocomplete="off">
                 <span :class="passIsFocus?'cur':'nocur'">密码</span>
                 <i class="show-pwd" :class="{'hide-pwd':showpwd}" @click="showPwd"></i>
             </div>
             <div class="remember">
                 <div class="isRemember"><input type="checkbox" checked="checked" v-model="checked">保存密码</div>
-                <router-link to="/reset" class="forget">忘记密码？</router-link>
+                <router-link to="/resetpwd" class="forget">忘记密码？</router-link>
             </div>
-            <div class="login-btn" @click="login">登录</div>
+            <div class="login-btn" v-if="ajaxSwitch" @click="login">登录</div>
+            <div class="login-btn gray" v-else>登录中...</div>
         </form>
         <div class="toRegister">还没有账号？
             <router-link to="/phoneregister">立即注册平台账号</router-link>
@@ -33,6 +34,7 @@
 <script>
     import Prompt from '@/components/prompt/prompt.vue';
     import Navigation from '@/components/navigation/navigation.vue';
+    import { JSEncrypt } from 'jsencrypt';
     export default {
         data() {
             return {
@@ -40,15 +42,16 @@
                     userName:'',
                     password:''
                 },
-                
                 userPic:'',
                 userGrade:'',
                 nameIsFocus:false,
                 passIsFocus:false,
                 checked: true,
                 pwdType: 'password',
+                publicKey: '',
                 showpwd:true,
-                message:''
+                message:'',
+                ajaxSwitch: true,
             }
         },
         computed: {
@@ -62,6 +65,9 @@
         },
         filters: {
             
+        },
+        created() {
+          this.getPublicKey();
         },
         methods: {
             back(){
@@ -80,41 +86,67 @@
                 this.userAccount.password = '';
                 this.inputTitleChange();
             },
+            getPublicKey() {
+              this.$axios({
+                url: '/api/index/rsaKey',
+                data: {}
+              })
+              .then(res => {
+                this.publicKey = res.data.rsa_public_key;
+              })
+            },
+            opensslEncrypt(str) {
+              let encryptor = new JSEncrypt()  // 新建JSEncrypt对象
+              if(this.publicKey === '') {
+                this.getPublicKey();
+              }
+              encryptor.setPublicKey(this.publicKey)  // 设置公钥
+              let temp = encryptor.encrypt(str)  // 对密码进行加密
+              return temp;
+            },
             login(){
                 if(this.userAccount.userName == ''){
                     this.message = '请输入用户名!'
                     return false;
-                }else if(this.userAccount.userName.length <6){
+                }else if(this.userAccount.userName.length < 6){
                     this.message = '用户名不能小于6位'
                     return false;
                 }else if(this.userAccount.password == ''){
                     this.message = '请输入密码!'
                     return false;
-                }else if(this.userAccount.password.length <6){
+                }else if(this.userAccount.password.length < 6){
                     this.message = '密码不能小于6位'
                     return false;
+                } else if(this.userAccount.password.length > 18) {
+                  this.message = '密码不能大于18位'
+                  return false;
                 }
-                var _this = this;
-                this.$axios({
-                    url: '/api/user/login',
-                    data: {
-                    username:this.userAccount.userName,
-                    password:this.userAccount.password,
+                if(this.ajaxSwitch) {
+                  this.ajaxSwitch = false;
+                  let password = this.opensslEncrypt(this.userAccount.password);
+                  this.$axios({
+                      url: '/api/user/login',
+                      data: {
+                      username: this.userAccount.userName,
+                      password: password,
+                      }
+                  }).then((res) =>{
+                    if(res.data) {
+                      this.message = '登录成功';
+                      localStorage.token = res.data.token;
+                      this.$router.push({
+                        name: 'Mine'
+                      })
+                    } else {
+                      this.message = res.msg;
                     }
-                }).then(() =>{
-                    // this.message = res.msg;
-                    // console.log()
-                    localStorage.token = 'a9f0b013d6b60fac58bc6745b05bf3c2'
-                    setTimeout(function(){
-                        _this.$router.go(-1)
-                    },1000)
-                    
-                }).catch(()=>{
-                })
+                    this.ajaxSwitch = true;
+                  }).catch(()=>{
+                    this.message = '网络不好，请稍后重试';
+                    this.ajaxSwitch = true;
+                  })
+                }
             },
-            // e5be85336ce9aa0e2c3742dc8ffead1d
-            // 5141094e9aa96ea6d6cf44a4db5e8f49
-            // 5109e4781ba171b9dcaa4964db3c490a
             nameInFocus(){
                 this.nameIsFocus = true;
             },

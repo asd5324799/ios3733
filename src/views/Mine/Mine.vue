@@ -14,27 +14,28 @@
         <span  
           class="user-grade-item"
           :class="userGrade.vip?'issvip':'nosvip'">SVIP</span>
-        <span class="user-grade-item user-rank">{{userGrade.rank}}</span>
+        <span v-if="userGrade.rank" class="user-grade-item user-rank">{{userGrade.rank}}</span>
         <span 
+          v-if="userGrade.fu"
           class="user-grade-item user-fu" 
           :style="{backgroundColor:(userGrade.fu_color||'#d3dfef')}">{{userGrade.fu}}</span>
       </div>
       <!-- 金币游戏币 -->
       <div class="user-gold-list">
-        <div class="user-gold-item gold-currency">
+        <router-link to="Gold" tag="div" class="user-gold-item gold-currency">
             <span><b>{{userGold}}</b>个</span>
             <p>金币</p>
-        </div>
-        <div class="user-gold-item platform-currency">
+        </router-link>
+        <router-link to="PlatformGold" tag="div" class="user-gold-item platform-currency">
             <span><b>{{userPtb}}</b>个</span>
             <p>平台币</p>
-        </div>
-        <div class="user-gold-item recharge">充值</div>
+        </router-link>
+        <router-link to="Recharge" tag="div" class="user-gold-item recharge">充值</router-link>
       </div>
       <!-- 功能列表 -->
       <div class="func">
           <ul class="func-list">
-              <li class="func-item message">
+              <router-link to="MyMessage" tag="li" class="func-item message">
                   <div class="item-content">
                       <div class="func-left">
                           <i class="func-icon"></i>
@@ -44,8 +45,8 @@
                           <span class="right-arrow"></span>
                       </div>
                   </div>
-              </li>
-              <li class="func-item kefu">
+              </router-link>
+              <router-link to="CustomCenter" tag="li" class="func-item kefu">
                   <div class="item-content">
                       <div class="func-left">
                           <i class="func-icon"></i>
@@ -55,8 +56,8 @@
                           <span class="right-arrow"></span>
                       </div>
                   </div>
-              </li>
-              <router-link to="/mygame" tag="li" class="func-item mygame">
+              </router-link>
+              <router-link to="MyGame" tag="li" class="func-item mygame">
                   <div class="item-content">
                       <div class="func-left">
                           <i class="func-icon"></i>
@@ -67,7 +68,7 @@
                       </div>
                   </div>
               </router-link>
-              <router-link to="/mygift" tag="li" class="func-item mygift">
+              <router-link to="MyGift" tag="li" class="func-item mygift">
                   <div class="item-content">
                       <div class="func-left">
                           <i class="func-icon"></i>
@@ -78,7 +79,7 @@
                       </div>
                   </div>
               </router-link>
-              <li class="func-item complaint">
+              <router-link to="Complain" tag="li" class="func-item complaint">
                   <div class="item-content">
                       <div class="func-left">
                           <i class="func-icon"></i>
@@ -88,7 +89,7 @@
                           <span class="right-arrow"></span>
                       </div>
                   </div>
-              </li>
+              </router-link>
           </ul>
       </div>
     </div>

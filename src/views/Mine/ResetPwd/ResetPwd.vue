@@ -14,7 +14,8 @@
             </div>
             <div class="password" :class="passIsFocus?'linegreen':'linegrey'"><input :type="pwdType" v-model.trim="userAccount.password" @focus="passInFocus" @blur="passOutFocus"><span :class="passIsFocus?'cur':'nocur'">新密码</span><i class="show-pwd" :class="{'hide-pwd':showpwd}" @click="showPwd"></i></div>
             
-            <div class="submit-btn" @click="submitReset">提交</div>
+            <div class="submit-btn" v-if="ajaxSwitch" @click="submitReset">提交</div>
+            <div class="submit-btn gray" v-else>提交</div>
         </form>
     </main>
         <Prompt :message="message" />
@@ -41,7 +42,8 @@
                 checked: true,
                 pwdType: 'password',
                 showpwd:true,
-                message:''
+                message:'',
+                ajaxSwitch: true,
             }
         },
         filters: {
@@ -74,7 +76,7 @@
                 }
                 if(this.codeBtnShow){
                     this.$axios({
-                        url: 'https://api2.3733.com/api/sms/send',
+                        url: '/api/sms/send',
                         data: {
                             phone:this.userAccount.phoneNum,
                             type:4
@@ -96,7 +98,6 @@
                             }, 1000)    
                         }  
                     }).catch(() =>{
-                        // console.log(err);
                     })
                 }
             },
@@ -111,19 +112,22 @@
                      this.message = '密码密码不能小于6位'
                     return false;
                 }
-                this.$axios({
-                    url: '/api/user/resetPassword',
-                    data: {
-                        phone:this.userAccount.phoneNum,
-                        code:this.userAccount.codeNum,
-                        password:this.userAccount.password
-                    }
-                }).then(res =>{
-                    this.message = res.msg;
-                    setTimeout(()=>{
-                        this.$router.go(-1)
-                    },1000)
-                })
+                if(this.ajaxSwitch) {
+                  this.ajaxSwitch = false;
+                  this.$axios({
+                      url: '/api/user/resetPassword',
+                      data: {
+                          phone:this.userAccount.phoneNum,
+                          code:this.userAccount.codeNum,
+                          password:this.userAccount.password
+                      }
+                  }).then(res =>{
+                      this.message = res.msg;
+                      setTimeout(()=>{
+                          this.$router.go(-1)
+                      },1000)
+                  })
+                }
             },
             nameInFocus(){
                 this.nameIsFocus = true;

@@ -14,11 +14,7 @@ axios.interceptors.request.use(res => {
 // 拦截响应
 axios.interceptors.response.use(res => {
   res = res.data;
-  if(res.code === 1) {
-    return res;
-  } else {
-    return null;
-  }
+  return res;
 }, err => {
   return Promise.reject(err);
 })

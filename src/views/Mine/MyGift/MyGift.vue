@@ -12,7 +12,7 @@
                     @pullingUp="pullUp"
                     slot="loading-content">
                     <div class="nomore" slot="content" v-if="giftList.length === 0">暂无礼包</div>
-                    <GiftList :copyCode="copyCode" :giftList="giftList" slot="content" class="content"/>
+                    <GiftList :giftList="giftList" slot="content" class="content"/>
                 </Scroll>
             </Loading>
         </div>
@@ -55,6 +55,9 @@ export default {
           }
         }).then(res => {
           this.handleInitData(res);
+          if(res.data.list.length < 20) {
+            this.pullUpState = 'nomore';
+          }
           this.$nextTick(() => {
             this.loading = 'success';
           })

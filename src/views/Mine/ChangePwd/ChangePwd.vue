@@ -4,12 +4,13 @@
     <main>
         <form action="">
             <!-- 原密码 -->
-            <div class="password" :class="oldIsFocus?'linegreen':'linegrey'"><input :type="oldPwdType" v-model.trim="userAccount.oldPwd" @focus="oldInFocus" @blur="oldOutFocus"><span :class="oldIsFocus?'cur':'nocur'">原密码</span><i class="show-pwd" :class="{'hide-pwd':showoldpwd}" @click="showOldPwd"></i></div>
+            <div class="password" :class="oldIsFocus?'linegreen':'linegrey'"><input :type="pwdType[0]" autocomplete="off" v-model.trim="userAccount.oldPwd" @focus="oldInFocus" @blur="oldOutFocus"><span :class="oldIsFocus?'cur':'nocur'">原密码</span><i class="show-pwd" :class="{'hide-pwd':showoldpwd}" @click="showOldPwd"></i></div>
             <!-- 新密码 -->
-            <div class="password" :class="passIsFocus?'linegreen':'linegrey'"><input :type="pwdType" v-model.trim="userAccount.password" @focus="passInFocus" @blur="passOutFocus"><span :class="passIsFocus?'cur':'nocur'">新密码</span><i class="show-pwd" :class="{'hide-pwd':showpwd}" @click="showPwd"></i></div>
+            <div class="password" :class="passIsFocus?'linegreen':'linegrey'"><input :type="pwdType[1]" autocomplete="off" v-model.trim="userAccount.password" @focus="passInFocus" @blur="passOutFocus"><span :class="passIsFocus?'cur':'nocur'">新密码</span><i class="show-pwd" :class="{'hide-pwd':showpwd}" @click="showPwd"></i></div>
             <!-- 重复新密码 -->
-            <div class="password" :class="confirmIsFocus?'linegreen':'linegrey'"><input :type="confirmPwdType" v-model.trim="userAccount.confirmPwd" @focus="confirmInFocus" @blur="confirmOutFocus"><span :class="confirmIsFocus?'cur':'nocur'">重复新密码</span><i class="show-pwd" :class="{'hide-pwd':showconfirmpwd}" @click="showConfirmPwd"></i></div>
+            <div class="password" :class="confirmIsFocus?'linegreen':'linegrey'"><input :type="pwdType[2]" autocomplete="off" v-model.trim="userAccount.confirmPwd" @focus="confirmInFocus" @blur="confirmOutFocus"><span :class="confirmIsFocus?'cur':'nocur'">重复新密码</span><i class="show-pwd" :class="{'hide-pwd':showconfirmpwd}" @click="showConfirmPwd"></i></div>
             <div class="submit-btn" @click="submitChange">提交</div>
+            <div class="submit-btn gray" @click="submitChange">提交中...</div>
         </form>
     </main>
         <Prompt :message="message" />
@@ -17,6 +18,7 @@
 </template>
 <script>
     import Navigation from '@/components/navigation/navigation.vue';
+    import { JSEncrypt } from 'jsencrypt';
     export default {
         data() {
             return {
@@ -25,51 +27,68 @@
                     password:'',
                     confirmPwd:''
                 },
-                count:'',
-                codeTimer:null,
-                codeBtnShow:true,
-                userPic:'',
-                userGrade:'',
                 oldIsFocus:false,
                 confirmIsFocus:false,
                 passIsFocus:false,
-                checked: true,
-                oldPwdType:'password',
-                pwdType: 'password',
-                confirmPwdType:'password',
+                pwdType: ['password', 'password', 'password'],
                 showoldpwd:true,
                 showpwd:true,
                 showconfirmpwd:true,
                 message:'',
-                token:''
+                token:'',
+                publicKey: '',
+                ajaxSwitch: true,
             }
+        },
+        created() {
+          this.inputTitleChange();
+          this.token = localStorage.token;
+          this.getPublicKey();
         },
         methods: {
             back(){
                 this.$router.go(-1);
             },
+            getPublicKey() {
+              this.$axios({
+                url: '/api/index/rsaKey',
+                data: {}
+              })
+              .then(res => {
+                this.publicKey = res.data.rsa_public_key;
+              })
+            },
+            opensslEncrypt(str) {
+              let encryptor = new JSEncrypt()  // 新建JSEncrypt对象
+              if(this.publicKey === '') {
+                this.getPublicKey();
+              }
+              encryptor.setPublicKey(this.publicKey)  // 设置公钥
+              let temp = encryptor.encrypt(str)  // 对密码进行加密
+              return temp;
+            },
             showOldPwd() {
                 this.showoldpwd = ! this.showoldpwd;
-                if (this.oldPwdType === 'password') {
-                this.oldPwdType = 'text'
+                if (this.pwdType[0] === 'password') {
+                this.pwdType[0] = 'text'
                 } else {
-                this.oldPwdType = 'password'
+                this.pwdType[0] = 'password'
                 }
             },
             showPwd() {
                 this.showpwd = ! this.showpwd;
-                if (this.pwdType === 'password') {
-                this.pwdType = 'text'
+                if (this.pwdType[1] === 'password') {
+                this.pwdType[1] = 'text'
                 } else {
-                this.pwdType = 'password'
+                this.pwdType[1] = 'password'
                 }
             },
             showConfirmPwd() {
                 this.showconfirmpwd = ! this.showconfirmpwd;
-                if (this.confirmPwdType === 'password') {
-                this.confirmPwdType = 'text'
+                if (this.pwdType[2] === 'password') {
+                this.pwdType[2] = 'text'
                 } else {
-                this.confirmPwdType = 'password'
+                this.pwdType[2] = 'password'
                 }
             },
             submitChange(){
@@ -82,23 +101,42 @@
                 }else if(this.userAccount.password.length <6){
                     this.message = '新密码不能小于6位';
                     return false;
-                }else if(this.userAccount.confirmPwd == ''){
+                } else if(this.userAccount.password.length > 18) {
+                  this.message = '新密码不能大于18位';
+                } else if(this.userAccount.confirmPwd == ''){
                     this.message = '请输入重复密码'
                     return false;
                 }else if(this.userAccount.confirmPwd != this.userAccount.password){
                     this.message = '两次输入密码不一致';
                     return false;
                 }
-                this.$axios({
+                let oldPassword = this.opensslEncrypt(this.userAccount.oldPwd);
+                let newPassword = this.opensslEncrypt(this.userAccount.password);
+                if(this.ajaxSwitch) {
+                  this.ajaxSwitch = false;
+                  this.$axios({
                     url: '/api/user/changePassword',
                     data: {
-                    password:this.userAccount.oldPwd,
-                    newPassword:this.userAccount.password,
+                    password: oldPassword,
+                    newPassword: newPassword,
                     token:this.token
                     }
-                }).then(res =>{
-                    this.message = res.msg;
-                })
+                  }).then(res =>{
+                    if(res.code === 0) {
+                      this.message = res.msg;
+                    } else {
+                      this.message = res.msg;
+                      localStorage.setItem('token', '');
+                      setTimeout(() => {
+                        this.$router.push('Login');
+                      }, 1000)
+                    }
+                    this.ajaxSwitch = true;
+                  }).catch(() => {
+                    this.message = '网络不好，请稍后重试';
+                    this.ajaxSwitch = true;
+                  })
+                }
             },
             oldInFocus(){
                 this.oldIsFocus = true;
@@ -141,10 +179,6 @@
                     this.oldIsFocus = true;
                 }
             }
-        },
-        created () {
-            this.inputTitleChange();
-            this.token = localStorage.token;
         },
         components: {
             Navigation,
