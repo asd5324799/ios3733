@@ -2,7 +2,7 @@
   <div class="header">
     <div class="back" @click="goBack"></div>
     <div class="title">{{title}}</div>
-    <div class="right" v-if="type === 2" @click="reply">发布  </div>
+    <div class="right" v-if="type === 2" @click="rightClick">{{assTitle}}</div>
   </div>
 </template>
 <script>
@@ -15,14 +15,18 @@ export default {
     type: {
       type: Number,
       default: 1
+    },
+    assTitle: {
+      type: String,
+      default: '发布'
     }
   },
   methods: {
     goBack() {
       this.$router.back();
     },
-    reply() {
-      this.$emit('reply');
+    rightClick() {
+      this.$emit('rightClick');
     }
   },
 }

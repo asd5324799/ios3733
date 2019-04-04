@@ -1,12 +1,13 @@
 <template>
   <div class="reply-page">
-    <Navigation :title="'回复'" :type="2" @reply="upLoad"></Navigation>
+    <Navigation v-if="type === 2" :title="'回复'" :type="2" @rightClick="upLoad"></Navigation>
+    <Navigation v-else :title="'评论'" :type="2" @rightClick="upLoad"></Navigation>
     <main>
       <textarea 
         class="text-area" 
         cols="30" 
         rows="10" 
-        :placeholder="`回复:${nickname}`"
+        :placeholder="placeholder"
         v-model="reply"></textarea>
       <ul class="image-list">
         <li 
@@ -21,7 +22,7 @@
             @change="showImage(index)">
           <div class="add"></div>
           <img class="preview" :src="imageList[index]">
-          <i class="close"></i>
+          <i class="close" @click.stop="deleteImage(index)"></i>
         </li>
       </ul>
     </main>
@@ -40,7 +41,17 @@ export default {
       reply: '',
       imageList: [''],
       type: 2,
-      message: '',
+      message: '',  
+      ajaxSwitch: true,
+    }
+  },
+  computed: {
+    placeholder() {
+      if(this.type === 2) {
+        return `回复:${this.nickname}`
+      } else {
+        return `写出你对游戏玩法、操作、攻略等方面的客观评价吧，优质评论将会前排展示~并获得金币奖励~`
+      }
     }
   },
   created() {
@@ -51,11 +62,13 @@ export default {
   },
   methods: {  
     createdMethod() {
-      this.nickname = JSON.parse(this.$route.query.nickname);
-      this.sourceId = JSON.parse(this.$route.query.source_id);
       this.type = JSON.parse(this.$route.query.type);
-      this.commentId = JSON.parse(this.$route.query.comment_id);
-      this.replyOuterId = JSON.parse(this.$route.query.reply_outer_id);
+      if(this.type === 2) {
+        this.nickname = JSON.parse(this.$route.query.nickname);
+        this.replyOuterId = JSON.parse(this.$route.query.reply_outer_id);
+        this.replyCommentId = JSON.parse(this.$route.query.comment_id);
+      }
+      this.sourceId = JSON.parse(this.$route.query.source_id);
       this.reply = '';
       this.imageList = [''];
     },
@@ -72,6 +85,10 @@ export default {
       this.imageList.splice(index, 1, window.URL.createObjectURL(this.$refs.input[index].files[0]));
       this.imageList.push('');
     },
+    deleteImage(index) {
+      event.preventDefault();
+      this.imageList.splice(index, 1);
+    },
     upLoad(item) {
       let token = localStorage.getItem('token');
       let data = {
@@ -85,21 +102,33 @@ export default {
         data.imageList = this.imageList.slice(0, this.imageList.length - 1);
       }
       if(this.type === 2) {
-        data.commentId = this.commentId;
+        data.replyCommentId = this.replyCommentId;
       }
       if(this.replyOuterId !== '0') {
         data.replyOuterId = this.replyOuterId;
       }
-      this.$axios({
-        url: '/api/comment/submit',
-        data,
-      })
-      .then(() => {
-
-      })
-      .catch(() => {
-        this.message = '回复失败，请稍后再试！';
-      })
+      if(this.ajaxSwitch) {
+        this.ajaxSwitch = false;
+        this.message = '正在发布评论...';
+        this.$axios({
+          url: '/api/comment/submit',
+          headers: {
+            "User-Agent": "xmyy",
+          },
+          data,
+        })
+        .then(() => {
+          this.message = '发布成功';
+          this.ajaxSwitch = true;
+          setTimeout(() => {
+            this.$router.back();
+          }, 1000);
+        })
+        .catch(() => {
+          this.message = '回复失败，请稍后再试！';
+          this.ajaxSwitch = true;
+        })
+      }
     }
   },
   components: {

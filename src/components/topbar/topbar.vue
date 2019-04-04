@@ -1,22 +1,24 @@
 <template>
-  <div class="top-bar">
-    <div class="search-bar">
-      <router-link class="search-button" to="/search" >搜索
-          <object>
-            <router-link class="qrcode" to="/qrcode">
-              <i class="code-icon"></i>
-            </router-link>
-          </object>
-      </router-link>
-    </div>
-    <div class="tab-list">
-      <div
-        v-for="(item, index) in list"
-        :key="index"
-        class="tab-item"
-        :class="{current: currentTab === index}"
-        @click="change(index)">
-      <span class="text">{{item}}</span>
+  <div>
+    <div class="top-bar">
+      <div class="search-bar">
+        <router-link class="search-button" to="/search" >搜索
+            <!-- <object>
+              <router-link class="qrcode" to="/qrcode">
+                <i class="code-icon"></i>
+              </router-link>
+            </object> -->
+        </router-link>
+      </div>
+      <div class="tab-list">
+        <div
+          v-for="(item, index) in list"
+          :key="index"
+          class="tab-item"
+          :class="{current: currentTab === index}"
+          @click="change(index)">
+        <span class="text">{{item}}</span>
+        </div>
       </div>
     </div>
   </div>

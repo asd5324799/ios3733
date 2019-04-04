@@ -35,6 +35,7 @@
     import Prompt from '@/components/prompt/prompt.vue';
     import Navigation from '@/components/navigation/navigation.vue';
     import { JSEncrypt } from 'jsencrypt';
+    import Box from '@/common/box.js';
     export default {
         data() {
             return {
@@ -134,6 +135,8 @@
                     if(res.data) {
                       this.message = '登录成功';
                       localStorage.token = res.data.token;
+                      let box = new Box();
+                      box.loginSuccess(res.data);
                       this.$router.push({
                         name: 'Mine'
                       })

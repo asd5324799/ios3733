@@ -31,7 +31,7 @@
               </ul>
             </div>
           </div>
-          <div class="ready-comments">
+          <div class="ready-comments" @click="toReplyPage()">
             <i class="icon"></i>
             <span class="text">我要评论</span>
           </div>
@@ -108,6 +108,13 @@ export default {
       return newList
     }
   },
+  watch: {
+    '$route' (to, from) {
+      if(from.name === 'Detail' && to.name === 'Detail') {
+        this.createdMethod();
+      }
+    }
+  },
   created() {
     this.createdMethod();
   },
@@ -139,6 +146,15 @@ export default {
         }
       }
       return starList;
+    },
+    toReplyPage() {
+      this.$router.push({
+        name: 'ReplyPage',
+        query: {
+          source_id: JSON.stringify(this.id),
+          type: JSON.stringify(1),
+        }
+      })      
     },
     tabChange(index) {
       this.tabNow = index;

@@ -45,7 +45,7 @@
           <i class="good"></i>
           <span class="text">{{supportCount}}</span>
         </div>
-        <div class="right-item">
+        <div class="right-item" @click="toRelyPage">
           <i class="reply"></i>
           <span class="text">{{item.reply_count}}</span>
         </div>
@@ -121,27 +121,40 @@ export default {
       }   
       return 1
     },
-    toCommentDetail(item) {
+    toCommentDetail() {
       if(this.type === 2) {
         this.$router.push({
           name: 'ReplyPage',
           query: {
-            nickname: JSON.stringify(item.user.nickname),
-            source_id: JSON.stringify(item.source_id),
+            nickname: JSON.stringify(this.item.user.nickname),
+            source_id: JSON.stringify(this.item.source_id),
             type: JSON.stringify(2),
-            reply_outer_id: JSON.stringify(item.reply_outer_id),
-            comment_id: JSON.stringify(item.comment_id),
+            reply_outer_id: JSON.stringify(this.item.reply_outer_id),
+            comment_id: JSON.stringify(this.item.comment_id),
           }
         })
       } else {
         this.$router.push({
           name: 'CommentDetail',
           query: {
-            comment_id: JSON.stringify(item.comment_id),
-            source_id: JSON.stringify(item.source_id),
+            comment_id: JSON.stringify(this.item.comment_id),
+            source_id: JSON.stringify(this.item.source_id),
           }
         })
       }
+    },
+    toRelyPage() {
+      event.stopPropagation();
+      this.$router.push({
+        name: 'ReplyPage',
+        query: {
+          nickname: JSON.stringify(this.item.user.nickname),
+          source_id: JSON.stringify(this.item.source_id),
+          type: JSON.stringify(2),
+          reply_outer_id: JSON.stringify(this.item.reply_outer_id),
+          comment_id: JSON.stringify(this.item.comment_id),
+        }
+      })
     },
     styleObject(item) {
       if(item.gold_url !== '') {

@@ -13,9 +13,10 @@
             </div>
             <div class="get-code" :class="codeBtnShow?'bgGreen':'bgGrey'" @click="getCode">{{codeBtnShow?'获取验证码':'重新发送('+count+'秒)'}}</div>
             </div>
-            <div class="password" :class="passIsFocus?'linegreen':'linegrey'"><input :type="pwdType" v-model.trim="userAccount.password" @focus="passInFocus" @blur="passOutFocus"><span :class="passIsFocus?'cur':'nocur'">密码</span><i class="show-pwd" :class="{'hide-pwd':showpwd}" @click="showPwd"></i></div>
+            <div class="password" :class="passIsFocus?'linegreen':'linegrey'"><input :type="pwdType" v-model.trim="userAccount.password" @focus="passInFocus" @blur="passOutFocus" autocomplete="off"><span :class="passIsFocus?'cur':'nocur'">密码</span><i class="show-pwd" :class="{'hide-pwd':showpwd}" @click="showPwd"></i></div>
             
-            <div class="regis-btn" @click="register">注册</div>
+            <div class="regis-btn" v-if="ajaxSwitch" @click="register">注册</div>
+            <div class="regis-btn gray" v-else>注册</div>
         </form>
         <div class="register-bottom">
             <router-link to="/userregister" replace>用户名注册</router-link>
@@ -27,27 +28,37 @@
 </template>
 <script>
     import Navigation from '@/components/navigation/navigation.vue';
+    import { JSEncrypt } from 'jsencrypt';
+    import Box from '@/common/box.js';
+    import Prompt from '@/components/prompt/prompt.vue';
     export default {
         data() {
-            return {
-                userAccount:{
-                    userName:'',
-                    password:'',
-                    codeNum:''
-                },
-                count:'',
-                codeTimer:null,
-                codeBtnShow:true,
-                userPic:'',
-                userGrade:'',
-                nameIsFocus:false,
-                codeIsFocus:false,
-                passIsFocus:false,
-                checked: true,
-                pwdType: 'password',
-                showpwd:true,
-                message:''
-            }
+          return {
+            userAccount:{
+                userName:'',
+                password:'',
+                codeNum:''
+            },
+            count:'',
+            codeTimer:null,
+            codeBtnShow:true,
+            userPic:'',
+            userGrade:'',
+            nameIsFocus:false,
+            codeIsFocus:false,
+            passIsFocus:false,
+            checked: true,
+            pwdType: 'password',
+            showpwd:true,
+            message:'',
+            ajaxSwitch: true,
+          }
+        },
+        created() {
+          this.getPublicKey();
+        },
+        mounted () {
+          this.inputTitleChange();
         },
         filters: {
             
@@ -69,6 +80,24 @@
                 this.userAccount.password = '';
                 this.inputTitleChange();
             },
+            getPublicKey() {
+              this.$axios({
+                url: '/api/index/rsaKey',
+                data: {}
+              })
+              .then(res => {
+                this.publicKey = res.data.rsa_public_key;
+              })
+            },
+            opensslEncrypt(str) {
+              let encryptor = new JSEncrypt()  // 新建JSEncrypt对象
+              if(this.publicKey === '') {
+                this.getPublicKey();
+              }
+              encryptor.setPublicKey(this.publicKey)  // 设置公钥
+              let temp = encryptor.encrypt(str)  // 对密码进行加密
+              return temp;
+            },
             getCode(){
                 if(!this.userAccount.userName){
                     this.message = '请输入手机号'
@@ -79,10 +108,13 @@
                 }
                 if(this.codeBtnShow){
                     this.$axios({
-                        url: 'https://api2.3733.com/api/sms/send',
+                        url: '/api/sms/send',
+                        headers: {
+                          'User-Agent': 'xmyy',
+                        },
                         data: {
                             phone:this.userAccount.userName,
-                            type:1
+                            type:2
                         }
                     }).then(() =>{
                         this.codeBtnShow = false;
@@ -115,15 +147,29 @@
                      this.message = '密码密码不能小于6位'
                     return false;
                 }
-                this.$axios({
+                if(this.ajaxSwitch) {
+                  this.ajaxSwitch = false;
+                  let password = this.opensslEncrypt(this.userAccount.password);
+                  this.$axios({
                     url: '/api/user/register',
                     data: {
-                        phone:this.userAccount.userName,
-                        code:this.userAccount.codeNum,
-                        password:this.userAccount.password
+                      phone:this.userAccount.userName,
+                      code:this.userAccount.codeNum,
+                      password:password
                     }
-                }).then(() =>{
-                })
+                  }).then((res) =>{
+                    this.ajaxSwitch = true;
+                    this.message = '登录成功';
+                    localStorage.token = res.data.token;
+                    let box = new Box();
+                    box.loginSuccess(res.data);
+                    this.$router.push({
+                      name: 'Mine'
+                    });
+                  }).catch(() => {
+                    this.ajaxSwitch = true;
+                  })
+                }
             },
             nameInFocus(){
                 this.nameIsFocus = true;
@@ -167,11 +213,9 @@
                 }
             }
         },
-        mounted () {
-            this.inputTitleChange();
-        },
         components: {
             Navigation,
+            Prompt,
         }
     }
 </script>

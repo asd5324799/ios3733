@@ -22,11 +22,13 @@ import GiftDetail from '../views/GiftDetail/GiftDetail.vue';
 import CommentDetail from '../views/Detail/comment-detail/comment-detail.vue';
 import ReplyPage from '../views/Detail/reply-page/reply-page.vue';
 import Subscribe from '../views/Subscribe/subscribe.vue';
+import Gold from '../views/Mine/Gold/Gold.vue';
+import PlatformGold from '../views/Mine/PlatformGold/PlatformGold.vue';
+import MyMessage from '../views/Mine/MyMessage/MyMessage.vue';
 
 Vue.use(Router)
 
 var router = new Router({
-  mode:'history',
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
@@ -87,7 +89,10 @@ var router = new Router({
     }, {
       path: '/reply-page',
       name: 'ReplyPage',
-      component: ReplyPage
+      component: ReplyPage,
+      meta: {  
+        requiresAuth: true    
+      }
     },
     {
       path: '/topic',
@@ -163,12 +168,23 @@ var router = new Router({
       path:'/resetpwd',
       name: 'ResetPwd',
       component: ResetPwd
-    },
+    }, {
+      path: '/gold',
+      name: 'Gold',
+      component: Gold
+    }, {
+      path: '/platformgold', 
+      name: 'PlatformGold',
+      component: PlatformGold,
+    }, {
+      path: '/mymessage',
+      name: 'MyMessage',
+      component: MyMessage,
+    }
   ]
 })
 
 router.beforeEach((to, from, next) => {
-  // localStorage.token = '1f1643d43c60f52c4960ce91122b33e2'
   let token = window.localStorage.getItem('token')
   if(to.path === '/login'){
     next();

@@ -30,7 +30,7 @@ export default {
       pullDownState: 'ready',
       pullUpState: 'ready',
       ajaxSwitch: true,
-      page:1,
+      page:2,
       loading: 'ready',
     }
   },
@@ -43,7 +43,7 @@ export default {
       this.$axios({
         url: '/api/server/index',
         data: {
-          page:this.page,
+          page:1,
           type:this.kaiFuType,
         }
       }).then(res => {
@@ -65,11 +65,10 @@ export default {
     pullDown() {
       if(this.ajaxSwitch) {
         this.ajaxSwitch = false;
-        this.page = 1;
         this.$axios({
           url:"/api/server/index",
           data:{
-            page:this.page,
+            page: 1,
             type: this.kaiFuType
           }
         }).then(res => {
@@ -92,7 +91,6 @@ export default {
     pullUp() {
       if(this.ajaxSwitch) {
         this.ajaxSwitch = false;
-        this.page++;
         this.$axios({
           url:"/api/server/index",
           data:{

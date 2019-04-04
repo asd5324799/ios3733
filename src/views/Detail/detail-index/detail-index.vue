@@ -34,7 +34,7 @@
           <div class="qq-group">
             <div class="big-text">加入QQ群：{{detail.qq_qun}}领取礼包</div>
             <div class="small-text">{{detail.yxftitle}}</div>
-            <a :href="detail.kefu_qq_url" class="button">加群</a>
+            <div class="button" @click="openInBrowser(`mqqapi://card/show_pslcard?src_type=internal&version=1&uin=${detail.notices[0].action_text}&key=959d333984b2deb937df28c4af43e3df678f8ec616a43e91c828e7ee563c4163&card_type=group&source=external`)">加群</div>
           </div>
           <!-- swiper -->
           <div class="swiper">
@@ -85,7 +85,7 @@
               <div class="explain">*专属返利活动*请在充值后48小时内尽快提交返利申请哦！</div>
               <div 
                 class="text"
-                v-for="(item, index) in detail.gameFeature"
+                v-for="(item, index) in detail.activity"
                 :key="index">
                 {{item}}
               </div>
@@ -145,6 +145,7 @@
                   v-for="(item, index) in detail.type"
                   :key="index"
                   :class="color(index)"
+                  @click="toCategory(item)"
                 >
                   {{item}}
                 </li>
@@ -171,6 +172,7 @@ import Scroll from '@/components/scroll/scroll.vue';
 import GameList2 from '@/components/gamelist2/gamelist2.vue';
 import 'swiper/dist/css/swiper.css';
 import {swiper as Swiper, swiperSlide as SwiperSlide} from 'vue-awesome-swiper';
+import Box from '@/common/box.js';
 
 export default {
   name: 'DetailIndex',
@@ -188,6 +190,14 @@ export default {
       loading: 'ready',
       pullDownState: 'ready',
       ajaxSwitch: true,
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      if(from.name === 'Detail' && to.name === 'Detail') {
+        this.createdMethod();
+        this.$emit('changeDetail')
+      }
     }
   },
   created() {
@@ -277,6 +287,19 @@ export default {
       } else {
         return 'after'
       }
+    },
+    toCategory(item) {
+      this.$router.push({
+        name: 'Home',
+        params: {
+          tag: JSON.stringify(item)
+        }
+      })
+    },
+    // 加群 
+    openInBrowser(str) {
+      let box = new Box();
+      box.openInBrowser(str);
     }
   },
   components: {

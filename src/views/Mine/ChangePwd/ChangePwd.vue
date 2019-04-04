@@ -23,9 +23,9 @@
         data() {
             return {
                 userAccount:{
-                    oldPwd:'',
-                    password:'',
-                    confirmPwd:''
+                  oldPwd:'',
+                  password:'',
+                  confirmPwd:''
                 },
                 oldIsFocus:false,
                 confirmIsFocus:false,

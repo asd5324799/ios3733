@@ -21,8 +21,8 @@
                 v-for="(item, itemIndex) in value"
                 :key="itemIndex"
                 :class="{active: itemIndex === selectedList[index]}">
-                 <div 
-                  class="text"
+                <div 
+                  class="text" 
                   @click="changeSelectList(index, itemIndex)">
                   {{item.title}}
                 </div>
@@ -118,6 +118,7 @@ export default {
       this.lists.classList = res.data.class_list;
       this.lists.sizeList = res.data.size_cate;
       this.lists.typeList = res.data.game_cate;
+      sessionStorage.setItem('typeList', JSON.stringify(res.data.game_cate));
     },
     changeSelectList(number, index) {
       this.$emit('changeSelectedList', number, index)

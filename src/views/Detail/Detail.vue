@@ -20,7 +20,7 @@
         <!-- main -->
         <main>
           <Swiper :options="swiperOption" class="swiper" ref="Swiper">
-            <SwiperSlide><DetailIndex /></SwiperSlide>
+            <SwiperSlide><DetailIndex @changeDetail="changeDetail" /></SwiperSlide>
             <SwiperSlide><DetailComment /></SwiperSlide>
             <SwiperSlide><DetailGift /></SwiperSlide>
             <SwiperSlide><DetailNews /></SwiperSlide>
@@ -30,9 +30,9 @@
     </div>
     <!-- download -->
     <div class="game-download">
-      <div class="left"><i class="icon icon-left"></i><div class="text">收藏</div></div> 
+      <!-- <div class="left"><i class="icon icon-left"></i><div class="text">收藏</div></div>  -->
       <a :href="down_ip" class="download">下载《{{title}}》</a>
-      <div class="right"><i class="icon icon-right"></i><div class="text">分享</div></div> 
+      <!-- <div class="right"><i class="icon icon-right"></i><div class="text">分享</div></div>  -->
     </div>
   </div>
 </template>
@@ -52,6 +52,8 @@ export default {
       tabList: ['详情', '评论', '礼包', '资讯'],
       currentTab: 0,
       swiperOption: {
+        touchAngle : 30,
+        resistanceRatio : 0,
         on: {
           slideChange: () => {
             this.currentTab = this.swiper.activeIndex;
@@ -86,6 +88,9 @@ export default {
     changeSlide(index) {
       this.swiper.slideTo(index);
       this.currentTab = index;
+    },
+    changeDetail() {
+      this.createdMethod();
     }
   },
   components: {

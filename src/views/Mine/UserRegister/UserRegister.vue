@@ -21,6 +21,9 @@
 </template>
 <script>
     import Navigation from '@/components/navigation/navigation.vue';
+    import { JSEncrypt } from 'jsencrypt';
+    import Box from '@/common/box.js';
+    import Prompt from '@/components/prompt/prompt.vue';
     export default {
         data() {
             return {
@@ -42,11 +45,15 @@
                 confirmPwdType:'password',
                 showpwd:true,
                 showconfirmpwd:true,
-                message:''
+                message:'',
+                ajaxSwitch: true,
             }
         },
-        filters: {
-            
+        created() {
+          this.getPublicKey();
+        },
+        mounted () {
+            this.inputTitleChange();
         },
         methods: {
             back(){
@@ -88,14 +95,46 @@
                     this.message = '两次输入密码不一致';
                     return false;
                 }
-                this.$axios({
-                    url: '/api/user/register',
-                    data: {
-                    username:'dadiao062',
-                    password:'123456'
-                    }
-                }).then(() =>{
-                })
+                if(this.ajaxSwitch) {
+                  this.ajaxSwitch = false;
+                  let password = this.opensslEncrypt(this.userAccount.password);
+                  this.$axios({
+                      url: '/api/user/register',
+                      data: {
+                        phone:this.userAccount.userName,
+                        password:password
+                      }
+                  }).then((res) =>{
+                    this.ajaxSwitch = true;
+                    this.message = '登录成功';
+                    localStorage.token = res.data.token;
+                    let box = new Box();
+                    box.loginSuccess(res.data);
+                    this.$router.push({
+                      name: 'Mine'
+                    });             
+                  }).catch(() => {
+                    this.ajaxSwitch = true;
+                  })
+                }
+            },
+            getPublicKey() {
+              this.$axios({
+                url: '/api/index/rsaKey',
+                data: {}
+              })
+              .then(res => {
+                this.publicKey = res.data.rsa_public_key;
+              })
+            },
+            opensslEncrypt(str) {
+              let encryptor = new JSEncrypt()  // 新建JSEncrypt对象
+              if(this.publicKey === '') {
+                this.getPublicKey();
+              }
+              encryptor.setPublicKey(this.publicKey)  // 设置公钥
+              let temp = encryptor.encrypt(str)  // 对密码进行加密
+              return temp;
             },
             nameInFocus(){
                 this.nameIsFocus = true;
@@ -139,11 +178,12 @@
                 }
             }
         },
-        mounted () {
-            this.inputTitleChange();
+        filters: {
+            
         },
         components: {
             Navigation,
+            Prompt,
         }
     }
 </script>

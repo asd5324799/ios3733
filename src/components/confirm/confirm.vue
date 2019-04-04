@@ -14,7 +14,7 @@
                         <i></i>
                         <div class="sex-text">我是汉纸</div>
                     </div>
-                    <div class="woman">
+                    <div class="woman" @click="close()">
                         <i></i>
                         <div class="sex-text">我是妹纸</div>
                     </div>
@@ -63,10 +63,13 @@
                 message:'',
                 codeBtnShow:true,
                 codeTimer:null,
-                count:0
+                count:0,
+                publicKey: '',
             }
         },
         methods: {
+            ok() {},
+
             close() {},
             handleInput(e){
                 if(this.text.type===4){//只能输入数字
@@ -84,6 +87,9 @@
                 if(this.codeBtnShow){
                     this.$axios({
                         url: '/api/sms/send',
+                        headers: {
+                          'User-Agent': 'xmyy',
+                        },
                         data: {
                           phone: this.text.phoneText,
                           type: this.text.bindType,

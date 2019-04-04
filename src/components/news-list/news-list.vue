@@ -3,7 +3,8 @@
     <li 
       class="news-item"
       v-for="(item, index) in list"
-      :key="index">
+      :key="index"
+      @click="BOX_openInNewWindow(`http://m.3733.com/appnews/${item.id}.html`)">
       <img class="news-img" :src="item.titlepic">
       <div class="container">
         <div class="title">{{item.title}}</div>
@@ -14,6 +15,7 @@
   </ul>
 </template>
 <script>
+import Box from '@/common/box.js';
 export default {
   name: 'NewsList',
   props: {
@@ -32,6 +34,10 @@ export default {
           d = temp.getDate();
       return `${y}-${m}-${d}`;
     },
+    BOX_openInNewWindow(url) {
+      let box = new Box();
+      box.openInNewWindow(url);
+    }
   },
 }
 </script>

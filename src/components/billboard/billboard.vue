@@ -5,7 +5,7 @@
           <ul class="game-list">
               <li class="game-item" v-for="(item,index) of gameTop" :key="index">
                   <div class="game-pic">
-                      <router-link to="/detail"><img :src="item.titlepic" alt=""></router-link>
+                      <div @click="toDetail(item)"><img :src="item.titlepic" alt=""></div>
                       <i class="cap-ico"></i>
                       <span class="no-ico"></span>
                   </div>
@@ -32,7 +32,19 @@ export default {
       type: String,
       default: 'newgame-billboard'
     }
-  }
+  },
+  methods: {
+    toDetail(item) {
+      this.$router.push({ 
+        name: 'Detail', 
+        query: {
+          id: JSON.stringify(item.id), 
+          title: JSON.stringify(item.title), 
+          down_ip: JSON.stringify(item.down_ip),
+        }
+      })
+    }
+  },
 }
 </script>
 <style lang="less" scoped>

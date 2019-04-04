@@ -1,16 +1,19 @@
 <template>
   <div class="home">
     <!-- header -->
-    <TopBar :list="tabList" :currentTab="currentTab" @changeSlide="changeSlide"></TopBar>
-    <main>
-      <Swiper :options="swiperOption" class="swiper" ref="Swiper">
-        <SwiperSlide>
-            <QualitySelect @toTypePage="toTypePage" @toNewGame="toNewGame"/>
-        </SwiperSlide>
-        <SwiperSlide><NewGame /></SwiperSlide>
-        <SwiperSlide><CateGory :selectedList="selectedList" @changeSelectedList="changeSelectedList"/></SwiperSlide>
-      </Swiper>
-    </main>
+    <TopBar :list="tabList" :currentTab="currentTab" @changeSlide="changeSlide">
+      <div slot="content">
+        <main>
+          <Swiper :options="swiperOption" class="swiper" ref="Swiper">
+            <SwiperSlide>
+                <QualitySelect @toTypePage="toTypePage" @toNewGame="toNewGame"/>
+            </SwiperSlide>
+            <SwiperSlide><NewGame /></SwiperSlide>
+            <SwiperSlide><CateGory :selectedList="selectedList" @changeSelectedList="changeSelectedList"/></SwiperSlide>
+          </Swiper>
+        </main>
+      </div>
+    </TopBar>
     <!-- footer -->
     <NavCom :pageIndex="0" />
   </div>
@@ -32,6 +35,8 @@ export default {
       currentTab: 0,
       selectedList: [0, 0, 0, 0],
       swiperOption: {
+        touchAngle : 30,
+        resistanceRatio : 0,
         on: {
           slideChange: () => {
             this.currentTab = this.swiper.activeIndex;
@@ -43,6 +48,20 @@ export default {
   computed: {
     swiper() {
       return this.$refs.Swiper.swiper
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      if(to.name === 'Home' && from.name === 'Detail' && this.$route.params.tag !== undefined) {
+        let arr = JSON.parse(sessionStorage.typeList);
+        arr.forEach((ele, index) => {
+          if(this.$route.params.tag === `"${ele.title}"`) {
+            this.swiper.slideTo(2);
+            this.changeSelectedList(1, index); 
+          }
+        });
+      }
+      
     }
   },
   methods: {
@@ -57,7 +76,7 @@ export default {
       if(data !== 3) {
         this.swiper.slideTo(2);
         data++;
-        this.selectedList.splice(0, 1, data);
+        this.changeSelectedList(0, data);
       } else {
         this.$router.push({name: 'Topic'})
       }

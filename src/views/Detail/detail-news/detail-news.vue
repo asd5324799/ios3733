@@ -32,6 +32,13 @@ export default {
       title: ''
     }
   },
+  watch: {
+    '$route' (to, from) {
+      if(from.name === 'Detail' && to.name === 'Detail') {
+        this.createdMethod();
+      }
+    }
+  },
   created() {
     this.createdMethod();
   },
