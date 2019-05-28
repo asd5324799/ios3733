@@ -2,23 +2,18 @@
   <div>
     <div class="top-bar">
       <div class="search-bar">
-        <router-link class="search-button" to="/search" >搜索
-            <!-- <object>
-              <router-link class="qrcode" to="/qrcode">
-                <i class="code-icon"></i>
-              </router-link>
-            </object> -->
-        </router-link>
+        <router-link class="search-button" to="/search" >搜索</router-link>
       </div>
       <div class="tab-list">
-        <div
+        <router-link
+          tag="div"
           v-for="(item, index) in list"
           :key="index"
           class="tab-item"
-          :class="{current: currentTab === index}"
-          @click="change(index)">
-        <span class="text">{{item}}</span>
-        </div>
+          :to="{name: item.name}"
+        >
+          <span class="text">{{item.title}}</span>
+        </router-link>
       </div>
     </div>
   </div>
@@ -28,16 +23,13 @@
     props: {
       list: {
         type: Array,
-        default: []
-      },
-      currentTab: {
-        type: Number,
-        default: 0
+        default() {
+          return []
+        }
       }
     },
-    methods: {
-      change(index) {
-        this.$emit('changeSlide', index);
+    data() {
+      return {
       }
     },
   }

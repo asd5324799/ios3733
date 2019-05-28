@@ -1,28 +1,29 @@
 <template>
   <div class="topic">
     <Navigation :title="'游戏专题'" />
-    <Loading class="wrapper" :loading="loading">
-      <Scroll 
-        :pullDown="pullDownState"
-        :pullUp="pullUpState"
-        @pullingDown="pullDown"
-        @pullingUp="pullUp"
-        slot="loading-content">
-        <div class="topic-box content" slot="content">
+    <Loading :loading="loading" @refresh="createdMethod">
+      <van-pull-refresh v-model="pullDownState" @refresh="pullDown" slot="loading-content">
+        <div class="topic-box content">
           <ul class="topic-list">
-            <li class="topic-item" v-for="(item,index) of topicList" :key="index">
-              <img :src="item.info.titlepic" @click="toTopicList(item.info.id)">
-            </li>
+            <van-list
+            v-model="pullUpState"
+            :finished="noMore"
+            finished-text="没有更多了"
+            @load="pullUp"
+            >
+              <li class="topic-item" v-for="(item,index) of topicList" :key="index">
+                <img :src="item.info.titlepic" @click="toTopicList(item.info.id)">
+              </li>
+            </van-list>
           </ul>
         </div>
-      </Scroll>
+      </van-pull-refresh>
     </Loading>
   </div>
 </template>
 <script>
 import Navigation from  '@/components/navigation/navigation.vue';
 import Loading from '@/components/loading/loading.vue';
-import Scroll from '@/components/scroll/scroll.vue';
 export default {
   name:"Topic",
   data() {
@@ -30,9 +31,9 @@ export default {
       topicList:[],
       page:2,
       loading: 'ready',
-      pullDownState: 'ready',
-      pullUpState: 'ready',
-      ajaxSwitch: true
+      pullDownState: false,
+      pullUpState: false,
+      noMore: false,
     }
   },
   created(){
@@ -62,63 +63,43 @@ export default {
       }
     },
     pullDown() {
-      if(this.ajaxSwitch) {
-        this.ajaxSwitch = false;
-        this.$axios({
-          url: "/api/subject/index",
-          data: {
-            page: 1,
-            listRows: "20"
-          }
-        })
-        .then(res => {
-          this.hadnleInitData(res);
-          this.pullDownState = 'success';
-          setTimeout(()=> {
-            this.pullDownState = 'ready';
-            this.ajaxSwitch = true;
-          }, 1000)
-        })
-        .catch(() => {
-          this.pullDownState = 'fail';
-          setTimeout(()=> {
-            this.pullDownState = 'ready';
-            this.ajaxSwitch = true;
-          }, 1000)   
-        })
-      }
+      this.$axios({
+        url: "/api/subject/index",
+        data: {
+          page: 1,
+          listRows: "20"
+        }
+      })
+      .then(res => {
+        this.page = 2;
+        this.hadnleInitData(res);
+        this.pullDownState = false;
+        this.$toast('刷新成功');
+      })
+      .catch(() => {
+        this.pullDownState = false;  
+        this.$toast('刷新失败');
+      })
     },
     pullUp() {
-      if(this.ajaxSwitch && this.pullUpState !== 'nomore') {
-        this.ajaxSwitch = false;
-        this.$axios({
-          url: "/api/subject/index",
-          data: {
-            page: this.page,  
-            listRows: "20"
-          }
-        })
-        .then(res => {
-          this.topicList.push(...res.data);
-          if(res.data.length < 20) {
-            this.pullUpState = 'nomore';
-          } else {
-            this.page++;
-            this.pullUpState = 'success';
-            setTimeout(() => {
-              this.pullUpState = 'ready';
-            }, 1000);
-          }
-          this.ajaxSwitch = true;
-        })
-        .catch(() => {
-          this.pullUpState = 'fail';
-          this.ajaxSwitch = true;
-          setTimeout(() => {
-            this.pullUpState = 'ready';
-          }, 1000);      
-        })
-      }
+      this.$axios({
+        url: "/api/subject/index",
+        data: {
+          page: this.page,  
+          listRows: "20"
+        }
+      })
+      .then(res => {
+        this.topicList.push(...res.data);
+        this.page++;
+        this.pullUpState = false;
+        if(res.data.length < 20) {
+          this.noMore = true;
+        }
+      })
+      .catch(() => {
+        this.pullUpState = false; 
+      })
     },
     toTopicList(id) {
       this.$router.push({
@@ -132,7 +113,6 @@ export default {
   components: {
     Navigation,
     Loading,
-    Scroll,
   }
 }
 </script>

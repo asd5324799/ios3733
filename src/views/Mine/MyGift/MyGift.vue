@@ -3,21 +3,19 @@
       <Navigation title="我的礼包"/>
     <!-- header -->
     <main>
-        <div class="my-gift-list"  v-if="giftList.length">
-            <Loading :loading="loading" @refresh="createdMethod">
-                <Scroll 
-                    :pullDown="pullDownState"
-                    :pullUp="pullUpState"
-                    @pullingDown="pullDown"
-                    @pullingUp="pullUp"
-                    slot="loading-content">
-                    <div class="nomore" slot="content" v-if="giftList.length === 0">暂无礼包</div>
-                    <GiftList :giftList="giftList" slot="content" class="content"/>
-                </Scroll>
-            </Loading>
-        </div>
-      <div class="my-gift-list" v-else>
-          <div class="content-none">{{noneText}}</div>
+      <div class="my-gift-list">
+          <Loading :loading="loading" @refresh="createdMethod">
+            <div slot="loading-content">
+              <van-list
+                v-model="pullUpState"
+                :finished="noMore"
+                :finished-text="text"
+                @load="pullUp"
+              >
+                <GiftList :giftList="giftList" class="content"/>
+              </van-list>
+            </div>
+          </Loading>
       </div>
     </main>
   </div>
@@ -26,7 +24,6 @@
 
 <script>
 import Loading from '@/components/loading/loading.vue';
-import Scroll from '@/components/scroll/scroll.vue';
 import Navigation from '@/components/navigation/navigation.vue';
 import GiftList from '@/components/giftlist/giftlist.vue';
 
@@ -36,13 +33,18 @@ export default {
     return{
         giftList:[],
         noneText:'您还没有领取过礼包',
-        pullDownState: 'ready',
-        pullUpState:'ready',
+        pullUpState: false,
         loading: 'ready',
         ajaxSwitch: true,
         token:'',
-        page:2
+        page:2,
+        text: '没有更多了',
+        noMore: false,
     }
+  },
+  activated() {
+    this.token = sessionStorage.token;
+    this.createdMethod();   
   },
   methods: {
       createdMethod() {
@@ -56,7 +58,10 @@ export default {
         }).then(res => {
           this.handleInitData(res);
           if(res.data.list.length < 20) {
-            this.pullUpState = 'nomore';
+            this.noMore = true;
+            if(res.data.list.length === 0) {
+              this.text = '您还没有领取过礼包';
+            }
           }
           this.$nextTick(() => {
             this.loading = 'success';
@@ -66,32 +71,7 @@ export default {
         })
     },
     handleInitData(res) {
-        this.giftList = this.giftList.concat(res.data.list);
-    },
-    pullDown() {
-        this.page = 2;
-        this.$axios({
-          url:'/api/card/mine',
-          data:{
-            token: this.token,
-            page: 1
-          }
-        }).then(res => {
-          this.giftList = [];
-          this.handleInitData(res);
-          this.pullDownState = 'success';
-          this.pullUpState = 'ready';
-          setTimeout(() => {
-            this.pullDownState = 'ready';
-            this.ajaxSwitch = true;
-          }, 1000)
-        }).catch(() => {
-          this.pullDownState = 'fail';
-          setTimeout(() => {
-            this.pullDownState = 'ready';
-            this.ajaxSwitch = true;
-          }, 1000)
-        })
+      this.giftList = this.giftList.concat(res.data.list);
     },
     pullUp(){
       if(this.ajaxSwitch) {
@@ -107,34 +87,20 @@ export default {
           this.page++;
           this.handleInitData(res);
           if(res.data.list.length < 20) {
-            this.pullUpState = 'nomore';
-          } else {
-            this.pullUpState = 'success';
-            setTimeout(() => {
-              this.pullUpState = 'ready';
-              this.ajaxSwitch = true;
-            }, 1000)
+            this.noMore = true;
           }
+          this.pullUpState = false;
         })
         .catch(() => {
-            this.pullUpState = 'fail';
-            setTimeout(() => {
-              this.pullUpState = 'ready';
-              this.ajaxSwitch = true;
-            }, 1000)
+            this.pullUpState = false;
         })
       }
     }
-  },
-  created () {
-      this.token = localStorage.token;
-      this.createdMethod();
   },
   components: {
     Navigation,
     GiftList,
     Loading,
-    Scroll
   }
 }
 </script>

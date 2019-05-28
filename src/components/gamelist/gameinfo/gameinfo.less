@@ -67,6 +67,7 @@
   }
   .game-download {
     position: absolute;
+    box-sizing: border-box;
     top: 27*@rem;
     right: 14*@rem;
     width: 60*@rem;
@@ -79,6 +80,11 @@
     color: rgba(255, 255, 255, 1);
     &.orange {
       background-color: rgba(255, 157, 2, 1);
+    }
+    &.orange.already {
+      background-color: rgba(255, 255, 255, 1);
+      color: #6e6e6e;
+      border: 1px solid #6e6e6e;
     }
   }
 }

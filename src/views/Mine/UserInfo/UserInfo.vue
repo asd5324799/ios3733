@@ -1,175 +1,163 @@
 <template>
-    <div class="mine">
-    <Navigation title="个人信息"/>
-    <main>
-        <!-- 图片裁剪 -->
-        <Cropper :initParam="uploadParam" :successCallback="uploadHandle" ref="cropper">
-        </Cropper>
-        <div class="func">
-                <ul class="func-list">
-                    <li @click="changeUserPic" class="func-item message">
-                        <div class="item-content userPic">
-                            <div class="func-left">
-                                <div class="func-name">头像</div>
-                            </div>
-                            <div class="func-right">
-                                <div class="user-pic"><img :src="userPic | hasPic" alt=""></div>
-                                <span class="right-arrow"></span>
-                            </div>
-                        </div>
-                    </li>
-                    <li @click="changeUserName(userName)" class="func-item message">
-                        <div class="item-content userName">
-                            <div class="func-left">
-                                <div class="func-name">昵称</div>
-                            </div>
-                            <div class="func-right">
-                                <div class="user-name right-text">{{userName}}</div>
-                                <span class="right-arrow"></span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="func-item message">
-                        <div class="item-content userNum">
-                            <div class="func-left">
-                                <div class="func-name">账号</div>
-                            </div>
-                            <div class="func-right">
-                                <div class="user-name right-text">{{userNum}}</div>
-                            </div>
-                        </div>
-                    </li>
-                    <li @click="bandPhone(userPhone)" class="func-item message">
-                        <div class="item-content userPhone">
-                            <div class="func-left">
-                                <div class="func-name">手机绑定</div>
-                            </div>
-                            <div class="func-right">
-                                <div class="user-name right-text">{{userPhone||'点此绑定'}}</div>
-                                <span class="right-arrow"></span>
-                            </div>
-                        </div>
-                    </li>
-                    <router-link :to="{name:'Identity',query:{name:userRealName,num:userIdNumber}}" class="func-item message" tag="li">
-                        <div class="item-content userRealName">
-                            <div class="func-left">
-                                <div class="func-name">实名认证</div>
-                            </div>
-                            <div class="func-right">
-                                <div class="user-name right-text">{{userRealName||'点此认证'}}</div>
-                                <span class="right-arrow"></span>
-                            </div>
-                        </div>
-                    </router-link>
-                   <router-link to="ChangePwd" class="func-item message" tag="li">
-                        <div class="item-content userChangePwd">
-                            <div class="func-left">
-                                <div class="func-name">修改密码</div>
-                            </div>
-                            <div class="func-right">
-                                <span class="right-arrow"></span>
-                            </div>
-                        </div>
-                    </router-link>
-                    <li @click="changeUserSex" class="func-item message">
-                        <div class="item-content userSex">
-                            <div class="func-left">
-                                <div class="func-name">性别</div>
-                            </div>
-                            <div class="func-right">
-                                <div class="user-name right-text">{{userSex | stringSex}}</div>
-                                <span class="right-arrow"></span>
-                            </div>
-                        </div>
-                    </li>
-                    <li @click="changeUserBirth" class="func-item message">
-                        <div class="item-content userBirth">
-                            <div class="func-left">
-                                <div class="func-name">生日</div>
-                            </div>
-                            <div class="func-right">
-                                <div class="user-name right-text">{{userBirth | formatDate}}</div>
-                                <span class="right-arrow"></span>
-                            </div>
-                        </div>
-                    </li>
-                    <li @click="changeUserQQ(userQQ)" class="func-item message">
-                        <div class="item-content userQQ">
-                            <div class="func-left">
-                                <div class="func-name">QQ</div>
-                            </div>
-                            <div class="func-right">
-                                <div class="user-name right-text">{{userQQ || '添加QQ号'}}</div>
-                                <span class="right-arrow"></span>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-        </div>
-        <div class="quitBtn" @click="quitLogin">退出登录</div>
-    </main>
-        <Prompt :message="message" />
-    </div>
+  <div class="mine">
+  <Navigation title="个人信息"/>
+  <main>
+      <!-- 图片裁剪 -->
+      <Cropper :initParam="uploadParam" :successCallback="uploadHandle" ref="cropper">
+      </Cropper>
+      <div class="func">
+              <ul class="func-list">
+                  <li @click="changeUserPic" class="func-item message">
+                      <div class="item-content userPic">
+                          <div class="func-left">
+                              <div class="func-name">头像</div>
+                          </div>
+                          <div class="func-right">
+                              <div class="user-pic">
+                                <img v-if="userPic" :src="userPic">
+                                <img v-else :src="defaultPic">
+                                </div>
+                              <span class="right-arrow"></span>
+                          </div>
+                      </div>
+                  </li>
+                  <li @click="changeUserName(userName)" class="func-item message">
+                      <div class="item-content userName">
+                          <div class="func-left">
+                              <div class="func-name">昵称</div>
+                          </div>
+                          <div class="func-right">
+                              <div class="user-name right-text">{{userName}}</div>
+                              <span class="right-arrow"></span>
+                          </div>
+                      </div>
+                  </li>
+                  <li class="func-item message">
+                      <div class="item-content userNum">
+                          <div class="func-left">
+                              <div class="func-name">账号</div>
+                          </div>
+                          <div class="func-right">
+                              <div class="user-name right-text">{{userNum}}</div>
+                          </div>
+                      </div>
+                  </li>
+                  <li @click="bandPhone(userPhone)" class="func-item message">
+                      <div class="item-content userPhone">
+                          <div class="func-left">
+                              <div class="func-name">手机绑定</div>
+                          </div>
+                          <div class="func-right">
+                              <div class="user-name right-text">{{userPhone||'点此绑定'}}</div>
+                              <span class="right-arrow"></span>
+                          </div>
+                      </div>
+                  </li>
+                  <router-link :to="{name:'Identity',query:{name:userRealName,num:userIdNumber}}" class="func-item message" tag="li">
+                      <div class="item-content userRealName">
+                          <div class="func-left">
+                              <div class="func-name">实名认证</div>
+                          </div>
+                          <div class="func-right">
+                              <div class="user-name right-text">{{userRealName||'点此认证'}}</div>
+                              <span class="right-arrow"></span>
+                          </div>
+                      </div>
+                  </router-link>
+                  <router-link to="ChangePwd" class="func-item message" tag="li">
+                      <div class="item-content userChangePwd">
+                          <div class="func-left">
+                              <div class="func-name">修改密码</div>
+                          </div>
+                          <div class="func-right">
+                              <span class="right-arrow"></span>
+                          </div>
+                      </div>
+                  </router-link>
+                  <li @click="changeUserSex" class="func-item message">
+                      <div class="item-content userSex">
+                          <div class="func-left">
+                              <div class="func-name">性别</div>
+                          </div>
+                          <div class="func-right">
+                              <div class="user-name right-text">{{userSex | stringSex}}</div>
+                              <span class="right-arrow"></span>
+                          </div>
+                      </div>
+                  </li>
+                  <li @click="changeUserBirth" class="func-item message">
+                      <div class="item-content userBirth">
+                          <div class="func-left">
+                              <div class="func-name">生日</div>
+                          </div>
+                          <div class="func-right">
+                              <div class="user-name right-text">{{userBirth | formatDate}}</div>
+                              <span class="right-arrow"></span>
+                          </div>
+                      </div>
+                  </li>
+                  <li @click="changeUserQQ(userQQ)" class="func-item message">
+                      <div class="item-content userQQ">
+                          <div class="func-left">
+                              <div class="func-name">QQ</div>
+                          </div>
+                          <div class="func-right">
+                              <div class="user-name right-text">{{userQQ || '添加QQ号'}}</div>
+                              <span class="right-arrow"></span>
+                          </div>
+                      </div>
+                  </li>
+              </ul>
+      </div>
+      <div class="quitBtn" @click="quitLogin">退出登录</div>
+  </main>
+  </div>
 </template>
 <script>
     import Navigation from '@/components/navigation/navigation.vue';
-    import Prompt from "@/components/prompt/prompt.vue";
     import Cropper from '@/components/cropper/cropper.vue';
     export default {
         data() {
-            return {
-                token:'',
-                userName:'',
-                userPic:'',
-                userNum:'',
-                userQQ:'未设置',
-                userBirth:'',
-                userPhone:'点此绑定',
-                userSex:'未设置',
-                userRealName:'点此认证',
-                checked: true,
-                message:'',
-                userIdNumber: '',
-                uploadParam: {
-                     fileType: 'recruit', // 其他上传参数 
-                     uploadURL: 'http://image.3733.com/upload', // 上传地址 
-                     scale: 4 // 相对手机屏幕放大的倍数: 4倍 
-                 },
-            }
+          return {
+            token:'',
+            userName:'',
+            userPic:'',
+            userNum:'',
+            userQQ:'未设置',
+            userBirth:'',
+            userPhone:'点此绑定',
+            userSex:'未设置',
+            userRealName:'点此认证',
+            checked: true,
+            userIdNumber: '',
+            defaultPic: 'http://pic5.3733.com/avatar/img_user_default.png',
+            uploadParam: {
+                  fileType: 'recruit', // 其他上传参数 
+                  uploadURL: 'http://image.3733.com/upload', // 上传地址 
+                  scale: 4 // 相对手机屏幕放大的倍数: 4倍 
+              },
+          }
         },
         computed: {
-            isNone(){
-                if(this.userAccount.userName||this.userAccount.password){
-                    return false;
-                }else{
-                    return true;
-                }
-            },
-            date(){
-                if(this.userBirth){
-                    let date = new Date(Number(this.userBirth)*1000);
-                    let y = date.getFullYear();
-                    let MM = date.getMonth() + 1;
-                    MM = MM < 10 ? ('0' + MM) : MM;
-                    let d = date.getDate();
-                    d = d < 10 ? ('0' + d) : d;
-                    return y + '-' + MM + '-' + d;
-                }else{
-                    return '未设置'
-                } 
-            }
+          date(){
+              if(this.userBirth){
+                  let date = new Date(Number(this.userBirth)*1000);
+                  let y = date.getFullYear();
+                  let MM = date.getMonth() + 1;
+                  MM = MM < 10 ? ('0' + MM) : MM;
+                  let d = date.getDate();
+                  d = d < 10 ? ('0' + d) : d;
+                  return y + '-' + MM + '-' + d;
+              }else{
+                  return '未设置'
+              } 
+          }
         },
         watch: {
-            $route(){
-                this.token = localStorage.token;
-                this.getUser();
-                this.getUserInfo();
-            },
-            token(){
-                this.getUser();
-                this.getUserInfo();
-
-            }
+          token(){
+              this.getUser();
+              this.getUserInfo();
+          }
         },
         filters: {
             stringSex(value){
@@ -195,52 +183,48 @@
                 }
             },
             hasPic (str) { 
-                return str || 'http://pic5.3733.com/avatar/img_user_default.png';
+                return str || '';
             }
         },
+        
         methods: {
-            back(){
-                this.$router.go(-1);
-            },
-            getUser(){
-                this.$axios({
-                    url:'/api/user/info',
-                    data:{
-                        token:this.token
-                    }
-                }).then(res=>{
-                    if(res.data){
-                        this.userPic = res.data.avatar;
-                        this.userName = res.data.nickname;
-                        this.userNum = res.data.username;
-                        this.userPhone = res.data.mobile;
-                    }
-                    
-                })
-            },
+          getUser(){
+            this.$axios({
+              url:'/api/user/info',
+              data:{
+                  token:this.token
+              }
+            }).then(res=>{
+              if(res.data){
+                  this.userPic = res.data.avatar;
+                  this.userName = res.data.nickname;
+                  this.userNum = res.data.username;
+                  this.userPhone = res.data.mobile;
+              }
+            })
+          },
             getUserInfo(){
-                this.$axios({
-                    url:'/api/user/infoEx',
-                    method:'POST',
-                    data:{
-                        token:this.token
-                    }
-                }).then(res=>{
-                    if(res.data){
-                        this.userBirth = res.data.birthday;
-                        this.userQQ = res.data.qq;
-                        this.userSex = res.data.sex;
-                        this.userRealName = res.data.real_name;
-                        this.userIdNumber = res.data.id_card;
-                    }
-                })
+              this.$axios({
+                url:'/api/user/infoEx',
+                data:{
+                    token:this.token
+                }
+              }).then(res=>{
+                if(res.data){
+                  this.userBirth = res.data.birthday;
+                  this.userQQ = res.data.qq;
+                  this.userSex = res.data.sex;
+                  this.userRealName = res.data.real_name;
+                  this.userIdNumber = res.data.id_card;
+                }
+              })
             },
             uploadPic(){
-                document.getElementById('upload-pic').click();
+              document.getElementById('upload-pic').click();
             },
             uploadHandle(data) {
                 if (data.code == 0) {
-                    this.message = data.msg
+                    this.$toast(data.msg);
                 }
                  if (data.code == 1) {
                      this.$axios({
@@ -251,7 +235,7 @@
                              avatar:data.data.object
                          }
                      }).then(res=>{
-                         this.message = res.msg;
+                         this.$toast(res.msg);
                          this.getUser()
                      })
                  }
@@ -321,10 +305,10 @@
                             nickname:res.inputText
                         }
                     }).then(res2=>{
-                        this.message = res2.msg;
+                        this.$toast(res2.msg);
                         this.userName = res.inputText
                     }).catch(() => {
-                      this.message = '修改失败请重试';
+                      this.$toast('修改失败请重试');
                     })
                 })
             },
@@ -343,7 +327,7 @@
                         }
                     }).then(res=>{
                         this.userSex = 2;
-                        this.message = res.msg;
+                        this.$toast(res.msg);
                     })
                 }).catch(()=>{
                     this.$axios({
@@ -354,9 +338,9 @@
                         }
                     }).then(res=>{
                         this.userSex = 1;
-                        this.message = res.msg;
+                        this.$toast(res.msg);
                     }).catch(() => {
-                      this.message = '修改失败请重试';
+                      this.$toast('修改失败请重试');
                     })
                 })
             },
@@ -385,7 +369,7 @@
                                 token:this.token
                             }
                         }).then(data=>{
-                            this.message = data.msg;
+                            this.$toast(data.msg);
                             this.getUserInfo();
                         })
                     }).catch(()=>{
@@ -406,7 +390,7 @@
                         token:this.token
                     }).then(res=>{
                         if(res.codeText == ''){
-                            this.message = '请输入验证码'
+                            this.$toast('请输入验证码')
                         }else{
                             this.$axios({
                                 url:'/api/user/unbindPhone',
@@ -416,7 +400,7 @@
                                     token:this.token
                                 }
                             }).then(data=>{
-                                this.message = data.msg
+                                this.$toast(data.msg);
                                 this.getUserInfo();
                             })
                         }
@@ -443,9 +427,9 @@
                             }
                         }).then(res => {
                             this.userBirth = res.data.birthday;
-                            this.message = res.msg;
+                            this.$toast(res.msg);
                         }).catch(() => {
-                          this.message = '修改失败请重试';
+                          this.$toast('修改失败请重试');
                         })
                     }
                 })
@@ -464,7 +448,7 @@
                     btnShow:true
                 }).then((res)=>{
                     if(res.inputText < 1000){
-                        this.message = "请输入正确的QQ号"
+                        this.$toast("请输入正确的QQ号")
                     }else{
                         this.$axios({
                         url:'/api/user/changeInfoEx',
@@ -473,7 +457,7 @@
                             qq:res.inputText
                         }
                     }).then(res=>{
-                        this.message = res.msg;
+                        this.$toast(res.msg);
                         this.userQQ = res.data.qq;
                     })
                     }
@@ -491,7 +475,7 @@
                     },
                     btnShow:true
                 }).then(() => {
-                    localStorage.token = '';
+                    sessionStorage.token = '';
                 this.$router.replace('/login')
                 })
                 .catch(() => {
@@ -500,13 +484,12 @@
             }
         },
         created () {
-            this.token = localStorage.token;
-            this.getUser()
-            this.getUserInfo()
+          this.token = sessionStorage.token;
+          this.getUser()
+          this.getUserInfo()
         },
         components: {
             Navigation,
-            Prompt,
             Cropper
         }
     }

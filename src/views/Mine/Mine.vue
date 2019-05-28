@@ -35,7 +35,7 @@
       <!-- 功能列表 -->
       <div class="func">
           <ul class="func-list">
-              <router-link to="MyMessage" tag="li" class="func-item message">
+              <router-link :to="{name: 'ReplyMessage'}" tag="li" class="func-item message">
                   <div class="item-content">
                       <div class="func-left">
                           <i class="func-icon"></i>
@@ -57,7 +57,7 @@
                       </div>
                   </div>
               </li>
-              <router-link to="MyGame" tag="li" class="func-item mygame">
+              <router-link :to="{name: 'GameCollect'}" tag="li" class="func-item mygame">
                   <div class="item-content">
                       <div class="func-left">
                           <i class="func-icon"></i>
@@ -93,13 +93,11 @@
           </ul>
       </div>
     </div>
-      <NavCom :pageIndex="3" />
-      <Prompt :message="message" />
+    <NavCom :pageIndex="3" />
   </div>
 </template>
 <script>
     import NavCom from '@/components/navcom/navcom.vue';
-    import Prompt from "@/components/prompt/prompt.vue";
     import Box from '@/common/box.js';
     export default {
       data() {
@@ -116,7 +114,16 @@
           userPtb:0,
           clocked_in:false,
           token:'',
-          message: '',
+        }
+      },
+      activated() {
+        this.token = sessionStorage.getItem('token');
+        if(this.token === '') {
+          this.userPic = '';
+          this.userGold = 0;
+          this.userPtb = 0;
+        } else {
+          this.getUserInfo(); 
         }
       },
       computed: {
@@ -126,15 +133,6 @@
           }else{
             return '签到'
           }
-        }
-      },
-      watch: {
-        $route(){
-          this.token = localStorage.token;
-          this.getUserInfo();
-        },
-        token(){
-          this.getUserInfo();
         }
       },
       filters: {
@@ -153,6 +151,7 @@
           let box = new Box();
           let temp = box.getToken();
           if(temp) {
+            sessionStorage.setItem('token', temp);
             this.token = temp;
             this.getUserInfo();
           }
@@ -163,25 +162,24 @@
               data: {
                 token:this.token
               }
-          }).then(res =>{
-            if(res.code == 1){
-              if(res.data){
-                var data = res.data;
-                this.userName = data.nickname
-                this.userPic = data.avatar
-                this.userGrade.fu = data.pay_level_name
-                this.userGrade.fu_color = data.pay_level_color
-                this.userGrade.rank = data.exp_level_name
-                this.userGrade.vip = data.is_svip
-                this.userGold = data.gold
-                this.userPtb = data.ptb
-                this.clocked_in = data.clocked_in
-              }
+          })
+          .then(res =>{
+            let data = res.data;
+            if(res.data) {
+              this.userName = data.nickname;
+              this.userPic = data.avatar;
+              this.userGrade.fu = data.pay_level_name;
+              this.userGrade.fu_color = data.pay_level_color;
+              this.userGrade.rank = data.exp_level_name;
+              this.userGrade.vip = data.is_svip;
+              this.userGold = data.gold;
+              this.userPtb = data.ptb;
+              this.clocked_in = data.clocked_in;
             }
           })
         },
         attendance() {
-          let token = localStorage.token;
+          let token = sessionStorage.token;
           this.$axios({
             url: '/api/user/clockIn',
             header: {
@@ -194,11 +192,11 @@
           })
           .then((res) => {
             if(res.code === 1) {
-              this.message = '签到成功';
+              this.$toast('签到成功');
             }
           })
           .catch(() => {
-            this.message = '签到失败,请稍后重试';
+            this.$toast('签到失败,请稍后重试');
           })
         },
         BOX_openInNewWindow(url) {
@@ -208,7 +206,6 @@
       },
       components: {
         NavCom,
-        Prompt,
       }
     }
 </script>

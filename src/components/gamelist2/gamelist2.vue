@@ -12,7 +12,15 @@
           <div class="game-name">{{item.title}}</div>
           <div class="game-type" v-if="type === '3'">{{item.totaldown}}人在玩</div>
         </div>
-        <a :href="item.down_ip" class="button" :class="{orange: type === 2}">{{type === 2 ? '预约' : '下载'}}</a>
+        <a :href="item.down_ip" v-if="type !== 2" class="button" :class="{orange: type === 2}">{{'下载'}}</a>
+        <div 
+          @click="appointment" 
+          class="button" 
+          v-if="type === 2" 
+          :class="{orange: type === 2, already: alreadyAppointment}"
+        >
+          {{text}}
+        </div>
       </li>
     </ul>
   </div>
@@ -24,18 +32,64 @@
 export default {
   props: {
     list: Array,
-    type: Number
+    type: {
+      type: Number,
+      default: 1
+    },
+  },
+  data() {
+    return {  
+      alreadyAppointment: false,
+    }
+  },
+  created() {
+    this.IfSubscribed();
+  },
+  computed: {
+    text() {
+      if(this.alreadyAppointment) {
+        return '已预约';
+      } else {
+        return '预约';
+      }
+    }
   },
   methods: {
     toDetail(item) {
-      this.$router.push({ 
-        name: 'Detail', 
-        query: {
-          id: JSON.stringify(item.id), 
-          title: JSON.stringify(item.title), 
-          down_ip: JSON.stringify(item.down_ip),
-        }
-      })
+      sessionStorage.setItem('goBack', this.$route.name);
+      sessionStorage.setItem('gameInfo', JSON.stringify(item));
+      if(this.type === 2) {
+        sessionStorage.setItem('type', 0);
+      } else {
+        sessionStorage.setItem('type', 1);
+      }
+      this.$router.push({
+          name: 'DetailIndex',
+      });
+    },
+    appointment() {
+      if(!this.alreadyAppointment) {
+        this.$axios({
+          url: '/api/game/subscribe',
+          data: {
+            token: sessionStorage.getItem('token'),
+            gameId: this.item.id
+          }
+        })
+        .then(res => {
+          this.alreadyAppointment = true;
+          this.$toast(res.msg); 
+        })
+      }
+    },
+    IfSubscribed() {
+      // if(subscribed) {
+      //   this.alreadyAppointment = true;
+      //   return true;
+      // } else {
+      //   this.alreadyAppointment = false;
+      //   return false;
+      // }
     }
   },
 };

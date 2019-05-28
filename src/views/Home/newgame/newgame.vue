@@ -2,14 +2,14 @@
   <div class="newgame">
     <Loading 
       :loading="loading" 
-      @refresh="createdMethod">
-      <Scroll 
-        :pullDown="pullDownState"
-        :pullUp="pullUpState"
-        @pullingDown="pullDown"
-        @pullingUp="pullUp"
-        slot="loading-content">
-        <div class="content" slot="content">
+      @refresh="createdMethod"
+    >
+      <van-pull-refresh 
+        v-model="pullDownState" 
+        @refresh="pullDown" 
+        slot="loading-content"
+      >
+        <div class="content">
           <!-- today-newgame -->
           <div class="today-newgame" v-if="todayNewGameList.length !== 0">
             <div class="title">今日新游</div>
@@ -21,31 +21,37 @@
           <!-- appointment -->
           <GameTitle
             :headerTitle="'预约专区'"
-            @clickDo="toSubscribePage"
+            :name="'Subscribe'"
           ></GameTitle>
           <GameList2
             :list="appointmentList"
             :type="2">
           </GameList2>
           <!-- time sort -->
-          <div class="time-sort"
-            v-for="(item, key, index) in sortGameObject"
-            :key="index">
-            <div class="title">{{key}}</div>
-            <GameList
-              :list="item"
-            ></GameList>
-          </div>
+          <van-list
+            v-model="pullUpState"
+            :finished="noMore"
+            finished-text="没有更多了"
+            @load="pullUp"
+          >
+            <div class="time-sort"
+              v-for="(item, key, index) in sortGameObject"
+              :key="index">
+              <div class="title">{{key}}</div>
+              <GameList
+                :list="item"
+              ></GameList>
+            </div>
+          </van-list>
         </div>
-      </Scroll>
-    </Loading> 
+      </van-pull-refresh>
+    </Loading>
   </div>
 </template>
 <script>
 import GameList from '@/components/gamelist/gamelist.vue';
 import GameList2 from '@/components/gamelist2/gamelist2.vue';
 import GameTitle from '@/components/gametitle/gametitle.vue';
-import Scroll from '@/components/scroll/scroll.vue';
 import Loading from '@/components/loading/loading.vue';
 
 export default {
@@ -57,10 +63,10 @@ export default {
       originalGameList: [],
       sortGameObject: {},
       newGamePage: 2,
-      ajaxSwitch: true,
       loading: 'ready',
-      pullDownState: 'ready',
-      pullUpState: 'ready',
+      pullDownState: false,
+      pullUpState: false,
+      noMore: false,
     }
   },
   created() {
@@ -113,76 +119,45 @@ export default {
       return `${y}-${m}-${d}`;
     },
     pullDown() {
-      if(this.ajaxSwitch) {
-        this.ajaxSwitch = false;
-        this.$axios({
-          method: 'post',
-          url: '/api/game/newList',
-          data: {}
-        }).then(res => {
-          this.handleInitData(res);
-          this.newGamePage = 2;
-          this.pullDownState = 'success';
-          this.$nextTick(() => {
-            this.ajaxSwitch = true;
-            setTimeout(() => {
-              this.pullDownState = 'ready';
-            }, 50);
-          })
-        }).catch(() => {
-          this.pullDownState = 'fail';
-          this.ajaxSwitch = true;
-          setTimeout(() => {
-              this.pullDownState = 'ready';
-          }, 1000);
-        })
-      }
+      this.$axios({
+        method: 'post',
+        url: '/api/game/newList',
+        data: {}
+      }).then(res => {
+        this.handleInitData(res);
+        this.newGamePage = 2;
+        this.pullDownState = false;
+        this.$toast('刷新成功');
+      })
+      .catch(() => {
+        this.pullDownState = false;
+      })
     },
     pullUp() {
-      if(this.ajaxSwitch) {
-        this.ajaxSwitch = false;
-        this.$axios({
-          method: 'post',
-          url: '/api/game/newList',
-          data: {
-            page: this.newGamePage
-          }
-        })
-        .then(res => {
-          if(res.data.list.length < 20) {
-            this.pullUpState = 'nomore';
-            this.ajaxSwitch = true;
-            this.handleListSort(res.data.list); 
-          } else {
-            this.pullUpState = 'success';
-            this.newGamePage++;
-            this.handleListSort(res.data.list); 
-            this.$nextTick(() => {
-              this.ajaxSwitch = true;
-              setTimeout(() => {
-              this.pullUpState = 'ready';
-            }, 50);
-            })
-          }
-        }).catch(() => {
-          this.pullUpState = 'fail';
-          this.ajaxSwitch = true;
-          setTimeout(() => {
-            this.pullUpState = 'ready';
-          }, 50);    
-        })
-      }
+      this.$axios({
+        method: 'post',
+        url: '/api/game/newList',
+        data: {
+          page: this.newGamePage
+        }
+      })
+      .then(res => {
+        this.pullUpState = false;
+        this.newGamePage++;
+        this.handleListSort(res.data.list); 
+        if(res.data.list.length < 20) {
+          this.noMore = true;
+        }
+      }).catch(() => {
+        this.pullUpState = false;
+      })
     },
-    toSubscribePage() {
-      this.$router.push({name: 'Subscribe'});
-    }
   },
   components: {
     GameList,
     GameList2,
     GameTitle,
     Loading,
-    Scroll
   },
 }
 </script>

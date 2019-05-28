@@ -1,8 +1,8 @@
 <template>
   <div class="detail-comments">
     <Loading :loading="loading" @refresh="createdMethod">
-      <Scroll slot="loading-content">
-        <div class="content" slot="content">
+      <div slot="loading-content" class="content">
+        <div>
           <div class="comment-scores">
             <div class="left-wrapper">
               <div class="scores">{{comments.rating.rating}}</div>
@@ -54,76 +54,86 @@
               </div>
             </div>
             <div class="tab-content">
-              <ul v-show="tabNow === 0">
-                <CommentItem
-                  v-for="(item, index) in handleList()"
-                  :key="index"
-                  :item="item"/>
-              </ul>
-              <ul v-show="tabNow === 1">
-                <CommentItem
-                  v-for="(item, index) in newCommentsList"
-                  :key="index"
-                  :item="item"/>       
-              </ul>
+              <van-list
+                v-model="pullUpState"
+                :finished="noMore"
+                finished-text="没有更多了"
+                @load="pullUp"
+              >
+                <ul v-show="tabNow === 0">
+                  <CommentItem
+                    v-for="(item, index) in defaultList"
+                    :key="index"
+                    :item="item"/>
+                </ul>
+                <ul v-show="tabNow === 1">
+                  <CommentItem
+                    v-for="(item, index) in newList"
+                    :key="index"
+                    :item="item"/>       
+                </ul>
+              </van-list>
             </div>
           </main>
         </div>
-      </Scroll>
+      </div>
     </Loading>
   </div>
 </template>
 <script>
 import CommentItem from '@/components/comment-item/comment-item.vue';
 import Loading from '@/components/loading/loading.vue';
-import Scroll from '@/components/scroll/scroll.vue';
 
 export default {
   name: 'detailComment',
   data() {
     return {
-      id: 0,
+      id: '',
       tabNow: 0,
+      loading: 'ready',
       comments: {
         rating: {},
         tops: [],
         comments: [],
         hots: []
       },
-      loading: 'ready',
-      pullDownState: 'ready',
-      ajaxSwitch: true,
-    }
-  },
-  computed: {
-    newCommentsList() {
-      let newList = this.handleList();
-      for(let i = newList.length; i > 0; i--) {
-        for(let j = 0; j < i - 1; j++) {
-          if(newList[j].create_time > newList[j+1].create_time) {
-            [newList[j], newList[j+1]] = [newList[j+1], newList[j]];
-          }
-        }
-      }
-      return newList
-    }
-  },
-  watch: {
-    '$route' (to, from) {
-      if(from.name === 'Detail' && to.name === 'Detail') {
-        this.createdMethod();
-      }
+      pullUpState: false,
+      noMore: false,
+      page: 2,  
+      defaultList: [],
+      newList: [],
     }
   },
   created() {
     this.createdMethod();
   },
   activated() {
-    if(this.id !== JSON.parse(this.$route.query.id)) {
+    if(this.id !== JSON.parse(sessionStorage.getItem('gameInfo')).id) {
       this.createdMethod();
     }
   },
   methods: {
+    createdMethod() {
+      this.id = JSON.parse(sessionStorage.getItem('gameInfo')).id;
+      this.loading = 'ready';
+      this.$axios({
+        url: '/api/comment/comments',
+        data: {
+          page: 1,
+          listRows: 20,
+          classId: 103,
+          sourceId: this.id,
+          order: 0
+        }
+      }).then(res => {
+        this.handleInitData(res);
+        this.$nextTick(() => {
+          this.loading = 'success';
+        }, 20)
+      }).catch(() => {
+        this.loading = 'fail';
+      })
+    },
     handleStar() {
       let star = Number(this.comments.rating.rating) + 1;
       let starList = []
@@ -161,24 +171,35 @@ export default {
     },
     handleInitData(res) {
       this.comments = res.data;
+      this.defaultList = this.handleComments(res.data);
+      this.newList = this.handleNewsList(this.handleComments(res.data));
     },
-    handleList() {
+    handleComments(list) {
       let temp = [];
-      for(let i of this.comments.tops) {
+      for(let i of list.tops) {
         temp.push(i);
       }
-      for(let i of this.comments.hots) {
+      for(let i of list.hots) {
         temp.push(i);
       }
-      for(let i of this.comments.comments) {
+      for(let i of list.comments) {
         temp.push(i);
       }
       return temp
     },
-    createdMethod() {
-      this.loading = 'ready';
-      this.id = JSON.parse(this.$route.query.id);
-      this.$axios({
+    handleNewsList(newList) {
+      for(let i = newList.length; i > 0; i--) {
+        for(let j = 0; j < i - 1; j++) {
+          if(newList[j].create_time > newList[j+1].create_time) {
+            [newList[j], newList[j+1]] = [newList[j+1], newList[j]];
+          }
+        }
+      }
+      newList.reverse();
+      return newList
+    },
+    pullUp() {
+     this.$axios({
         url: '/api/comment/comments',
         data: {
           page: this.page,
@@ -188,19 +209,22 @@ export default {
           order: 0
         }
       }).then(res => {
-        this.handleInitData(res);
-        this.$nextTick(() => {
-          this.loading = 'success';
-        }, 20)
-      }).catch(() => {
-        this.loading = 'fail';
+        this.page++;
+        this.pullUpState = false;
+        this.defaultList = [...this.defaultList, ...res.data.comments];
+        this.newList = this.handleNewsList([...this.newList, ...res.data.comments]);
+        if(res.data.list.length < 20) {
+          this.noMore = true;
+        }
       })
-    }
+      .catch(() => {   
+        this.pullUpState = false;
+      })
+    },  
   },
   components: {
     CommentItem,
     Loading,
-    Scroll,
   }
 }
 

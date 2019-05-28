@@ -1,70 +1,41 @@
 <template>
   <div class="rank">
-    <TopBar :list="tabList" :currentTab="currentTab" @changeSlide="changeSlide"></TopBar>
+    <TopBar :list="list" />
     <div class="main">
-      <Swiper :options="swiperOption" class="swiper" ref="Swiper">
-        <SwiperSlide
-          v-for="(item, index) in list"
-          :key="index"><RankList :rank="item" /></SwiperSlide>
-      </Swiper>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </div>
     <NavCom :pageIndex="1" />
   </div>
 </template>
 <script>
 import TopBar from '@/components/topbar/topbar.vue';
-import RankList from './ranklist/ranklist.vue';
 import NavCom from '@/components/navcom/navcom.vue';
-import {swiper as Swiper, swiperSlide as SwiperSlide} from 'vue-awesome-swiper';
 
 export default {
   data() {
     return {
-      tabList: ['新游榜', '畅销榜', '下载榜'],
-      currentTab: 0,
-      swiperOption: {
-        on: {
-          slideChange: () => {
-            this.currentTab = this.swiper.activeIndex;
-          }
-        }
-      },
+      active: 0,
       list: [
         {
           title: '新游榜',
-          bg: 'newgame-billboard',
-          order: 101,
+          name: 'NewGameRank',
         },
         {
           title: '畅销榜',
-          bg: 'sellwell-billboard',
-          order: 102
+          name: 'SellWellRank',
         },
         {
           title: '下载榜',
-          bg: 'download-billboard',
-          order: 103
+          name: 'DownloadRank',
         }
       ]
     }
   },
-  computed: {
-    swiper() {
-      return this.$refs.Swiper.swiper
-    }
-  },
-  methods: {
-    changeSlide(index) {
-      this.swiper.slideTo(index);
-      this.currentTab = index;
-    },
-  },
   components: {
     NavCom,
     TopBar,
-    RankList,
-    Swiper,
-    SwiperSlide,
   }
 }
 </script>

@@ -1,20 +1,21 @@
 <template>
   <div class="kaifu-list">
     <Loading :loading="loading" @refresh="createdMethod">
-      <Scroll 
-        :pullDown="pullDownState"
-        :pullUp="pullUpState"
-        @pullingDown="pullDown"
-        @pullingUp="pullUp"
-        slot="loading-content">
-        <GameList :list="list" :type="3" slot="content" class="content"></GameList>
-      </Scroll>
+      <van-pull-refresh v-model="pullDownState" @refresh="pullDown" slot="loading-content">
+        <van-list
+          v-model="pullUpState"
+          :finished="noMore"
+          finished-text="没有更多了"
+          @load="pullUp"
+        >
+          <GameList :list="list" :type="3"></GameList>
+        </van-list>
+      </van-pull-refresh>
     </Loading>
   </div>
 </template>
 <script>
 import Loading from '@/components/loading/loading.vue';
-import Scroll from '@/components/scroll/scroll.vue';
 import GameList from '@/components/gamelist/gamelist.vue';
 export default {
   name: 'KaiFuList',
@@ -27,11 +28,11 @@ export default {
   data() {
     return {
       list: [],
-      pullDownState: 'ready',
-      pullUpState: 'ready',
-      ajaxSwitch: true,
+      pullDownState: false,
+      pullUpState: false,
       page:2,
       loading: 'ready',
+      noMore: false,
     }
   },
   created() {
@@ -63,34 +64,24 @@ export default {
       }
     },
     pullDown() {
-      if(this.ajaxSwitch) {
-        this.ajaxSwitch = false;
-        this.$axios({
-          url:"/api/server/index",
-          data:{
-            page: 1,
-            type: this.kaiFuType
-          }
-        }).then(res => {
-          this.list = [];
-          this.handleInitData(res);
-          this.pullDownState = 'success';
-          setTimeout(() => {
-            this.pullDownState = 'ready';
-            this.ajaxSwitch = true;
-          }, 1000)
-        }).catch(() => {
-          this.pullDownState = 'fail';
-          setTimeout(() => {
-            this.pullDownState = 'ready';
-            this.ajaxSwitch = true;
-          }, 1000)
-        })
-      }
+      this.$axios({
+        url:"/api/server/index",
+        data:{
+          page: 1,
+          type: this.kaiFuType
+        }
+      }).then(res => {
+        this.list = [];
+        this.handleInitData(res);
+        this.pullDownState = false;
+        this.page = 2;
+        this.$toast('刷新成功');
+      }).catch(() => {
+        this.pullDownState = false;
+        this.$toast('刷新失败');
+      })
     },
     pullUp() {
-      if(this.ajaxSwitch) {
-        this.ajaxSwitch = false;
         this.$axios({
           url:"/api/server/index",
           data:{
@@ -100,24 +91,17 @@ export default {
         }).then(res => {
           this.page++;
           this.handleInitData(res);
-          this.pullUpState = 'success';
-          setTimeout(() => {
-            this.pullUpState = 'ready';
-            this.ajaxSwitch = true;
-          }, 1000)
+          this.pullUpState = false;
+          if(res.data.list.length < 20) {
+            this.noMore = true;
+          }
         }).catch(() => {
-          this.pullUpState = 'fail';
-          setTimeout(() => {
-            this.pullUpState = 'ready';
-            this.ajaxSwitch = true;
-          }, 1000)
+          this.pullUpState = false;
         })
-      }
     }
   },
   components: {
     Loading,
-    Scroll,
     GameList,
   }
 }

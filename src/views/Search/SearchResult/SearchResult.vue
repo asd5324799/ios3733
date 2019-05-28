@@ -1,29 +1,26 @@
 <template>
     <div class="search-list">
       <div class="tab-list">
-        <div
+        <router-link
           v-for="(item, index) in tabList"
           :key="index"
           class="tab-item"
-          :class="{current: currentTab === index}"
-          @click="changeSlide(index)">
-        <span class="text">{{item}}</span>
-        </div>
+          :to="{name: item.name}"
+          replace>
+          <span class="text">{{item.title}}</span>
+        </router-link>
       </div>
-      <Swiper :options="swiperOption" class="swiper" ref="Swiper">
-        <SwiperSlide>
-          <SearchGame v-if="resultGameList.length !== 0" :list="resultGameList" :searchKey="searchKey" />
-          <div v-else class="empty">没有找到相关游戏</div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <SearchGift v-if="resultGiftList.length !== 0" :list="resultGiftList" :searchKey="searchKey"/>
-          <div v-else class="empty">没有找到相关礼包</div>
-        </SwiperSlide>
-      </Swiper>
+      <main>
+        <keep-alive>
+          <router-view
+            :searchKey="searchKey"
+            :gameList="resultGameList"
+            :giftList="resultGiftList"></router-view>
+        </keep-alive>
+      </main>
     </div>
 </template>
 <script>
-import {swiper as Swiper, swiperSlide as SwiperSlide} from 'vue-awesome-swiper';
 import SearchGame from './SearchGame/SearchGame';
 import SearchGift from './SearchGift/SearchGift';
 export default {
@@ -50,33 +47,15 @@ export default {
   },
   data() {
     return {
-      tabList: ['游戏', '礼包'],
-      currentTab: 0,
-      swiperOption: {
-        on: {
-          slideChange: () => {
-            this.currentTab = this.swiper.activeIndex;
-          }
-        }
-      },
+      tabList: [
+        {
+          title:'游戏',
+          name: 'SearchGame'
+        }, {
+          title: '礼包',
+          name: 'SearchGift'
+        }],
     }
-  },
-  computed: {
-    swiper() {
-      return this.$refs.Swiper.swiper
-    }
-  },
-  methods: {
-    changeSlide(index) {
-      this.swiper.slideTo(index);
-      this.currentTab = index;
-    }
-  },
-  components: {
-    Swiper,
-    SwiperSlide,
-    SearchGame,
-    SearchGift
   }
 }
 </script>

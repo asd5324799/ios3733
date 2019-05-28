@@ -90,7 +90,10 @@ export default {
       this.imageList.splice(index, 1);
     },
     upLoad(item) {
-      let token = localStorage.getItem('token');
+      let token = sessionStorage.getItem('token');
+      if(this.reply.length <= 15) {
+        this.$toast('评论的字数不得小于15个字');
+      }
       let data = {
         token: token,
         sourceId: this.sourceId,

@@ -1,38 +1,32 @@
 <template>
     <div class="mine">
-        <!-- <div class="header">
-        <div class="history"><div class="back" @click="back"><img src="../../assets/images/ic_toolbar_back_white.png" alt=""></div></div>
-        <div class="title">用户登录</div>
-    </div> -->
-    <Navigation title="用户登录"/>
-    <main>
-        <form action="">
-            <div class="user-name" :class="nameIsFocus?'linegreen':'linegrey'">
-                <input type="text" name="username" autofocus="autofocus" v-model.trim="userAccount.userName" @focus="nameInFocus" @blur="nameOutFocus">
-                <span :class="nameIsFocus?'cur':'nocur'">用户名/手机号</span>
-                <i class="clear" @click="clearBox" v-show="!isNone"></i>
-            </div>
-            <div class="password" :class="passIsFocus?'linegreen':'linegrey'">
-                <input :type="pwdType" v-model.trim="userAccount.password" @focus="passInFocus" @blur="passOutFocus" autocomplete="off">
-                <span :class="passIsFocus?'cur':'nocur'">密码</span>
-                <i class="show-pwd" :class="{'hide-pwd':showpwd}" @click="showPwd"></i>
-            </div>
-            <div class="remember">
-                <div class="isRemember"><input type="checkbox" checked="checked" v-model="checked">保存密码</div>
-                <router-link to="/resetpwd" class="forget">忘记密码？</router-link>
-            </div>
-            <div class="login-btn" v-if="ajaxSwitch" @click="login">登录</div>
-            <div class="login-btn gray" v-else>登录中...</div>
-        </form>
-        <div class="toRegister">还没有账号？
-            <router-link to="/phoneregister">立即注册平台账号</router-link>
-        </div>
-    </main>
-        <Prompt :message="message" />
+      <Navigation title="用户登录"/>
+      <main>
+          <form action="">
+              <div class="user-name" :class="nameIsFocus?'linegreen':'linegrey'">
+                  <input type="text" name="username" autofocus="autofocus" v-model.trim="userAccount.userName" @focus="nameInFocus" @blur="nameOutFocus">
+                  <span :class="nameIsFocus?'cur':'nocur'">用户名/手机号</span>
+                  <i class="clear" @click="clearBox" v-show="!isNone"></i>
+              </div>
+              <div class="password" :class="passIsFocus?'linegreen':'linegrey'">
+                  <input :type="pwdType" v-model.trim="userAccount.password" @focus="passInFocus" @blur="passOutFocus" autocomplete="off">
+                  <span :class="passIsFocus?'cur':'nocur'">密码</span>
+                  <i class="show-pwd" :class="{'hide-pwd':showpwd}" @click="showPwd"></i>
+              </div>
+              <div class="remember">
+                  <div class="isRemember"><input type="checkbox" checked="checked" v-model="checked">保存密码</div>
+                  <router-link tag="div" :to="{name: 'ResetPwd'}" class="forget">忘记密码？</router-link>
+              </div>
+              <div class="login-btn" v-if="ajaxSwitch" @click="login">登录</div>
+              <div class="login-btn gray" v-else>登录中...</div>
+          </form>
+          <div class="toRegister">还没有账号？
+              <router-link to="/phoneregister">立即注册平台账号</router-link>
+          </div>
+      </main>
     </div>
 </template>
 <script>
-    import Prompt from '@/components/prompt/prompt.vue';
     import Navigation from '@/components/navigation/navigation.vue';
     import { JSEncrypt } from 'jsencrypt';
     import Box from '@/common/box.js';
@@ -51,7 +45,6 @@
                 pwdType: 'password',
                 publicKey: '',
                 showpwd:true,
-                message:'',
                 ajaxSwitch: true,
             }
         },
@@ -107,19 +100,19 @@
             },
             login(){
                 if(this.userAccount.userName == ''){
-                    this.message = '请输入用户名!'
+                    this.$toast('请输入用户名!');
                     return false;
                 }else if(this.userAccount.userName.length < 6){
-                    this.message = '用户名不能小于6位'
+                    this.$toast('用户名不能小于6位');
                     return false;
                 }else if(this.userAccount.password == ''){
-                    this.message = '请输入密码!'
+                    this.$toast('请输入密码!');
                     return false;
                 }else if(this.userAccount.password.length < 6){
-                    this.message = '密码不能小于6位'
+                    this.$toast('密码不能小于6位');
                     return false;
                 } else if(this.userAccount.password.length > 18) {
-                  this.message = '密码不能大于18位'
+                  this.$toast('密码不能大于18位');
                   return false;
                 }
                 if(this.ajaxSwitch) {
@@ -133,19 +126,19 @@
                       }
                   }).then((res) =>{
                     if(res.data) {
-                      this.message = '登录成功';
-                      localStorage.token = res.data.token;
+                      this.$toast('登录成功');
+                      sessionStorage.token = res.data.token;
                       let box = new Box();
                       box.loginSuccess(res.data);
                       this.$router.push({
                         name: 'Mine'
                       })
                     } else {
-                      this.message = res.msg;
+                      this.$toast(res.msg);
                     }
                     this.ajaxSwitch = true;
                   }).catch(()=>{
-                    this.message = '网络不好，请稍后重试';
+                    this.$toast('网络不好，请稍后重试');
                     this.ajaxSwitch = true;
                   })
                 }
@@ -184,7 +177,6 @@
         },
         components: {
             Navigation,
-            Prompt,
         }
     }
 </script>

@@ -1,7 +1,6 @@
 <template>
   <div class="search-index">
-    <!-- <Loading :loading="loading" @refresh="createdMethod"> -->
-      <div class="loading-content" slot="loading-content">
+      <div class="loading-content">
         <div class="hot-search">
           <div class="section-title">
             <span class="hot-title">热门搜索</span>
@@ -31,7 +30,6 @@
           </ul>
         </div>
       </div>
-    <!-- </Loading> -->
   </div>
 </template>
 <script>
@@ -56,19 +54,11 @@
     },
     methods: {
       createdMethod() {
-        this.loading = 'ready';
         this.$axios({
           url: '/api/index/extra',
           data: {}
         }).then(res => {
           this.handleInitData(res);
-          this.$nextTick(() => {
-            this.loading = 'success';
-          })
-        }).catch(() => {
-          this.$nextTick(() => {
-            this.loading = 'fail';
-          })
         })
       },
       handleInitData(res) {
@@ -88,7 +78,7 @@
       toSearchResult(keyword) {
         if(this.searchKey === keyword) {
           this.$router.push({
-            name: 'SearchResult'
+            name: 'SearchGame'
           })
         } else {
           this.$emit('toSearchResult', keyword);

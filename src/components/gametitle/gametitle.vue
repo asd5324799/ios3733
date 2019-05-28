@@ -1,10 +1,13 @@
 <template>
   <div class="game-title">
     {{headerTitle}}
-    <span
-    v-if="type"
-    @click="clickDo"
-    class="more">更多</span>
+    <router-link
+      tag="span"
+      v-if="type"
+      class="more"
+      :to="{name: name}"
+    >更多
+    </router-link>
   </div>
 </template>
 <script>
@@ -18,11 +21,10 @@ export default {
     type: {
       type: Boolean,
       default: true,
-    }
-  },
-  methods: {
-    clickDo() {
-      this.$emit('clickDo')
+    },
+    name: {
+      type: String,
+      default: ''
     }
   },
 }

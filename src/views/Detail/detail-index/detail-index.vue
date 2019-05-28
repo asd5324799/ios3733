@@ -1,35 +1,8 @@
 <template>
   <div class="detail-index">
     <Loading :loading="loading" @refresh="createdMethod">
-      <Scroll
-        slot="loading-content">
-        <div class="content" slot="content">
-          <!-- background-image -->
-          <div class="background-image"
-            :style="{backgroundImage: `url(${detail.titlepic})`}">
-          </div>
-          <!-- game-info -->
-          <div 
-            class="game-info" 
-            ref="gameInfo">
-            <img 
-            :src="detail.titlepic"
-            class="game-img">
-            <div class="game-container">
-              <div class="game-name">{{detail.title}}</div>
-              <div class="game-number">{{detail.totaldown}}人在玩</div>
-              <div class="game-type" v-if="detail.app_tag !== []">
-                <div class="type-item"
-                  v-for="(item, index) in detail.app_tag"
-                  :key="index">
-                  <img 
-                    :src="item.icon"
-                    class="icon">
-                  <span class="text">{{item.name}}</span>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div class="content" slot="loading-content">
+        <div>
           <!-- qq-group -->
           <div class="qq-group">
             <div class="big-text">加入QQ群：{{detail.qq_qun}}领取礼包</div>
@@ -140,15 +113,16 @@
             <div class="title"><i class="icon"></i><span class="text">游戏标签</span></div>
             <div class="section-content">
               <ul class="type-list">
-                <li 
+                <router-link
+                  tag="li"
                   class="type-item"
                   v-for="(item, index) in detail.type"
                   :key="index"
                   :class="color(index)"
-                  @click="toCategory(item)"
+                  :to="{name: 'GameClass', query: {type: 4, tag: item}}"
                 >
                   {{item}}
-                </li>
+                </router-link>
               </ul>
             </div>
           </section>
@@ -156,20 +130,31 @@
           <section class="game-section game-liked">
             <div class="title"><i class="icon"></i><span class="text">猜你喜欢</span></div>
             <div class="section-content">
-              <GameList2
-              :list="liked"
-              :type='3'></GameList2>
+              <div class="game-list2">
+                <ul class="list">
+                  <li 
+                  v-for="(item, index) in liked" 
+                  :key="index"
+                  class="game-item">
+                    <div
+                      class="container" 
+                      @click="toDetail(item)">
+                      <img :src="item.titlepic" class="game-img">
+                      <div class="game-name">{{item.title}}</div>
+                    </div>
+                    <a :href="item.down_ip" class="button">{{'下载'}}</a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </section>
         </div>
-      </Scroll>
+      </div>
     </Loading>
   </div>
 </template>
 <script>
 import Loading from '@/components/loading/loading.vue';
-import Scroll from '@/components/scroll/scroll.vue';
-import GameList2 from '@/components/gamelist2/gamelist2.vue';
 import 'swiper/dist/css/swiper.css';
 import {swiper as Swiper, swiperSlide as SwiperSlide} from 'vue-awesome-swiper';
 import Box from '@/common/box.js';
@@ -188,29 +173,19 @@ export default {
         freeMode : true,
       },
       loading: 'ready',
-      pullDownState: 'ready',
-      ajaxSwitch: true,
-    }
-  },
-  watch: {
-    '$route' (to, from) {
-      if(from.name === 'Detail' && to.name === 'Detail') {
-        this.createdMethod();
-        this.$emit('changeDetail')
-      }
     }
   },
   created() {
     this.createdMethod();
   },
   activated() {
-    if(this.id !== JSON.parse(this.$route.query.id)) {
+    if(this.id !== JSON.parse(sessionStorage.getItem('gameInfo')).id) {
       this.createdMethod();
     }
   },
   methods: {
     createdMethod() {
-      this.id = JSON.parse(this.$route.query.id);
+      this.id = JSON.parse(sessionStorage.getItem('gameInfo')).id;
       this.loading = 'ready';
       this.$axios.all([
         this.$axios({
@@ -288,26 +263,21 @@ export default {
         return 'after'
       }
     },
-    toCategory(item) {
-      this.$router.push({
-        name: 'Home',
-        params: {
-          tag: JSON.stringify(item)
-        }
-      })
-    },
     // 加群 
     openInBrowser(str) {
       let box = new Box();
       box.openInBrowser(str);
+    },
+    toDetail(item) {
+      sessionStorage.setItem('gameInfo', JSON.stringify(item));
+      this.createdMethod();
+      this.$emit('changeDetail');
     }
   },
   components: {
-    GameList2,
     Swiper,
     SwiperSlide,
     Loading,
-    Scroll
   }
 }
 </script>

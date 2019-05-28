@@ -30,10 +30,14 @@
           </div>
         </div>
       </div>
-      <a :href="item.down_ip" class="game-download" :class="{orange: type === 4}" v-if="!showBigImg()">{{text}}</a>
+      <a :href="item.down_ip" class="game-download" v-if="!showBigImg() && type !== 4">{{'下载'}}</a>
+      <div @click="appointment" class="game-download"  v-if="!showBigImg() && type === 4" :class="{orange: type === 4, already: alreadyAppointment}">{{text}}</div>
     </div>
 </template>
 <script>
+/**
+ * @param type 1为正常列表 2为有序号的列表 3取消游戏福利栏显示开服时间 4为游戏预约
+  */
 export default {
   props: {
     item: {
@@ -49,14 +53,23 @@ export default {
     index: {
       type: Number,
       default: 0
+    },
+
+  },
+  data() {
+    return {  
+      alreadyAppointment: false,
     }
+  },
+  created() {
+    this.IfSubscribed();
   },
   computed: {
     text() {
-      if(this.type === 4) {
-        return '预约';
+      if(this.alreadyAppointment) {
+        return '已预约';
       } else {
-        return '下载';
+        return '预约';
       }
     }
   },
@@ -87,14 +100,38 @@ export default {
       return `${m}-${d} ${h}: ${min}`;
     },
     toDetail() {
-      this.$router.push({ 
-        name: 'Detail', 
-        query: {
-          id: JSON.stringify(this.item.id), 
-          title: JSON.stringify(this.item.title), 
-          down_ip: JSON.stringify(this.item.down_ip),
-        }
-      })
+      sessionStorage.setItem('goBack', this.$route.name);
+      sessionStorage.setItem('gameInfo', JSON.stringify(this.item));
+      if(this.type === 4) {
+        sessionStorage.setItem('type', 0);
+      } else {
+        sessionStorage.setItem('type', 1);
+      }
+      this.$router.push({
+        name: 'DetailIndex',
+      });
+    },
+    appointment() {
+      if(!this.alreadyAppointment) {
+        this.$axios({
+          url: '/api/game/subscribe',
+          data: {
+            token: sessionStorage.getItem('token'),
+            gameId: this.item.id
+          }
+        })
+        .then(res => {
+          this.alreadyAppointment = true;
+          this.$toast(res.msg); 
+        })
+      }
+    },
+    IfSubscribed() {
+      if(this.item.subscribed) {
+        this.alreadyAppointment = true;
+      } else {
+        this.alreadyAppointment = false;
+      }
     }
   }
 }

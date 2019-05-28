@@ -1,15 +1,8 @@
 <template>
   <div class="qualityselect">
-    <Loading 
-      :loading="loading" 
-      @refresh="createdMethod">
-      <Scroll 
-        :pullDown="pullDownState"
-        :pullUp="pullUpState"
-        @pullingDown="pullDown"
-        @pullingUp="pullUp"
-        slot="loading-content">
-        <div class="content" slot="content">
+    <Loading :loading="loading" @refresh="createdMethod">
+      <van-pull-refresh v-model="pullDownState" @refresh="pullDown" slot="loading-content">
+        <div class="content">
           <!-- swiper -->
           <div class="swiper">
             <Swiper :options="swiperOption">
@@ -17,10 +10,10 @@
               <SwiperSlide
                 v-for="(item, index) in bannerList"
                 :key="index" 
-                class="swiper-slide">
-                <div @click="toDetail(item)">
-                  <img :src="item.titleimg" alt="">
-                </div>
+                class="swiper-slide"
+                @click="toDetail"
+              >
+                <img :src="item.titleimg" alt="">
               </SwiperSlide>
               <div class="swiper-pagination"  slot="pagination"></div>
             </Swiper>
@@ -31,7 +24,7 @@
             v-for="(item, index) in navList"
             :key="index"
             class="nav-item"
-            @click="toTypePageParent(index)">
+            @click="toTypePage(index)">
               <div 
               :style="{backgroundColor: item.bg_color,backgroundImage: 'url(' + item.icon_url + ')'}"
               class="nav-icon">
@@ -42,7 +35,7 @@
           <!-- qualityRecommend -->
           <GameTitle
             :headerTitle="qualityRecommend.header_title"
-            @clickDo="toRankSellWell"
+            :name="'SellWellRank'"
           ></GameTitle>
           <GameList2
             :list="qualityRecommend.game_list"
@@ -50,7 +43,7 @@
           <!-- qualityFirstList -->
           <GameTitle
             :headerTitle="'精品首发'"
-            @clickDo="toNewGameParent"
+            :name="'NewGame'"
           ></GameTitle>
           <GameList 
             :list="qualityFirstList"
@@ -62,16 +55,24 @@
             :type="false"
           ></GameTitle>
           <GameList2
+            :type="2"
             :list="newGameAppointment.game_list"
           ></GameList2>
           <!-- newGameFirstList -->
-          <GameList
-            :list="newGameFirstList"
-            :type="1"
+          <van-list
+            v-model="pullUpState"
+            :finished="noMore"
+            finished-text="没有更多了"
+            @load="pullUp"
           >
-          </GameList>
+            <GameList
+              :list="newGameFirstList"
+              :type="1"
+            >
+            </GameList>
+          </van-list>
         </div>
-      </Scroll>
+      </van-pull-refresh>
     </Loading>
   </div>
 </template>
@@ -79,11 +80,9 @@
 import GameList from '@/components/gamelist/gamelist.vue';
 import GameList2 from '@/components/gamelist2/gamelist2.vue';
 import GameTitle from '@/components/gametitle/gametitle.vue';
-import Loading from '@/components/loading/loading.vue';
-import Scroll from '@/components/scroll/scroll.vue';
 import {swiper as Swiper, swiperSlide as SwiperSlide} from 'vue-awesome-swiper';
 import 'swiper/dist/css/swiper.min.css';
-
+import Loading from '@/components/loading/loading.vue';
 export default {
   name: 'QualitySelect',
   data() {
@@ -102,13 +101,13 @@ export default {
         loop : true,
       },
       page : 2,
-      ajaxSwitch: true,
       loading: 'ready',
-      pullDownState: 'ready',
-      pullUpState: 'ready',
+      pullDownState: false,
+      pullUpState: false,
+      noMore: false,
     }
   },
-  created() {
+  created() { 
     this.createdMethod();
   },
   methods: {
@@ -117,9 +116,7 @@ export default {
       this.$axios({
         method: 'post',
         url: '/api/index/index',
-        data: {
-          token: '0f955a36d0b3e252e34254f79ac76026',
-        },
+        data: {},
       })
       .then(res => {
         this.handleInitData(res);
@@ -151,84 +148,64 @@ export default {
         }
       });
     },
-    // 通知父组件跳转类型页
-    toTypePageParent(data) {
-      this.$emit('toTypePage', data);
-    },
-    toNewGameParent() {
-      this.$emit('toNewGame');
-    },
-    toRankSellWell() {
-      this.$router.push({name: 'Rank', query: {page: 'sellwell'}})
-    },
-    toDetail(item) {
-      this.$router.push({ 
-        name: 'Detail', 
-        query: {
-          id: JSON.stringify(item.id), 
-          title: JSON.stringify(item.title), 
-          down_ip: JSON.stringify(item.down_ip),
-        }
+    pullDown() {  
+      this.$axios({
+        url: '/api/index/index',
+        data: {}
+      })
+      .then((res) => {
+        this.handleInitData(res);
+        this.page = 2;
+        this.pullDownState = false;
+        this.$toast('刷新成功');
+      })
+      .catch(() => {
+        this.pullDownState = false;
+        this.$toast('刷新失败');
       })
     },
-    pullDown() {
-      if(this.ajaxSwitch) {
-        this.ajaxSwitch = false;
-        this.$axios({
-          url: '/api/index/index',
-          data: {
-            token: '0f955a36d0b3e252e34254f79ac76026',
-          }
-        })
-        .then((res) => {
-          this.handleInitData(res);
-          this.pullDownState = 'success';
-          this.ajaxSwitch = true;
-          setTimeout(()=> {
-            this.pullDownState = 'ready';
-          }, 20)
-        })
-        .catch(() => {
-          this.pullDownState = 'fail';
-          this.ajaxSwitch = true;
-          setTimeout(()=> {
-            this.pullDownState = 'ready';
-          }, 20)
-        })
-      }
-    },
     pullUp() {
-      if(this.ajaxSwitch && this.pullUpState !== 'nomore') {
-        this.ajaxSwitch = false;
-        this.$axios({
-          url: '/api/game/index',
-          data: {
-            order: 7,
-            page: this.page
-          }
-        }).then(res => {
-          if(res.data.list.length < 20) {
-            this.pullUpState = 'nomore';
-            this.ajaxSwitch = true;
-          } else {
-            this.page++;
-            this.newGameFirstList = [...this.newGameFirstList, ...res.data.list]
-            this.pullUpState = 'success';
-            this.ajaxSwitch = true;
-            setTimeout(() => {
-              this.pullUpState = 'ready';
-            }, 50);
-          }
+      this.$axios({
+        url: '/api/game/index',
+        data: {
+          order: 7,
+          page: this.page
+        }
+      }).then(res => {
+        this.page++;
+        this.pullUpState = false;
+        this.newGameFirstList = [...this.newGameFirstList, ...res.data.list];
+        if(res.data.list.length < 20) {
+          this.noMore = true;
+        }
+      })
+      .catch(() => {   
+        this.pullUpState = false;
+      })
+    },
+    toTypePage(index) {
+      if(index === 3) {
+        this.$router.push({
+          name: 'Topic'
         })
-        .catch(() => {
-          this.pullUpState = 'fail';
-          this.ajaxSwitch = true;
-          setTimeout(() => {
-            this.pullUpState = 'ready';
-          }, 50);      
+      } else {
+        this.$router.push({
+          name: 'GameClass',
+          query: {
+            type: JSON.stringify(index),
+          }
         })
       }
     },
+    toDetail() {
+      console.log(1);
+      sessionStorage.setItem('goBack', this.$route.name);
+      sessionStorage.setItem('gameInfo', JSON.stringify(this.item));
+      sessionStorage.setItem('item', 1);
+      this.$router.push({
+        name: 'DetailIndex'
+      });
+    }
   },
   components: {
     GameList,
@@ -236,8 +213,7 @@ export default {
     GameTitle,
     Swiper,
     SwiperSlide,
-    Loading,
-    Scroll
+    Loading
   }
 }
 </script>

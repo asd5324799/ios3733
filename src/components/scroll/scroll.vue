@@ -115,7 +115,7 @@ export default {
         click: true,
         pullDownRefresh,
         pullUpLoad,
-        swipeTime: 1000
+        momentum: false,
       }
       this.scroll = new BScroll(this.$refs.wrapper, option);
       if(this.pullDown !== 'false') {

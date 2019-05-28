@@ -30,12 +30,12 @@ export default {
   watch: {
     searchKey() {
       if(this.searchKey === '') {
-        this.$router.push({
+        this.$router.replace({
           name: 'SearchIndex'
         })
       } else {
-        this.$router.push({
-          name: 'SearchResult'
+        this.$router.replace({
+          name: 'SearchGame'
         })
         this.$axios.all([
           this.$axios({
@@ -71,7 +71,7 @@ export default {
         this.searchKey="";
     },
     toSearchResult(keyword) {
-      this.searchKey = keyword
+      this.searchKey = keyword;
     },
   },
 }

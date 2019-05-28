@@ -20,7 +20,7 @@
         </form>
         <div class="register-bottom">
             <router-link to="/userregister" replace>用户名注册</router-link>
-            <router-link to="/xieyi">注册即同意《用户协议》</router-link>
+            <div>注册即同意《用户协议》</div>
         </div>
     </main>
         <Prompt :message="message" />

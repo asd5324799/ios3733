@@ -38,6 +38,7 @@
     }
     .button {
       display: block;
+      box-sizing: border-box;
       width: 55*@rem;
       height: 25*@rem;
       margin: 0 auto;
@@ -49,6 +50,11 @@
       color: rgba(255, 255, 255, 1);
       &.orange {
         background-color: rgba(255, 157, 2, 1);
+        &.already {
+          border: 1px solid #6e6e6e;
+          color: #6e6e6e;
+          background-color: rgba(255, 255, 255, 1);
+        }
       }
     }
   }

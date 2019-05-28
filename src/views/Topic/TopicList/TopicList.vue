@@ -1,28 +1,29 @@
 <template>
   <div class="topiclist">
     <Navigation :title="'游戏专题'" />
-    <Loading class="wrapper" :loading="loading">
-      <Scroll 
-        :pullDown="pullDownState"
-        :pullUp="pullUpState"
-        @pullingDown="pullDown"
-        @pullingUp="pullUp"
-        slot="loading-content">
-        <div class="topic-box content" slot="content">
+    <Loading :loading="loading" @refresh="createdMethod">
+      <van-pull-refresh v-model="pullDownState" @refresh="pullDown" slot="loading-content">
+        <div class="topic-box">
           <div class="top-pic">
             <img :src="titlePic" alt="">
           </div>
           <p class="topic-desc">{{topicDesc}}</p>
-          <GameList :list="topicList" />
+          <van-list
+          v-model="pullUpState"
+          :finished="noMore"
+          finished-text="没有更多了"
+          @load="pullUp"
+          >
+            <GameList :list="topicList" />
+          </van-list>
         </div>
-      </Scroll>
+      </van-pull-refresh>
     </Loading>
   </div>
 </template>
 <script>
 import Navigation from  '@/components/navigation/navigation.vue';
 import Loading from '@/components/loading/loading.vue';
-import Scroll from '@/components/scroll/scroll.vue';
 import GameList from '@/components/gamelist/gamelist.vue';
 export default {
   name:"TopicList",
@@ -32,10 +33,10 @@ export default {
       titlePic:'',
       topicDesc:'',
       loading: 'ready',
-      pullDownState: 'ready',
-      pullUpState: 'ready',
-      ajaxSwitch: true,
-      page: 1,
+      pullDownState: false,
+      pullUpState: false,
+      noMore: false,
+      page: 2,
       id: ''
     }
   },
@@ -69,74 +70,53 @@ export default {
       this.titlePic = res.data.info.titlepic;
       this.topicDesc = res.data.info.subject_desc;
       if(this.topicList.length < 20) {
-        this.pullUpState = 'nomore';
+        this.noMore = true;
       }
     },
     pullDown() {
-      if(this.ajaxSwitch) {
-        this.ajaxSwitch = false;
-        this.$axios({
-          url: "/api/subject/items",
-          data:{
-            id: JSON.parse(this.$route.query.topicId),
-            page: 1,
-            listRow: 20
-          }
-        })
-        .then(res => {
-          this.handleInitData(res);
-          this.pullDownState = 'success';
-          setTimeout(()=> {
-            this.pullDownState = 'ready';
-            this.ajaxSwitch = true;
-          }, 1000)
-        })
-        .catch(() => {
-          this.pullDownState = 'fail';
-          setTimeout(()=> {
-            this.pullDownState = 'ready';
-            this.ajaxSwitch = true;
-          }, 1000)   
-        })
-      }
+      this.$axios({
+        url: "/api/subject/items",
+        data:{
+          id: JSON.parse(this.$route.query.topicId),
+          page: 1,
+          listRow: 20
+        }
+      })
+      .then(res => {
+        this.handleInitData(res);
+        this.pullDownState = false;
+        this.page = 2;
+        this.$toast('刷新成功');
+      })
+      .catch(() => {
+        this.pullDownState = false;
+        this.$toast('刷新失败');
+      })
     },
     pullUp() {
-      if(this.ajaxSwitch && this.pullUpState !== 'nomore') {
-        this.ajaxSwitch = false;
-        this.$axios({
-          url: "/api/subject/items",
-          data:{
-            id: JSON.parse(this.$route.query.topicId),
-            page: this.page,
-            listRow: 200
-          }
-        })
-        .then(res => {
-          this.topicList.push(...res.data);
-          if(res.data.length < 20) {
-            this.pullUpState = 'nomore';
-          } else {
-            this.page++;
-            this.pullUpState = 'success';
-            setTimeout(() => {
-              this.pullUpState = 'ready';
-            }, 1000);
-          }
-          this.ajaxSwitch = true;
-        })
-        .catch(() => {
-          this.pullUpState = 'fail';
-          this.ajaxSwitch = true;
-          setTimeout(() => {
-            this.pullUpState = 'ready';
-          }, 1000);      
-        })
-      }
+      this.$axios({
+        url: "/api/subject/items",
+        data:{
+          id: JSON.parse(this.$route.query.topicId),
+          page: this.page,
+          listRow: 200
+        }
+      })
+      .then(res => {
+        this.topicList.push(...res.data);
+        this.page++;
+        this.pullUpState = false;
+        if(res.data.length < 20) {
+          this.noMore = 'nomore';
+        }
+      })
+      .catch(() => {
+        this.pullUpState = false;
+      })
     },
   },
   components: {
     Loading,
-    Scroll,
     Navigation,
     GameList
   }

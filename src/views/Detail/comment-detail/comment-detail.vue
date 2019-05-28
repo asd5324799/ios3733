@@ -1,30 +1,31 @@
 <template>
   <div class="comment-detail">
-    <Navigation :title="'评论详情'"></Navigation>
-    <Loading :loading="loading">
-      <Scroll slot="loading-content">
-        <div class="content" slot="content">
-          <CommentItem :item="commentDetail" :type="2"/>
-          <div class="tab-wrapper">
-            <div class="left-wrapper">全部回复({{replyCount}})</div>
-            <div class="right-wrapper" @click="listReverse">{{replySort}}</div>
-          </div>
-          <ul>
-            <CommentItem 
-              v-for="(item, index) in replyList"
-              :key="index"
-              :item="item"
-              :type="2" />
-          </ul>
+    <Navigation :title="'评论详情'" />
+    <Loading :loading="loading" @refresh="createdMethod">
+      <div slot="loading-content">
+      <div class="content">
+        <div class="container">
+            <CommentItem :item="commentDetail" :type="2"/>
+            <div class="tab-wrapper">
+              <div class="left-wrapper">全部回复({{replyCount}})</div>
+              <div class="right-wrapper" @click="listReverse">{{replySort}}</div>
+            </div>
+            <ul>
+              <CommentItem 
+                v-for="(item, index) in replyList"
+                :key="index"
+                :item="item"
+                :type="2" />
+            </ul>
         </div>
-      </Scroll>
+      </div>
+      </div>
     </Loading>
   </div>
 </template>
 <script>
 import CommentItem from '@/components/comment-item/comment-item.vue';
 import Navigation from '@/components/navigation/navigation.vue';
-import Scroll from '@/components/scroll/scroll.vue';
 import Loading from '@/components/loading/loading.vue';
 export default {
   data() {
@@ -112,7 +113,6 @@ export default {
     }
   },
   components: {
-    Scroll,
     Loading,
     Navigation,
     CommentItem

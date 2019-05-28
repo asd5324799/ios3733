@@ -2,15 +2,20 @@
   <div class="subscribe">
     <Navigation :title="'预约专区'"></Navigation>
     <Loading :loading="loading" @refresh="createdMethod">
-      <Scroll 
-        :pullDown="pullDownState"
-        :pullUp="pullUpState"
-        @pullingDown="pullDown"
-        @pullingUp="pullUp" 
-        class="wrapper"
-        slot="loading-content">
-        <GameList :list="list" :type="4" slot="content" class="content"></GameList>
-      </Scroll>
+      <van-pull-refresh 
+        v-model="pullDownState" 
+        @refresh="pullDown" 
+        slot="loading-content"
+      >
+        <van-list
+          v-model="pullUpState"
+          :finished="noMore"
+          finished-text="没有更多了"
+          @load="pullUp"
+        >
+          <GameList :list="list" :type="4" class="content"></GameList>
+        </van-list>
+      </van-pull-refresh>
     </Loading>
   </div>
 </template>
@@ -18,7 +23,6 @@
 import Navigation from '@/components/navigation/navigation.vue';
 import GameList from '@/components/gamelist/gamelist.vue';
 import Loading from '@/components/loading/loading.vue';
-import Scroll from '@/components/scroll/scroll.vue';
 
 export default {
   data() {
@@ -26,9 +30,9 @@ export default {
       list: [],
       page: 2,
       loading: 'ready',
-      pullDownState: 'ready',
-      pullUpState: 'ready',
-      ajaxSwitch: true,
+      pullDownState: false,
+      pullUpState: false,
+      noMore: false,
     }
   },
   created() {
@@ -37,14 +41,28 @@ export default {
   methods: {
     createdMethod() {
       this.loading = 'ready';
-      this.$axios({
-        url: '/api/game/subscribeGames',
-        data: {
+      this.page = 2;
+      let data;
+      if(sessionStorage.getItem('token') !== '') {
+        data = {
+          page: 1,
+          listRows: 20,
+          token: sessionStorage.getItem('token')
+        }
+      } else {
+        data = {
           page: 1,
           listRows: 20,
         }
+      }
+      this.$axios({
+        url: '/api/game/subscribeGames',
+        data: data,
       }).then(res => {
         this.handleInitData(res);
+        if(res.data.list.length < 20) {
+          this.noMore = true;
+        }
         this.$nextTick(() => {
           this.loading = 'success';
         })
@@ -56,68 +74,67 @@ export default {
       this.list = res.data.list;
     },
     pullDown() {
-      if(this.ajaxSwitch) {
-        this.ajaxSwitch = false;
-        this.$axios({
-          url: '/api/game/subscribeGames',
-          data: {
-            page: 1,
-            listRows: 20,
-          }
-        }).then(res => {
-          this.handleInitData(res);
-          this.pullDownState = 'success';
-          setTimeout(() => {
-            this.ajaxSwitch = true;
-            this.pullDownState = 'ready';
-          }, 1000)
-        }).catch(() => {
-          this.pullDownState = 'fail';
-          setTimeout(() => {
-              this.pullDownState = 'ready';
-              this.ajaxSwitch = true;
-          }, 1000);
-        })
+      this.page = 2;
+      let data;
+      if(sessionStorage.getItem('token') !== '') {
+        data = {
+          page: 1,
+          listRows: 20,
+          token: sessionStorage.getItem('token')
+        }
+      } else {
+        data = {
+          page: 1,
+          listRows: 20,
+        }
       }
+      this.$axios({
+        url: '/api/game/subscribeGames',
+        data: data
+      }).then(res => {
+        this.$toast('刷新成功');
+        this.handleInitData(res);
+        this.pullDownState = false;
+        if(res.data.list.length < 20) {
+          this.noMore = true;
+        }
+      }).catch(() => {
+        this.pullDownState = false;
+      })
     },
     pullUp() {
-      if(this.ajaxSwitch) {
-        this.ajaxSwitch = false;
-        this.$axios({
-          url: '/api/game/subscribeGames',
-          data: {
-            page: this.page,
-            listRows: 20,
-          }
-        }).then(res => {
-          if(res.data.list.length < 20) {
-            this.pullUpState = 'nomore';
-            this.ajaxSwitch = true;
-            this.list.push(...res.data.list);
-          } else {
-            this.pullUpState = 'success';
-            this.page++;
-            this.gameList.push(...res.data.list);
-            setTimeout(() => {
-              this.pullUpState = 'ready';
-              this.ajaxSwitch = true;
-            }, 50);
-          }
-        }).catch(() => {
-          this.pullUpState = 'fail';
-          this.ajaxSwitch = true;
-          setTimeout(() => {
-            this.pullUpState = 'ready';
-          }, 50);    
-        })
+     let data;
+      if(sessionStorage.getItem('token') !== '') {
+        data = {
+          page: this.page,
+          listRows: 20,
+          token: sessionStorage.getItem('token')
+        }
+      } else {
+        data = {
+          page: this.page,
+          listRows: 20,
+        }
       }
+      this.$axios({
+        url: '/api/game/subscribeGames',
+        data: data
+      }).then(res => {
+        if(res.data.list.length < 20) {
+          this.noMore = true;
+        }
+        this.pullUpState = false;
+        this.page++;
+        this.list.push(...res.data.list);
+      }).catch(() => {
+        this.pullUpState = false;
+      })
     },
   },
   components: {
     Navigation,
     GameList,
     Loading,
-    Scroll
   }
 }
 </script>

@@ -1,19 +1,21 @@
 <template>
   <div class="search-game">
-    <Scroll
-      :pullUp="pullUpState"
-      @pullingUp="pullUp">
-      <GameList class="content" :list="gameList" :type="1" slot="content"/> 
-    </Scroll>
+    <van-list
+    v-model="pullUpState"
+    :finished="noMore"
+    :finished-text="text"
+    @load="pullUp"
+    >
+      <GameList class="content" :list="list" :type="1"/> 
+    </van-list>
   </div>
 </template>
 <script>
-  import Scroll from '@/components/scroll/scroll.vue';
   import GameList from '@/components/gamelist/gamelist.vue';
   export default {
     name: 'SearchGame',
     props: {
-      list: {
+      gameList: {
         type: Array,
         default() {
           return []
@@ -29,13 +31,14 @@
     data() {
       return {
         page: 2, //初始页码
-        ajaxSwitch: true,
-        gameList: [],
-        pullUpState: 'ready'
+        list: [],
+        pullUpState: false,
+        noMore: false,
+        text: '没有更多了',
       }
     },
     watch: {
-      list() {
+      gameList() {
         this.handleInitData();
       }
     },
@@ -44,8 +47,6 @@
     },
     methods: {
       pullUp() {
-        if(this.ajaxSwitch) {
-          this.ajaxSwitch = false;
           this.$axios({
             url: '/api/search/index',
             data: {
@@ -55,40 +56,31 @@
               type: 1
             }
           }).then(res => {
-            this.gameList.push(...res.data.game_list);
+            this.pullUpState = false;
+            this.page++;
+            this.list.push(...res.data.game_list);
             if(res.data.game_list.length < 20) {
-              this.pullUpState = 'nomore';
-            } else {
-              this.pullUpState = 'success';
-              this.page++;
-              setTimeout(() => {
-                this.pullUpState = 'ready';
-                this.ajaxSwitch = true;
-              }, 1000)
+              this.noMore = true;
             }
           }).catch(() => {
-            this.pullUpState = 'fail';
-            setTimeout(() => {
-              this.pullUpState = 'ready';
-              this.ajaxSwitch = true;
-            }, 1000)          
+            this.pullUpState = false;       
           })
-        }
       },
       handleInitData() {
         this.page = 2;
-        this.ajaxSwitch = true;
-        this.gameList = JSON.parse(JSON.stringify(this.list)); 
-        if(this.gameList.length < 20) {
-          this.pullUpState = 'nomore';
-        } else {
-          this.pullUpState = 'ready';
+        this.list = JSON.parse(JSON.stringify(this.gameList)); 
+        this.noMore = false;
+        this.text = '没有更多了';
+        if(this.list.length < 20) {
+          this.noMore = true;
+          if(this.list.length === 0) {
+            this.text = '暂无相关游戏';
+          }
         }
       }
     },
     components: {
       GameList,
-      Scroll,
     }
   }
 </script>

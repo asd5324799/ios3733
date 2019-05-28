@@ -1,105 +1,147 @@
 <template>
   <div class="game-detail">
     <!-- header -->
-    <div class="detail-header">
-      <i class="back-icon" @click="goback"></i>
-      <div class="title">{{title}}</div>
-    </div>
-    <!-- container -->
-    <div class="container" ref="wrapper">
-      <div class="content">
-        <!-- tab-list -->
-        <ul class="tab-list">
-          <li 
-            class="tab-item"
-            v-for="(item, index) in tabList"
-            :key="index"
-            :class="{current: currentTab === index}"
-            @click="changeSlide(index)"><div class="text">{{item}}</div></li>
-        </ul>
-        <!-- main -->
-        <main>
-          <Swiper :options="swiperOption" class="swiper" ref="Swiper">
-            <SwiperSlide><DetailIndex @changeDetail="changeDetail" /></SwiperSlide>
-            <SwiperSlide><DetailComment /></SwiperSlide>
-            <SwiperSlide><DetailGift /></SwiperSlide>
-            <SwiperSlide><DetailNews /></SwiperSlide>
-          </Swiper>
-        </main>
+    <Navigation :title="gameInfo.title" />
+    <main>
+      <!-- background-image -->
+      <div 
+        :style="{backgroundImage: `url(${gameInfo.titlepic})`}"
+        class="background-image"
+      >
       </div>
-    </div>
+      <!-- game-info -->
+      <div 
+        class="game-info" 
+        ref="gameInfo">
+        <img 
+        :src="gameInfo.titlepic"
+        class="game-img">
+        <div class="game-container">
+          <div class="game-name">{{gameInfo.title}}</div>
+          <div class="game-number">{{gameInfo.totaldown}}人在玩</div>
+          <div class="game-type" v-if="gameInfo.app_tag !== []">
+            <div class="type-item"
+              v-for="(item, index) in gameInfo.app_tag"
+              :key="index">
+              <img 
+                :src="item.icon"
+                class="icon">
+              <span class="text">{{item.name}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- tab-list -->
+      <ul class="tab-list" :class="{fixed: fixed}">
+        <router-link
+          tag="li"
+          class="tab-item"
+          v-for="(item, index) in tabList"
+          :key="index"
+          :to="{name: item.name, id: gameInfo.id}"
+          replace
+        >
+          <div class="text">{{item.title}}</div>
+        </router-link>
+      </ul>
+      <div class="content" :class="{fixed: fixed}">
+        <keep-alive>
+          <router-view @changeDetail="changeDetail"></router-view>
+        </keep-alive>
+      </div>
+      </main>
     <!-- download -->
     <div class="game-download">
       <!-- <div class="left"><i class="icon icon-left"></i><div class="text">收藏</div></div>  -->
-      <a :href="down_ip" class="download">下载《{{title}}》</a>
+      <a v-if="type" :href="gameInfo.down_ip" class="download">下载《{{gameInfo.title}}》</a>
+      <div @click="appointment" v-if="!type" class="download appointment" :class="{already: alreadyAppointment}">{{text}}</div>
       <!-- <div class="right"><i class="icon icon-right"></i><div class="text">分享</div></div>  -->
     </div>
   </div>
 </template>
 <script>
-import {swiper as Swiper, swiperSlide as SwiperSlide} from 'vue-awesome-swiper';
-import DetailIndex from './detail-index/detail-index';
-import DetailComment from './detail-comments/detail-comments';
-import DetailGift from './detail-gift/detail-gift';
-import DetailNews from './detail-news/detail-news';
+import Navigation from '@/components/navigation/navigation.vue';
 
 export default {
   name: 'Detail',
   data() {
     return {
-      title: '',
-      down_ip: '',
-      tabList: ['详情', '评论', '礼包', '资讯'],
-      currentTab: 0,
-      swiperOption: {
-        touchAngle : 30,
-        resistanceRatio : 0,
-        on: {
-          slideChange: () => {
-            this.currentTab = this.swiper.activeIndex;
-          }
+      gameInfo: {},
+      tabList: [
+        {
+          title: '详情', 
+          name: 'DetailIndex'
+        }, {
+          title: '评论', 
+          name: 'DetailComments'
+        }, {
+          title: '礼包', 
+          name: 'DetailGift'
+        }, {
+          title: '资讯',
+          name: 'DetailNews'
         }
-      },
+      ],
+      fixed: false,
+      alreadyAppointment: false,
     }
   },
   computed: {
-    swiper() {
-      return this.$refs.Swiper.swiper
+    text() {
+      if(this.alreadyAppointment) {
+        return '已预约'
+      } else {
+        return `预约《${this.gameInfo.title}》`
+      }
     }
   },
   created() {
     this.createdMethod();
   },
   activated() {
-    if(this.id !== JSON.parse(this.$route.query.id)) {
-      this.swiper.slideTo(0);
+    if(this.gameInfo.id !== JSON.parse(sessionStorage.getItem('gameInfo')).id) {
       this.createdMethod();
     }
+  },
+  mounted() {
+    window.addEventListener('scroll', () => {
+      if(document.documentElement.scrollTop >= 110) {
+        this.fixed = true;
+      } else {
+        this.fixed = false;
+      }
+    })
   },
   methods: {
     createdMethod() {
-      this.id = JSON.parse(this.$route.query.id);
-      this.title = JSON.parse(this.$route.query.title);
-      this.down_ip = JSON.parse(this.$route.query.down_ip);
-    },
-    goback() {
-      this.$router.back();
-    },
-    changeSlide(index) {
-      this.swiper.slideTo(index);
-      this.currentTab = index;
+      this.gameInfo = JSON.parse(sessionStorage.getItem('gameInfo'));
+      this.$set(this.gameInfo, 'add', 'add');
+      this.type = JSON.parse(sessionStorage.getItem('type'));
+      if(this.gameInfo.subscribed) {
+        this.alreadyAppointment = true;
+      }
     },
     changeDetail() {
       this.createdMethod();
+    },
+    appointment() {
+      if(!this.gameInfo.subscribed) {
+        this.$axios({
+          url: '/api/game/subscribe',
+          data: {
+            token: sessionStorage.getItem('token'),
+            gameId: this.gameInfo.id
+          }
+        })
+        .then(res => {
+          this.alreadyAppointment = true;
+          this.$toast(res.msg); 
+        })
+      }
     }
   },
   components: {
-    Swiper,
-    SwiperSlide,
-    DetailIndex,
-    DetailComment,
-    DetailGift,
-    DetailNews,
+    Navigation
   }
 }
 </script>

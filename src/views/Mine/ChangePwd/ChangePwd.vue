@@ -9,8 +9,8 @@
             <div class="password" :class="passIsFocus?'linegreen':'linegrey'"><input :type="pwdType[1]" autocomplete="off" v-model.trim="userAccount.password" @focus="passInFocus" @blur="passOutFocus"><span :class="passIsFocus?'cur':'nocur'">新密码</span><i class="show-pwd" :class="{'hide-pwd':showpwd}" @click="showPwd"></i></div>
             <!-- 重复新密码 -->
             <div class="password" :class="confirmIsFocus?'linegreen':'linegrey'"><input :type="pwdType[2]" autocomplete="off" v-model.trim="userAccount.confirmPwd" @focus="confirmInFocus" @blur="confirmOutFocus"><span :class="confirmIsFocus?'cur':'nocur'">重复新密码</span><i class="show-pwd" :class="{'hide-pwd':showconfirmpwd}" @click="showConfirmPwd"></i></div>
-            <div class="submit-btn" @click="submitChange">提交</div>
-            <div class="submit-btn gray" @click="submitChange">提交中...</div>
+            <div class="submit-btn" v-if="ajaxSwitch"  @click="submitChange">提交</div>
+            <div class="submit-btn gray" v-if="!ajaxSwitch">提交中...</div>
         </form>
     </main>
         <Prompt :message="message" />
