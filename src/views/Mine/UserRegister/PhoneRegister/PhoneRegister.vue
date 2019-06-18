@@ -103,7 +103,7 @@
                     this.message = '请输入手机号'
                     return false;
                 }else if(!(/^1[34578]\d{9}$/.test(this.userAccount.userName))){
-                    this.message = '请输入正确的中国大陆11位手机号'
+                    this.message = '请输入正确的中国大陆11位手机号';
                     return false;
                 }
                 if(this.codeBtnShow){
@@ -116,7 +116,9 @@
                             phone:this.userAccount.userName,
                             type:2
                         }
-                    }).then(() =>{
+                    }).then((res) =>{
+                      this.$toast(res.msg);
+                      if(res.code) {
                         this.codeBtnShow = false;
                         const TIME_COUNT = 60;   
                         if (!this.codeTimer) {    
@@ -132,6 +134,7 @@
                                 }    
                             }, 1000)    
                         }  
+                      }
                     }).catch(() =>{
                     })
                 }

@@ -116,6 +116,8 @@
 <script>
     import Navigation from '@/components/navigation/navigation.vue';
     import Cropper from '@/components/cropper/cropper.vue';
+    import Box from '@/common/box.js';
+    
     export default {
         data() {
           return {
@@ -475,18 +477,21 @@
                     },
                     btnShow:true
                 }).then(() => {
-                    sessionStorage.token = '';
-                this.$router.replace('/login')
+                    sessionStorage.setItem('token', '');
+                    let box = new Box();
+                    box.loginSuccess({token: ''});
+                    this.$router.push({
+                      name: 'Mine'
+                    })
                 })
                 .catch(() => {
                 })
-                
             }
         },
         created () {
           this.token = sessionStorage.token;
-          this.getUser()
-          this.getUserInfo()
+          this.getUser();
+          this.getUserInfo();
         },
         components: {
             Navigation,

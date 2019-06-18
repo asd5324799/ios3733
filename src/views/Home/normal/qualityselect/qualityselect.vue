@@ -198,7 +198,6 @@ export default {
       }
     },
     toDetail() {
-      console.log(1);
       sessionStorage.setItem('goBack', this.$route.name);
       sessionStorage.setItem('gameInfo', JSON.stringify(this.item));
       sessionStorage.setItem('item', 1);

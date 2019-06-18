@@ -10,7 +10,7 @@
 </template>
 <script>
 /**
- * @param type 1正常列表 2带序号列表 3显示开服表时间,否则显示游戏福利 4下载还是预约
+ * @param type 1正常列表 2带序号列表 3开服列表 4预约列表 5h5列表
  */
 import GameInfo from './gameinfo/gameinfo';
 export default {

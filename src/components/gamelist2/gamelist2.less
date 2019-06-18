@@ -2,25 +2,41 @@
 .game-list2 {
   .list {
     display: flex;
-    margin: 15*@rem 0;
+    margin: 0 0 15*@rem;
     padding: 0 14*@rem;
     box-sizing: border-box;
+    overflow-x: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+    }
     .game-item {
+      position: relative;
       flex: 0 0 25%;
+      padding-top: 15*@rem;
       overflow: hidden;
+      .discount {
+        position: absolute;
+        top: 10*@rem;
+        left: 45*@rem;
+        padding: 3*@rem 6*@rem;
+        background-color: rgba(255, 72, 52, 1);
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        font-size: 12*@rem;
+        color: rgba(255, 255, 255, 1);
+      }
       .container {
         .game-img {
           display: block;
-          width: 60*@rem;
-          height: 60*@rem;
+          width: 75*@rem;
+          height: 75*@rem;
           margin: 0 auto;
           background-color: rgba(238, 238, 238, 1);
           border-radius: 15px;
-          overflow: hidden;
-          text-overflow: ellipsis;
         }
         .game-name {
-          margin: 5*@rem 0;
+          margin: 12*@rem 0 14*@rem;
           padding: 0 5*@rem;
           text-align: center;
           font-size: 14*@rem;
@@ -37,13 +53,15 @@
       }
     }
     .button {
-      display: block;
+      display: flex;
       box-sizing: border-box;
       width: 55*@rem;
       height: 25*@rem;
       margin: 0 auto;
       text-align: center;
       line-height: 25*@rem;
+      justify-content: center;
+      align-items: center;
       background-color: rgba(71, 168, 58, 1);
       border-radius: 3px;
       font-size: 12*@rem;
@@ -56,6 +74,33 @@
           background-color: rgba(255, 255, 255, 1);
         }
       }
+      &.loading {
+        span {
+          display: block;
+          width: 16*@rem;
+          height: 16*@rem;
+          background-size: 16*@rem 16*@rem;
+          background-image: url(../../common/images/downloadLoading.png);
+          animation: rotate 1s infinite linear;
+        }
+        div {
+          display: none;
+        }
+      }
+      &.h5 {
+        background-color: rgba(255, 255, 255, 1);
+        border: 1px solid rgba(71, 168, 58, 1);
+        color: rgba(71, 168, 58, 1);
+      }
     }
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

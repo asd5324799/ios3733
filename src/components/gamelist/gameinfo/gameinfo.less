@@ -18,25 +18,51 @@
       font-size: 15*@rem;
     }
     .game-img {
-      flex: 0 0 65*@rem;
-      width: 65*@rem;
-      height: 65*@rem;
+      flex: 0 0 75*@rem;
+      width: 75*@rem;
+      height: 75*@rem;
       background-color: rgba(238, 238, 238, 1);
       border-radius: 15px;
       overflow: hidden;
+    }
+    .discount {
+      position: absolute;
+      top: 0;
+      left: 55*@rem;
+      padding: 3*@rem 6*@rem;
+      background-color: rgba(255, 72, 52, 1);
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
+      font-size: 12*@rem;
+      color: rgba(255, 255, 255, 1);
     }
     .game-content {
       flex: 1;
       margin-left: 10*@rem;
       overflow: hidden;
       .game-name {
-        font-size: 15*@rem;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        span {
+          display: inline-block;
+          line-height: 20*@rem;
+          font-size: 15*@rem;
+        }
+        i {
+          display: inline-block;
+          margin-left: 10*@rem;
+          padding: 3*@rem 6*@rem;
+          font-size: 12*@rem;
+          font-style: normal;
+          background-color: rgba(255, 43, 63, 1);
+          color: rgba(255, 255, 255, 1);
+          border-radius: 3px;
+        }
       }
       .game-type {
-        margin: 8*@rem 0;
+        margin: 12*@rem 0;
         font-size: 12*@rem;
         .type {
           margin-right: 3*@rem;
@@ -45,6 +71,17 @@
         }
         .size {
           color: #999999;
+        }
+      }
+      .h5-type {
+        margin: 12*@rem 0;
+        font-size: 12*@rem;
+        color: rgba(102, 102, 102, 1);
+        .type {
+          margin-right: 3*@rem;
+        }
+        .number {
+          margin-left: 3*@rem;
         }
       }
       .game-boon {
@@ -68,23 +105,53 @@
   .game-download {
     position: absolute;
     box-sizing: border-box;
-    top: 27*@rem;
+    top: 34*@rem;
     right: 14*@rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 60*@rem;
     height: 30*@rem;
     text-align: center;
     line-height: 30*@rem;
     background-color: rgba(71, 168, 58, 1);
-    border-radius: 3px;
+    border-radius: 5px;
     font-size: 14*@rem;
     color: rgba(255, 255, 255, 1);
     &.orange {
       background-color: rgba(255, 157, 2, 1);
+    }
+    &.h5 {
+      background-color: rgba(255, 255, 255, 1);
+      color: rgba(71, 168, 58, 1);
+      border: 1px solid rgba(71, 168, 58, 1);
     }
     &.orange.already {
       background-color: rgba(255, 255, 255, 1);
       color: #6e6e6e;
       border: 1px solid #6e6e6e;
     }
+    &.loading {
+      span {
+        display: block;
+        width: 16*@rem;
+        height: 16*@rem;
+        background-size: 16*@rem 16*@rem;
+        background-image: url(../../../common/images/downloadLoading.png);
+        animation: rotate 1s infinite linear;
+      }
+      div {
+        display: none;
+      }
+    }
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

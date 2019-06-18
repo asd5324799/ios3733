@@ -56,8 +56,11 @@
       createdMethod() {
         this.$axios({
           url: '/api/index/extra',
-          data: {}
+          data: {
+            startup: 1
+          }
         }).then(res => {
+          console.log(res);
           this.handleInitData(res);
         })
       },

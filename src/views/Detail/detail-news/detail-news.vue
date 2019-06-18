@@ -1,7 +1,7 @@
 <template>
   <div class="detail-news">
     <Loading :loading="loading" @refresh="createdMethod">
-      <van-pull-refresh v-model="pullDownState" @refresh="pullDown" slot="loading-content">
+      <div slot="loading-content">
         <div class="content" >
           <van-list
             v-model="pullUpState"
@@ -12,7 +12,7 @@
             <NewsList :list="list"></NewsList>
           </van-list>
         </div>
-      </van-pull-refresh>
+      </div>
     </Loading>
   </div>
 </template>
@@ -26,7 +26,6 @@ export default {
       list: [],
       loading: 'ready',
       pullUpState: false,
-      pullDownState: false,
       page: 1,
       title: '',
       noMore: false,
@@ -73,28 +72,6 @@ export default {
     },
     handleInitData(res) {
       this.list = res.data.list;
-    },
-    pullDown() {
-      this.page = 1;
-      this.$axios({
-        url: '/api/news/hotList',
-        data: {
-          classId: 23,
-          title: this.title,
-          page: 1,
-          listRows: 20
-        }
-      })
-      .then((res) => {
-        this.handleInitData(res);
-        if(res.data.list.length <= 20) {
-          this.noMore = true;
-        }       
-        this.pullDownState = false;
-      })
-      .catch(() => {
-        this.pullDownState = false
-      })
     },
     pullUp() {
       this.$axios({

@@ -5,30 +5,38 @@
       v-for="(item, index) in list" 
       :key="index"
       class="game-item">
+        <div class="discount" v-if="type === 4">4.5折</div>
         <div
           class="container" 
           @click="toDetail(item)">
           <img :src="item.titlepic" class="game-img">
           <div class="game-name">{{item.title}}</div>
-          <div class="game-type" v-if="type === '3'">{{item.totaldown}}人在玩</div>
+          <div class="game-type" v-if="type === 3">{{item.totaldown}}人在玩</div>
         </div>
-        <a :href="item.down_ip" v-if="type !== 2" class="button" :class="{orange: type === 2}">{{'下载'}}</a>
         <div 
-          @click="appointment" 
+          @click="clickEvent(item.down_ip, index)" 
           class="button" 
-          v-if="type === 2" 
-          :class="{orange: type === 2, already: alreadyAppointment}"
+          :class="{
+            orange: type === 2,
+            already: alreadyAppointment,
+            h5: type === 4
+          }"
+          ref="down"
         >
-          {{text}}
+          <span></span>
+          <div>{{text}}</div>
         </div>
+          
       </li>
     </ul>
   </div>
 </template>
 <script>
 /**
- * @param 1正常列表 2预约列表 3显示玩家人数
+ * @param 1.正常列表 2.预约列表 3.显示玩家人数 4.h5列表
  */
+import Box from '@/common/box.js';
+
 export default {
   props: {
     list: Array,
@@ -49,8 +57,12 @@ export default {
     text() {
       if(this.alreadyAppointment) {
         return '已预约';
-      } else {
+      } else if(this.type === 4) {
+        return '打开';
+      } else if(this.type === 2) {
         return '预约';
+      } else {
+        return '下载';
       }
     }
   },
@@ -68,19 +80,7 @@ export default {
       });
     },
     appointment() {
-      if(!this.alreadyAppointment) {
-        this.$axios({
-          url: '/api/game/subscribe',
-          data: {
-            token: sessionStorage.getItem('token'),
-            gameId: this.item.id
-          }
-        })
-        .then(res => {
-          this.alreadyAppointment = true;
-          this.$toast(res.msg); 
-        })
-      }
+
     },
     IfSubscribed() {
       // if(subscribed) {
@@ -90,6 +90,36 @@ export default {
       //   this.alreadyAppointment = false;
       //   return false;
       // }
+    },
+    clickEvent(url = '', index = 0, gameUrl = '') {
+      if(this.type === 2) {
+        // 如果是预约列表
+        if(!this.alreadyAppointment) {
+          this.$axios({
+            url: '/api/game/subscribe',
+            data: {
+              token: sessionStorage.getItem('token'),
+              gameId: this.item.id
+            }
+          })
+          .then(res => {
+            this.alreadyAppointment = true;
+            this.$toast(res.msg); 
+          })
+        }
+      } else if(this.type === 4) {
+        // 如果是H5列表
+        let box = new Box();
+        box.openH5Game(gameUrl);
+      } else {
+        // 如果是正常列表
+        this.$refs.down[index].classList.add('loading');
+        let box = new Box();
+        box.openInBrowser(url);
+        setTimeout(() => {
+          this.$refs.down[index].classList.remove('loading');
+        }, 2000)
+      }
     }
   },
 };

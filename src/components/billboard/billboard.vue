@@ -35,14 +35,12 @@ export default {
   },
   methods: {
     toDetail(item) {
-      this.$router.push({ 
-        name: 'Detail', 
-        query: {
-          id: JSON.stringify(item.id), 
-          title: JSON.stringify(item.title), 
-          down_ip: JSON.stringify(item.down_ip),
-        }
-      })
+      sessionStorage.setItem('goBack', this.$route.name);
+      sessionStorage.setItem('gameInfo', JSON.stringify(item));
+      sessionStorage.setItem('type', 1);
+      this.$router.push({
+          name: 'DetailIndex',
+      });
     }
   },
 }

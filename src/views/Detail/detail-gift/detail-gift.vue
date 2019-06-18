@@ -1,7 +1,7 @@
 <template>
   <div class="detail-gift">
     <Loading :loading="loading" @refresh="createdMethod">
-      <van-pull-refresh v-model="pullDownState" @refresh="pullDown" slot="loading-content">
+      <div slot="loading-content">
         <div class="content">
           <van-list
             v-model="pullUpState"
@@ -12,7 +12,7 @@
             <GiftList :giftList="list"></GiftList>
           </van-list>
         </div>
-      </van-pull-refresh>
+      </div>
     </Loading>
   </div>
 </template>
@@ -25,7 +25,6 @@ export default {
     return {
       list: [],
       loading: 'ready',
-      pullDownState: false,
       pullUpState: false,
       page: 1,
       id: 0,
@@ -71,23 +70,6 @@ export default {
     },
     handleInitData(res) {
       this.list = res.data.list;
-    },
-    pullDown() {
-      this.page = 1;
-      this.$axios({
-        url: '/api/card/index',
-        data: {
-          gameId: this.id,
-          page: 1
-        }
-      })
-      .then((res) => {
-        this.handleInitData(res);
-        this.pullDownState = false;
-      })
-      .catch(() => {
-        this.pullDownState = false;
-      })
     },
     pullUp() {
       this.$axios({

@@ -3,22 +3,24 @@
     <Navigation :title="'评论详情'" />
     <Loading :loading="loading" @refresh="createdMethod">
       <div slot="loading-content">
-      <div class="content">
-        <div class="container">
-            <CommentItem :item="commentDetail" :type="2"/>
-            <div class="tab-wrapper">
-              <div class="left-wrapper">全部回复({{replyCount}})</div>
-              <div class="right-wrapper" @click="listReverse">{{replySort}}</div>
+        <div>
+          <div class="content">
+            <div class="container">
+                <CommentItem :item="commentDetail" :type="2"/>
+                <div class="tab-wrapper">
+                  <div class="left-wrapper">全部回复({{replyCount}})</div>
+                  <div class="right-wrapper" @click="listReverse">{{replySort}}</div>
+                </div>
+                <ul>
+                  <CommentItem 
+                    v-for="(item, index) in replyList"
+                    :key="index"
+                    :item="item"
+                    :type="2" />
+                </ul>
             </div>
-            <ul>
-              <CommentItem 
-                v-for="(item, index) in replyList"
-                :key="index"
-                :item="item"
-                :type="2" />
-            </ul>
+          </div>
         </div>
-      </div>
       </div>
     </Loading>
   </div>
@@ -110,6 +112,7 @@ export default {
     },
     listReverse() {
       this.replySort = this.replySort === '顺序' ? '倒序' : '顺序';
+      this.replyList.reverse();
     }
   },
   components: {

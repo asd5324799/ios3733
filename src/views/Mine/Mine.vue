@@ -1,4 +1,4 @@
-<template>
+<template>  
   <div class="mine">
     <div class="mine-header">
       <!-- <router-link to="/qrcode" class="qrcode"><i class="code-icon"></i></router-link> -->
@@ -46,17 +46,24 @@
                       </div>
                   </div>
               </router-link>
+              <!-- <router-link
+                tag="li"
+                 class="func-item kefu"
+                 :to="{name: 'hehe'}"
+              > -->
+              <!-- <li @click="openH5Game('http://mitusir.top/public/test.html')" class="func-item kefu"> -->
               <li @click="BOX_openInNewWindow('http://u.3733.com/float.php/float/kefu/new_index')" class="func-item kefu">
-                  <div class="item-content">
-                      <div class="func-left">
-                          <i class="func-icon"></i>
-                          <div class="func-name">客服中心</div>
-                      </div>
-                      <div class="func-right">
-                          <span class="right-arrow"></span>
-                      </div>
-                  </div>
+                <div class="item-content">
+                    <div class="func-left">
+                        <i class="func-icon"></i>
+                        <div class="func-name">客服中心</div>
+                    </div>
+                    <div class="func-right">
+                        <span class="right-arrow"></span>
+                    </div>
+                </div>
               </li>
+              <!-- </router-link> -->
               <router-link :to="{name: 'GameCollect'}" tag="li" class="func-item mygame">
                   <div class="item-content">
                       <div class="func-left">
@@ -79,7 +86,8 @@
                       </div>
                   </div>
               </router-link>
-              <li @click="BOX_openInNewWindow('http://api2.c3733.com/h5/html/feedback')" class="func-item complaint">
+              <li @click="BOX_openH5Game('http://api2.a3733.com/h5/game/index')" class="func-item complaint">
+              <!-- <li @click="BOX_openInNewWindow('http://api2.c3733.com/h5/html/feedback')" class="func-item complaint"> -->
                   <div class="item-content">
                       <div class="func-left">
                           <i class="func-icon"></i>
@@ -99,6 +107,7 @@
 <script>
     import NavCom from '@/components/navcom/navcom.vue';
     import Box from '@/common/box.js';
+    
     export default {
       data() {
         return {
@@ -116,19 +125,9 @@
           token:'',
         }
       },
-      activated() {
-        this.token = sessionStorage.getItem('token');
-        if(this.token === '') {
-          this.userPic = '';
-          this.userGold = 0;
-          this.userPtb = 0;
-        } else {
-          this.getUserInfo(); 
-        }
-      },
       computed: {
         signin(){
-          if(this.clocked_in==true){
+          if(this.clocked_in === true){
             return '已签到'
           }else{
             return '签到'
@@ -143,18 +142,23 @@
           return str || 'http://pic5.3733.com/avatar/img_user_default.png'
         }
       },
+      activated() {
+        this.token = sessionStorage.getItem('token');
+        if(this.token === '') {
+          this.userPic = '';
+          this.userName = '';
+          this.userGold = 0;
+          this.userPtb = 0;
+        } else {
+          this.getUserInfo(); 
+        }
+      },
       created () {
         this.createdMethod();
       },
       methods: {
         createdMethod() {
-          let box = new Box();
-          let temp = box.getToken();
-          if(temp) {
-            sessionStorage.setItem('token', temp);
-            this.token = temp;
-            this.getUserInfo();
-          }
+          this.getUserInfo();
         },
         getUserInfo(){
           this.$axios({
@@ -179,7 +183,7 @@
           })
         },
         attendance() {
-          let token = sessionStorage.token;
+          let token = sessionStorage.getItem('token');
           this.$axios({
             url: '/api/user/clockIn',
             header: {
@@ -191,17 +195,30 @@
             }
           })
           .then((res) => {
-            if(res.code === 1) {
+            if(res.code) {
+              this.$toast(res.msg);
+            } else {
+              this.clocked_in = true;
               this.$toast('签到成功');
             }
           })
-          .catch(() => {
+          .catch((res) => {
             this.$toast('签到失败,请稍后重试');
           })
         },
         BOX_openInNewWindow(url) {
+          if(!this.token) {
+            this.$router.push({
+              name: 'Login'
+            })
+          } else {
+            let box = new Box();
+            box.openInNewWindow(url); 
+          }
+        },
+        BOX_openH5Game(url) {
           let box = new Box();
-          box.openInNewWindow(url);
+          box.openH5Game(url); 
         }
       },
       components: {

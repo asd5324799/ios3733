@@ -1,0 +1,106 @@
+@rem: 0.0267rem;
+.h5 {
+  .banner {
+    height: 130*@rem;
+    margin: 15*@rem;
+    border-radius: 5px;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }  
+  .nav-list {
+    display: flex;
+    margin: 15*@rem 0;
+    .nav-item {
+      flex: 0 0 25%;
+      .nav-icon {
+        display: block;
+        width: 42*@rem;
+        height: 42*@rem;
+        margin: 0 auto;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        border-radius: 10px;
+        &.bt {
+          background-image: url(./images/bt.png);
+        }
+        &.vip {
+          background-image: url(./images/vip.png);
+        }
+        &.discount {
+          background-image: url(./images/discount.png);
+        }
+        &.quality {
+          background-image: url(./images/quality.png);
+        }
+      }
+      .nav-text {
+        margin-top: 5*@rem;
+        text-align: center;
+        font-size: 12*@rem;
+        color: rgba(51, 51, 51, 1);
+      }
+    }
+  }
+  .lately {
+    position: relative;
+    width: 100%;
+    height: 105*@rem;
+    background-color: rgba(245, 245, 245, 1);
+    .left {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50*@rem;
+      .title {
+        position: relative;
+        top: 17.5*@rem;
+        left: 15*@rem;
+        box-sizing: border-box;
+        width: 20*@rem;
+        height: 70*@rem;
+        padding-top: 3*@rem;
+        text-align: center;
+        line-height: 16*@rem;
+        background-color: rgba(255, 166, 11, 1);
+        font-size: 12*@rem;
+        color: rgba(255, 255, 255, 1);
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+      }
+    }
+    .right {
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;      
+      padding-left: 50*@rem;
+      .list {
+        width: 100%;
+        height: 100%;
+        .item {
+          box-sizing: border-box;
+          width: 63*@rem;
+          padding-top: 17.5*@rem;
+          margin-right: 10*@rem;
+          text-align: center;
+          img {
+            width: 50*@rem;
+            height: 50*@rem;
+            margin-bottom: 5*@rem;
+            background-color: rgba(210, 210, 210, 1);
+            border-radius: 10px;
+          }
+          .game-name {
+            text-align: center;
+            font-size: 12*@rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+  }
+}

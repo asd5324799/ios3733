@@ -61,11 +61,9 @@
       </li>
       <div class="more" v-if="item.reply_count >= 5">查看全部{{item.reply_count}}条评论</div>
     </ul>
-    <Prompt :message="message" />
   </li>
 </template>
 <script>
-import Prompt from '@/components/prompt/prompt.vue';
 export default {
   props: {
     item: {
@@ -83,7 +81,6 @@ export default {
     return {
       supportColor: false,
       supportCount: 0,
-      message: '',
     }
   },
   mounted() {
@@ -165,7 +162,13 @@ export default {
     },
     isGood(commentId) {
       event.cancelBubble = true;
-      let token = localStorage.getItem('token');
+      let token = sessionStorage.getItem('token');
+      if(!token) {
+        this.$router.push({
+          name: 'Login'
+        })
+        return
+      }
       this.$axios({
         url: '/api/resource/support',
         data: {
@@ -175,6 +178,9 @@ export default {
         }
       })
       .then(res => {
+        if(res.data.msg) {
+          this.$toast(res.data.msg);
+        }
         if(this.supportColor) {
           this.supportColor = false;
           this.supportCount--;
@@ -183,14 +189,11 @@ export default {
           this.supportCount = res.data.count;
         }
       })
-      .catch(() => {
-        this.message = '点赞失败，请稍后重试';
+      .catch((res) => {
+        this.$toast(res.data.msg);
       })
     }
   },
-  components: {
-    Prompt,
-  }
 }
 </script>
 <style lang="less" scoped>

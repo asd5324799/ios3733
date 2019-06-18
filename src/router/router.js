@@ -2,10 +2,10 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import Home from '../views/Home/Home.vue';
-import QualitySelect from '../views/Home/qualityselect/qualityselect.vue';
-import NewGame from '../views/Home/newgame/newgame.vue';
-import CateGory from '../views/Home/category/category.vue'
-;
+import QualitySelect from '../views/Home/h5/qualityselect/qualityselect.vue';
+import NewGame from '../views/Home/h5/newgame/newgame.vue';
+import CateGory from '../views/Home/h5/category/category.vue';
+
 import Detail from '../views/Detail/Detail.vue';
 import DetailIndex from '../views/Detail/detail-index/detail-index.vue';
 import DetailComments from '../views/Detail/detail-comments/detail-comments.vue';
@@ -216,11 +216,17 @@ var router = new Router({
       children: [{
         path: '',
         name: 'GameCollect',
-        component: GameCollect
+        component: GameCollect,
+        meta: {  
+          requiresAuth: true    
+        },
       }, {
         path: 'AlreadyAppointment',
         name: 'AlreadyAppointment',
-        component: AlreadyAppointment
+        component: AlreadyAppointment,
+        meta: {  
+          requiresAuth: true    
+        },
       }]
     },
     {
@@ -288,7 +294,10 @@ var router = new Router({
       }, {
         path: 'ReplyMessage',
         name: 'ReplyMessage',
-        component: ReplyMessage
+        component: ReplyMessage,
+        meta: {  
+          requiresAuth: true    
+        },
       }, {
         path: 'Notice',
         name: 'Notice',
@@ -296,7 +305,7 @@ var router = new Router({
         meta: {  
           requiresAuth: true    
         },
-      }]
+      }],
     }
    
     // {
@@ -312,16 +321,30 @@ var router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+  //记录首页path
+  if(/\/home/.test(from.path)){
+    sessionStorage.setItem("HOME_PATH",from.path)
+  }
+  //记录排行榜页path
+  if(/\/rank/.test(from.path)){
+    sessionStorage.setItem("RANK_PATH",from.path)
+  }
+  //记录开服表页path
+  if(/\/kaifu/.test(from.path)){
+    sessionStorage.setItem("KAIFU_PATH",from.path)
+  }
   let token = sessionStorage.getItem('token')
   if(to.path === '/login'){
     next();
   }else{
-    if(to.meta.requiresAuth && token === '') {
+    if(to.meta.requiresAuth && !token) {
       next({ path: '/login' })
     }else{
       next();
     }
   }
 })
+
+
 
 export default router

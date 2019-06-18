@@ -7,18 +7,25 @@
           <img 
             :src="item.titlepic"
             class="game-img">
+          <div class="discount" v-if="type === 5">4.5折</div>
           <div class="game-content">
             <div class="game-name">
-              {{item.title}}
+              <span>{{item.title}}</span>
+              <i v-if="type === 5">精品首发</i>
             </div>
-            <div class="game-type">
+            <div class="game-type" v-if="type !== 5">
               <span 
                 v-for="(items, indexs) in item.app_tag"
                 :key="indexs"
                 :style="{backgroundColor: items.color}"
-                class="type" >{{items.name}}
+                class="type" 
+              >
+                {{items.name}}
               </span>
               <span class="size">{{item.size_ip}}</span>
+            </div>
+            <div class="h5-type" v-if="type === 5">
+              <span class="type">BT版</span>|<span class="number">123人在玩</span>
             </div>
             <div class="game-boon">
               <div class="text" v-if="type != 3">{{item.yxftitle}}</div>
@@ -30,14 +37,28 @@
           </div>
         </div>
       </div>
-      <a :href="item.down_ip" class="game-download" v-if="!showBigImg() && type !== 4">{{'下载'}}</a>
-      <div @click="appointment" class="game-download"  v-if="!showBigImg() && type === 4" :class="{orange: type === 4, already: alreadyAppointment}">{{text}}</div>
+      <div 
+        @click="clickEvent(item.down_ip, index)" 
+        class="game-download" 
+        v-if="!showBigImg() && type !== 4"
+        ref="down"
+        :class="{
+          orange: type === 4, 
+          already: alreadyAppointment,
+          h5: type === 5
+        }"
+      >
+        <span></span>
+        <div>{{text}}</div>
+      </div>
     </div>
 </template>
 <script>
 /**
- * @param type 1为正常列表 2为有序号的列表 3取消游戏福利栏显示开服时间 4为游戏预约
+ * @param type 1为正常列表(有大图) 2序号列表 3开服列表 4预约列表 5h5列表
   */
+  import Box from '@/common/box.js';
+
 export default {
   props: {
     item: {
@@ -66,10 +87,19 @@ export default {
   },
   computed: {
     text() {
-      if(this.alreadyAppointment) {
-        return '已预约';
+      if(this.type === 4) {
+        // 如果预约列表
+        if(this.alreadyAppointment) {
+          return '已预约';
+        } else {
+          return '预约';
+        }
+      } else if(this.type === 5) {
+        // 如果H5列表
+        return '打开';
       } else {
-        return '预约';
+        // 如果下载列表
+        return '下载';
       }
     }
   },
@@ -111,26 +141,41 @@ export default {
         name: 'DetailIndex',
       });
     },
-    appointment() {
-      if(!this.alreadyAppointment) {
-        this.$axios({
-          url: '/api/game/subscribe',
-          data: {
-            token: sessionStorage.getItem('token'),
-            gameId: this.item.id
-          }
-        })
-        .then(res => {
-          this.alreadyAppointment = true;
-          this.$toast(res.msg); 
-        })
-      }
-    },
     IfSubscribed() {
       if(this.item.subscribed) {
         this.alreadyAppointment = true;
       } else {
         this.alreadyAppointment = false;
+      }
+    },
+    clickEvent(url = '', gameUrl = '') {
+      if(this.type === 5) {
+        // 如果是H5列表
+        let box = new Box();
+        box.openH5Game(gameUrl);
+      } else if(this.type === 4) {
+        // 如果是预约列表
+        if(!this.alreadyAppointment) {
+          this.$axios({
+            url: '/api/game/subscribe',
+            data: {
+              token: sessionStorage.getItem('token'),
+              gameId: this.item.id
+            }
+          })
+          .then(res => {
+            this.alreadyAppointment = true;
+            this.$toast(res.msg); 
+          })
+        }
+      } else {
+        // 如果是下载列表
+        this.$refs.down.classList.add('loading');
+        let box = new Box();
+        box.openInBrowser(url);
+        setTimeout(() => {
+          this.$refs.down.classList.remove('loading');
+        }, 2000)
       }
     }
   }

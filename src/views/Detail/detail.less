@@ -160,7 +160,9 @@
       background-size: 100%;
     }
     .download {
-      display: inline-block;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       box-sizing: border-box;
       width: 260*@rem;
       height: 40*@rem;
@@ -178,6 +180,28 @@
           border: 1px solid #6e6e6e;
         }
       }
+      &.loading {
+        span {
+          display: block;
+          width: 16*@rem;
+          height: 16*@rem;
+          background-size: 16*@rem 16*@rem;
+          background-image: url(../../common/images/downloadLoading.png);
+          animation: rotate 1s infinite linear;
+        }
+        div {
+          display: none;
+        }
+      }
     }
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

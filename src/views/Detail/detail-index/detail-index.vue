@@ -19,7 +19,9 @@
                 class="swiper-slide">
                 <img 
                   :src="item"
-                  class="slide-img">
+                  class="slide-img"
+                  @click="showBigImage(detail.morepic.small, index)"
+                >
               </swiper-slide>
             </swiper>
           </div>
@@ -90,7 +92,7 @@
             </div>
           </section>
           <!-- vip-price -->
-          <section class="game-section game-vip">
+          <section class="game-section game-vip" v-if="detail.vip_price.length">
             <div class="title"><i class="icon"></i><span class="text">VIP价格表</span></div>
             <div class="section-content">
               <div class="explain">部分游戏月卡、基金、理财、礼包不算VIP经验和充值、详细咨询客服！</div>
@@ -158,6 +160,7 @@ import Loading from '@/components/loading/loading.vue';
 import 'swiper/dist/css/swiper.css';
 import {swiper as Swiper, swiperSlide as SwiperSlide} from 'vue-awesome-swiper';
 import Box from '@/common/box.js';
+import { ImagePreview } from 'vant';
 
 export default {
   name: 'DetailIndex',
@@ -272,6 +275,12 @@ export default {
       sessionStorage.setItem('gameInfo', JSON.stringify(item));
       this.createdMethod();
       this.$emit('changeDetail');
+    },
+    showBigImage(list, index) {
+      ImagePreview({
+        images: list,
+        startPosition: index,
+      }); 
     }
   },
   components: {

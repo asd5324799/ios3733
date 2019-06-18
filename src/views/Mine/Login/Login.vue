@@ -121,8 +121,8 @@
                   this.$axios({
                       url: '/api/user/login',
                       data: {
-                      username: this.userAccount.userName,
-                      password: password,
+                        username: this.userAccount.userName,
+                        password: password,
                       }
                   }).then((res) =>{
                     if(res.data) {
@@ -130,9 +130,7 @@
                       sessionStorage.token = res.data.token;
                       let box = new Box();
                       box.loginSuccess(res.data);
-                      this.$router.push({
-                        name: 'Mine'
-                      })
+                      this.$router.back();
                     } else {
                       this.$toast(res.msg);
                     }

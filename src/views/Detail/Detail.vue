@@ -53,7 +53,15 @@
     <!-- download -->
     <div class="game-download">
       <!-- <div class="left"><i class="icon icon-left"></i><div class="text">收藏</div></div>  -->
-      <a v-if="type" :href="gameInfo.down_ip" class="download">下载《{{gameInfo.title}}》</a>
+      <div 
+        v-if="type" 
+        @click="openInBrowser(gameInfo.down_ip)" 
+        class="download"
+        ref="down"
+      >
+        <span></span>
+        <div>下载《{{gameInfo.title}}》</div>
+      </div>
       <div @click="appointment" v-if="!type" class="download appointment" :class="{already: alreadyAppointment}">{{text}}</div>
       <!-- <div class="right"><i class="icon icon-right"></i><div class="text">分享</div></div>  -->
     </div>
@@ -61,6 +69,7 @@
 </template>
 <script>
 import Navigation from '@/components/navigation/navigation.vue';
+import Box from '@/common/box.js';
 
 export default {
   name: 'Detail',
@@ -105,7 +114,8 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', () => {
-      if(document.documentElement.scrollTop >= 110) {
+      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      if(scrollTop >= 110) {
         this.fixed = true;
       } else {
         this.fixed = false;
@@ -119,6 +129,8 @@ export default {
       this.type = JSON.parse(sessionStorage.getItem('type'));
       if(this.gameInfo.subscribed) {
         this.alreadyAppointment = true;
+      } else {
+        this.alreadyAppointment = false;
       }
     },
     changeDetail() {
@@ -138,6 +150,14 @@ export default {
           this.$toast(res.msg); 
         })
       }
+    },
+    openInBrowser(url) {
+      this.$refs.down.classList.add('loading');
+      let box = new Box();
+      box.openInBrowser(url);
+      setTimeout(() => {
+        this.$refs.down.classList.remove('loading');
+      }, 2000)
     }
   },
   components: {

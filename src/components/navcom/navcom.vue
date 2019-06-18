@@ -50,18 +50,18 @@ export default {
   props:['pageIndex'],
   watch:{
     $route(){
-        var homeUrl = sessionStorage.getItem("HOME_PATH");
-        if(homeUrl){
-            this.navList[1].src = homeUrl;
-        }
-        var rankUrl = sessionStorage.getItem("RANK_PATH");
-        if(rankUrl){
-            this.navList[1].src = rankUrl;
-        }
-        var kaifuUrl = sessionStorage.getItem("KAIFU_PATH");
-        if(kaifuUrl){
-            this.navList[2].src = kaifuUrl;
-        }
+      let homeUrl = sessionStorage.getItem("HOME_PATH");
+      if(homeUrl){
+          this.navList[0].src = homeUrl;
+      }
+      var rankUrl = sessionStorage.getItem("RANK_PATH");
+      if(rankUrl){
+          this.navList[1].src = rankUrl;
+      }
+      var kaifuUrl = sessionStorage.getItem("KAIFU_PATH");
+      if(kaifuUrl){
+          this.navList[2].src = kaifuUrl;
+      }
     }
   },
   mounted() {
