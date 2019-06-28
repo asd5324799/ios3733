@@ -1,49 +1,73 @@
 <template>
   <div class="h5">
-    <!-- banner -->
-    <div class="banner">  
-      <img src="http://pic5.3733.com/dynamic/201902/1e3a78084cbd374e397650bdd6d6b7a2_n.jpeg">
-    </div>
-    <!-- nav -->
-    <ul class="nav-list">
-      <li 
-      v-for="(item, index) in navList"
-      :key="index"
-      class="nav-item"
-      @click="toTypePage(index)">
-        <div class="nav-icon" :class="item.class"></div>
-        <div class="nav-text">{{item.title}}</div>
-      </li>
-    </ul>
-    <!-- lately -->
-    <div class="lately"> 
-      <div class="left">
-        <div class="title">最近在玩</div>
-      </div>
-      <div class="right">
-        <Swiper 
-          :options="swiperOption"
-          class="list"
-        >
-          <SwiperSlide 
-            class="item"
-            v-for="(item, index) in latelyList"
+    <Loading :loading="loading" @refresh="createdMethod">
+      <van-pull-refresh v-model="pullDownState" @refresh="pullDown" slot="loading-content">
+        <div class="content">
+          <!-- swiper -->
+          <div class="swiper">
+            <Swiper :options="swiperOption">
+              <!-- slides -->
+              <SwiperSlide
+                v-for="(item, index) in bannerList"
+                :key="index" 
+                class="swiper-slide"
+                @click="toDetail"
+              >
+                <img :src="item.titleimg" alt="">
+              </SwiperSlide>
+              <div class="swiper-pagination"  slot="pagination"></div>
+            </Swiper>
+          </div>
+          <!-- nav -->
+          <ul class="nav-list">
+            <li 
+            v-for="(item, index) in navList"
             :key="index"
+            class="nav-item"
+            @click="toTypePage(index)">
+              <div class="nav-icon" :class="item.class"></div>
+              <div class="nav-text">{{item.title}}</div>
+            </li>
+          </ul>
+          <!-- lately -->
+          <div class="lately" v-if="latelyList.length != 0"> 
+            <div class="left">
+              <div class="title">最近在玩</div>
+            </div>
+            <div class="right">
+              <Swiper 
+                :options="swiperOption2"
+                class="list"
+              >
+                <SwiperSlide 
+                  class="item"
+                  v-for="(item, index) in latelyList"
+                  :key="index"
+                >
+                  <img :src="item.titlepic">
+                  <div class="game-name">{{item.title}}</div>
+                </SwiperSlide>
+              </Swiper> 
+            </div>
+          </div>
+          <!-- quality -->
+          <div class="quality">
+            <GameTitle :name="''" />
+            <GameList2 :type="4" :list="qualityList"/>
+          </div>
+          <!-- hotList -->
+          <GameTitle :headerTitle="'热门推荐'" :type="false"/>
+          <van-list
+            v-model="pullUpState"
+            :finished="noMore"
+            finished-text="没有更多了"
+            @load="pullUp"
           >
-            <img :src="item.titlepic">
-            <div class="game-name">{{item.title}}</div>
-          </SwiperSlide>
-        </Swiper> 
-      </div>
-    </div>
-    <!-- quality -->
-    <div class="quality">
-      <GameTitle :name="''" />
-      <GameList2 :type="4" :list="qualityList"/>
-    </div>
-    <!-- hotList -->
-    <GameTitle :headerTitle="'热门推荐'" :type="false"/>
-    <GameList :list="hotList" :type="5"/>
+            <GameList :list="hotList" :type="5"/>
+          </van-list>
+        </div>
+      </van-pull-refresh>
+    </Loading>
   </div>
 </template>
 <script>
@@ -57,7 +81,14 @@ export default {
   name: 'H5',
   data() {
     return {
-      swiperOption: { 
+      swiperOption: {
+        autoplay:true,
+        pagination: {
+          el: '.swiper-pagination',
+        },
+        loop : true,
+      },
+      swiperOption2: { 
         slidesPerView : 'auto',
         freeMode: true,
         preventClicks : false,
@@ -76,9 +107,14 @@ export default {
         class: 'quality',
         title: '精品'
       }],
+      bannerList: [],
       latelyList: [],
       qualityList: [],
-      hotList: []
+      hotList: [],
+      loading: 'ready',
+      pullDownState: false,
+      pullUpState: false,
+      noMore: false,
     }
   },
   created() {
@@ -86,39 +122,79 @@ export default {
   },
   methods: {
     createdMethod() {
-      this.$axios({
-        // test
-        url: '/api/game/newList',
-        data: {
-          page: 1
-        }
+      this.loading = 'ready';
+      this.$axios.all([
+        this.$axios({
+          // test
+          url: '/api/index/index',
+          data: {}
+        }), 
+        this.$axios({
+          // test
+          url: '/api/user/downloadedGame',
+          data: {
+            isH5: 1
+          }
+        }), 
+      ]).then(this.$axios.spread((res, res2) => {
+        this.handleInitData(res, res2);
+        this.$nextTick(() => {
+          // loading消失
+          this.loading = 'success';
+        })
+      }))
+      .catch(() => {
+        this.loading = 'fail';
       })
-      .then(res => {
-        this.latelyList = res.data.today_list;
-      })
-      this.$axios({
-        // test
-        url: '/api/game/newList',
-        data: {
-          page: 1
-        }
-      })
-      .then(res => {
-        this.qualityList = res.data.today_list;
-      })
-      this.$axios({
-        // test
-        url: '/api/game/newList',
-        data: {
-          page: 1
-        }
-      })
-      .then(res => {
-        this.hotList = res.data.today_list;
-      })
+    },
+    handleInitData(res, res2) {
+      this.bannerList = res.data.banner;
+      console.log(res2)
+      this.latelyList = res2.data.list;
+      this.qualityList = res.data.game_list[0].game_list;
+      if(res.data.game_list.length < 21) {
+        this.noMore = true;
+      }
+      this.hotList = res.data.game_list.splice(1);
     },
     toTypePage(index) {
 
+    },
+    pullDown() {
+      this.$axios.all([
+        this.$axios({
+          // test
+          url: '/api/index/index',
+          data: {}
+        }), 
+        this.$axios({
+          // test
+          url: '/api/user/downloadedGame',
+          data: {
+            isH5: 1
+          }
+        }), 
+      ]).then(this.$axios.spread((res, res2) => {
+        this.handleInitData(res, res2);
+        this.page = 2;
+        this.pullDownState = false;
+        this.$toast('刷新成功');
+      }))
+      .catch(() => {
+        this.pullDownState = false;
+        this.$toast('刷新失败');
+      })  
+    },
+    pullUp() {
+      
+    },
+    toDetail() {
+      sessionStorage.setItem('goBack', this.$route.name);
+      sessionStorage.setItem('gameInfo', JSON.stringify(this.item));
+      sessionStorage.setItem('item', 1);
+      this.$router.push({
+        name: 'DetailIndex'
+      });
     }
   },
   components: {    

@@ -14,7 +14,7 @@
           <div class="game-type" v-if="type === 3">{{item.totaldown}}人在玩</div>
         </div>
         <div 
-          @click="clickEvent(item.down_ip, index)" 
+          @click="clickEvent(item.down_ip, index, item.h5_url)" 
           class="button" 
           :class="{
             orange: type === 2,
@@ -72,6 +72,8 @@ export default {
       sessionStorage.setItem('gameInfo', JSON.stringify(item));
       if(this.type === 2) {
         sessionStorage.setItem('type', 0);
+      } else if(this.type === 4) {
+        sessionStorage.setItem('type', 2);
       } else {
         sessionStorage.setItem('type', 1);
       }

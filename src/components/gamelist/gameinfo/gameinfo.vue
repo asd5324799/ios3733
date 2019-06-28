@@ -38,7 +38,7 @@
         </div>
       </div>
       <div 
-        @click="clickEvent(item.down_ip, index)" 
+        @click="clickEvent(item.down_ip, index, item.h5_url)" 
         class="game-download" 
         v-if="!showBigImg() && type !== 4"
         ref="down"
@@ -133,7 +133,11 @@ export default {
       sessionStorage.setItem('goBack', this.$route.name);
       sessionStorage.setItem('gameInfo', JSON.stringify(this.item));
       if(this.type === 4) {
+        // 如果是预约详情页
         sessionStorage.setItem('type', 0);
+      } else if(this.type === 5) {
+        // 如果是H5详情页
+        sessionStorage.setItem('type', 2);
       } else {
         sessionStorage.setItem('type', 1);
       }

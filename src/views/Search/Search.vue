@@ -36,7 +36,7 @@ export default {
       } else {
         this.$router.replace({
           name: 'SearchGame'
-        })
+        })  
         this.$axios.all([
           this.$axios({
             url: '/api/search/index',

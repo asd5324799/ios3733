@@ -1,15 +1,19 @@
 @rem: 0.0267rem;
 .h5 {
-  .banner {
-    height: 130*@rem;
-    margin: 15*@rem;
-    border-radius: 5px;
-    overflow: hidden;
-    img {
+  .swiper {
+    position: relative;
+    width: 100%;
+    .swiper-container {
       width: 100%;
-      height: 100%;
+      .swiper-slide {
+        img {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+      }
     }
-  }  
+  }
   .nav-list {
     display: flex;
     margin: 15*@rem 0;

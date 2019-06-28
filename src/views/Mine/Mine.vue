@@ -72,7 +72,7 @@
                       </div>
                       <div class="func-right">
                           <span class="right-arrow"></span>
-                      </div>
+                      </div>  
                   </div>
               </router-link>
               <router-link to="MyGift" tag="li" class="func-item mygift">
@@ -86,10 +86,10 @@
                       </div>
                   </div>
               </router-link>
-              <li @click="BOX_openH5Game('http://api2.a3733.com/h5/game/index')" class="func-item complaint">
-              <!-- <li @click="BOX_openInNewWindow('http://api2.c3733.com/h5/html/feedback')" class="func-item complaint"> -->
+              <!-- <li @click="BOX_openH5Game('http://api2.3733.com/h5/game/index?app_id=62453')" class="func-item complaint"> -->
+              <li @click="BOX_openInNewWindow('http://api2.c3733.com/h5/html/feedback')" class="func-item complaint">
                   <div class="item-content">
-                      <div class="func-left">
+                        <div class="func-left">
                           <i class="func-icon"></i>
                           <div class="func-name">投诉反馈</div>
                       </div>
@@ -97,7 +97,7 @@
                           <span class="right-arrow"></span>
                       </div>
                   </div>
-              </li>
+              </li> 
           </ul>
       </div>
     </div>

@@ -54,20 +54,27 @@
     <div class="game-download">
       <!-- <div class="left"><i class="icon icon-left"></i><div class="text">收藏</div></div>  -->
       <div 
-        v-if="type" 
-        @click="openInBrowser(gameInfo.down_ip)" 
+        @click="clickEvent(gameInfo.down_ip, gameInfo.h5_url)" 
         class="download"
+        :class="{
+          appointment: this.type === 0,
+          already: this.type === 0 && alreadyAppointment,
+          h5: this.type === 2
+        }"
         ref="down"
       >
         <span></span>
-        <div>下载《{{gameInfo.title}}》</div>
+        <div>{{text}}</div>
       </div>
-      <div @click="appointment" v-if="!type" class="download appointment" :class="{already: alreadyAppointment}">{{text}}</div>
       <!-- <div class="right"><i class="icon icon-right"></i><div class="text">分享</div></div>  -->
     </div>
   </div>
 </template>
 <script>
+/**
+ * @type 0为预约详情页 1为普通详情页 2为H5详情页
+  */
+
 import Navigation from '@/components/navigation/navigation.vue';
 import Box from '@/common/box.js';
 
@@ -93,14 +100,23 @@ export default {
       ],
       fixed: false,
       alreadyAppointment: false,
+      type: 1,
     }
   },
   computed: {
     text() {
-      if(this.alreadyAppointment) {
-        return '已预约'
+      if(this.type === 0) {
+        // 如果是预约页面
+        if(this.alreadyAppointment) {
+          return '已预约'
+        } else {
+          return `预约《${this.gameInfo.title}》`
+        }
+      } else if(this.type === 2) {
+        //如果是H5页面
+        return `打开《${this.gameInfo.title}》`
       } else {
-        return `预约《${this.gameInfo.title}》`
+        return `下载《${this.gameInfo.title}》`
       }
     }
   },
@@ -136,28 +152,35 @@ export default {
     changeDetail() {
       this.createdMethod();
     },
-    appointment() {
-      if(!this.gameInfo.subscribed) {
-        this.$axios({
-          url: '/api/game/subscribe',
-          data: {
-            token: sessionStorage.getItem('token'),
-            gameId: this.gameInfo.id
-          }
-        })
-        .then(res => {
-          this.alreadyAppointment = true;
-          this.$toast(res.msg); 
-        })
+    clickEvent(url = '', h5Url = '') {
+      if(this.type === 0) { 
+        // 如果是预约详情页
+        if(!this.gameInfo.subscribed) {
+          this.$axios({
+            url: '/api/game/subscribe',
+            data: {
+              token: sessionStorage.getItem('token'),
+              gameId: this.gameInfo.id
+            }
+          })
+          .then(res => {
+            this.alreadyAppointment = true;
+            this.$toast(res.msg); 
+          })
+        }
+      } else if (this.type === 2) {
+        //如果是H5详情页 
+        let box = new Box();
+        box.openH5Game(h5Url);
+      } else {
+        // 如果是游戏详情页
+        this.$refs.down.classList.add('loading');
+        let box = new Box();
+        box.openInBrowser(url);
+        setTimeout(() => {
+          this.$refs.down.classList.remove('loading');
+        }, 2000)
       }
-    },
-    openInBrowser(url) {
-      this.$refs.down.classList.add('loading');
-      let box = new Box();
-      box.openInBrowser(url);
-      setTimeout(() => {
-        this.$refs.down.classList.remove('loading');
-      }, 2000)
     }
   },
   components: {

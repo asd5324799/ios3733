@@ -1,7 +1,7 @@
 <template>
   <div class="search-index">
       <div class="loading-content">
-        <div class="hot-search">
+        <div class="hot-search" v-if="hotSearchGame.length !== 0">
           <div class="section-title">
             <span class="hot-title">热门搜索</span>
           </div>
@@ -15,7 +15,7 @@
             </li>
           </ul>
         </div>
-        <div class="hot-tag">
+        <div class="hot-tag" v-if="hotTag.length !== 0">
           <div class="section-title">
             <span class="hot-title">热门标签</span>
           </div>
@@ -60,13 +60,14 @@
             startup: 1
           }
         }).then(res => {
-          console.log(res);
           this.handleInitData(res);
         })
       },
       handleInitData(res) {
-        this.hotTag = res.data.configs.hot_search;
-        this.hotSearchGame = res.data.configs.hot_search_game;
+        if(res.data.configs) {
+          this.hotTag = res.data.configs.hot_search;
+          this.hotSearchGame = res.data.configs.hot_search_game;
+        }
       },
       toDetail(item) {
         this.$router.push({

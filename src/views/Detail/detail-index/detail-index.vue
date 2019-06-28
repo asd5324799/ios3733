@@ -92,7 +92,7 @@
             </div>
           </section>
           <!-- vip-price -->
-          <section class="game-section game-vip" v-if="detail.vip_price.length">
+          <section class="game-section game-vip" v-if="detail.vip_price.length !== 0">
             <div class="title"><i class="icon"></i><span class="text">VIP价格表</span></div>
             <div class="section-content">
               <div class="explain">部分游戏月卡、基金、理财、礼包不算VIP经验和充值、详细咨询客服！</div>
@@ -168,7 +168,9 @@ export default {
     return {
       id: '',
       openList: [],
-      detail: {},
+      detail: {
+        vip_price: []
+      },
       liked: [],
       swiperOption: {
         slidesPerView : 2.8,
