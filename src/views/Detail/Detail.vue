@@ -1,11 +1,11 @@
 <template>
   <div class="game-detail">
     <!-- header -->
-    <Navigation :title="gameInfo.title" />
+    <Navigation :title="$store.getters.gameInfo.title" />
     <main>
       <!-- background-image -->
       <div 
-        :style="{backgroundImage: `url(${gameInfo.titlepic})`}"
+        :style="{backgroundImage: `url(${$store.getters.gameInfo.titlepic})`}"
         class="background-image"
       >
       </div>
@@ -14,14 +14,14 @@
         class="game-info" 
         ref="gameInfo">
         <img 
-        :src="gameInfo.titlepic"
+        :src="$store.getters.gameInfo.titlepic" 
         class="game-img">
         <div class="game-container">
-          <div class="game-name">{{gameInfo.title}}</div>
-          <div class="game-number">{{gameInfo.totaldown}}人在玩</div>
-          <div class="game-type" v-if="gameInfo.app_tag !== []">
+          <div class="game-name">{{$store.getters.gameInfo.title}}</div>
+          <div class="game-number">{{$store.getters.gameInfo.totaldown}}人在玩</div>
+          <div class="game-type" v-if="$store.getters.gameInfo.app_tag !== []">
             <div class="type-item"
-              v-for="(item, index) in gameInfo.app_tag"
+              v-for="(item, index) in $store.getters.gameInfo.app_tag"
               :key="index">
               <img 
                 :src="item.icon"
@@ -38,7 +38,7 @@
           class="tab-item"
           v-for="(item, index) in tabList"
           :key="index"
-          :to="{name: item.name, id: gameInfo.id}"
+          :to="{name: item.name}"
           replace
         >
           <div class="text">{{item.title}}</div>
@@ -54,12 +54,12 @@
     <div class="game-download">
       <!-- <div class="left"><i class="icon icon-left"></i><div class="text">收藏</div></div>  -->
       <div 
-        @click="clickEvent(gameInfo.down_ip, gameInfo.h5_url)" 
+        @click="clickEvent($store.getters.gameInfo.down_ip, $store.getters.gameInfo.h5_url)" 
         class="download"
         :class="{
-          appointment: this.type === 0,
-          already: this.type === 0 && alreadyAppointment,
-          h5: this.type === 2
+          appointment: this.$store.getters.gameType === 0,
+          already: this.$store.getters.gameType === 0 && alreadyAppointment,
+          h5: this.$store.getters.gameType === 2
         }"
         ref="down"
       >
@@ -82,7 +82,7 @@ export default {
   name: 'Detail',
   data() {
     return {
-      gameInfo: {},
+      id: 0,
       tabList: [
         {
           title: '详情', 
@@ -100,23 +100,22 @@ export default {
       ],
       fixed: false,
       alreadyAppointment: false,
-      type: 1,
     }
   },
   computed: {
     text() {
-      if(this.type === 0) {
+      if(this.$store.getters.gameType === 0) {
         // 如果是预约页面
         if(this.alreadyAppointment) {
           return '已预约'
         } else {
-          return `预约《${this.gameInfo.title}》`
+          return `预约《${this.$store.getters.gameInfo.title}》`
         }
-      } else if(this.type === 2) {
+      } else if(this.$store.getters.gameType === 2) {
         //如果是H5页面
-        return `打开《${this.gameInfo.title}》`
+        return `打开《${this.$store.getters.gameInfo.title}》`
       } else {
-        return `下载《${this.gameInfo.title}》`
+        return `下载《${this.$store.getters.gameInfo.title}》`
       }
     }
   },
@@ -124,7 +123,7 @@ export default {
     this.createdMethod();
   },
   activated() {
-    if(this.gameInfo.id !== JSON.parse(sessionStorage.getItem('gameInfo')).id) {
+    if(this.id !== this.$store.getters.gameInfo.id) {
       this.createdMethod();
     }
   },
@@ -140,10 +139,8 @@ export default {
   },
   methods: {
     createdMethod() {
-      this.gameInfo = JSON.parse(sessionStorage.getItem('gameInfo'));
-      this.$set(this.gameInfo, 'add', 'add');
-      this.type = JSON.parse(sessionStorage.getItem('type'));
-      if(this.gameInfo.subscribed) {
+      this.id = this.$store.getters.gameInfo.id;
+      if(this.$store.getters.gameInfo.subscribed) {
         this.alreadyAppointment = true;
       } else {
         this.alreadyAppointment = false;
@@ -153,14 +150,14 @@ export default {
       this.createdMethod();
     },
     clickEvent(url = '', h5Url = '') {
-      if(this.type === 0) { 
+      if(this.$store.getters.gameType === 0) { 
         // 如果是预约详情页
-        if(!this.gameInfo.subscribed) {
+        if(!this.$store.getters.gameInfo.subscribed) {
           this.$axios({
             url: '/api/game/subscribe',
             data: {
               token: sessionStorage.getItem('token'),
-              gameId: this.gameInfo.id
+              gameId: this.id
             }
           })
           .then(res => {
@@ -168,7 +165,7 @@ export default {
             this.$toast(res.msg); 
           })
         }
-      } else if (this.type === 2) {
+      } else if (this.$store.getters.gameType === 2) {
         //如果是H5详情页 
         let box = new Box();
         box.openH5Game(h5Url);

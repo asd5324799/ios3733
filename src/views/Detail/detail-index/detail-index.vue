@@ -22,6 +22,11 @@
                   class="slide-img"
                   @click="showBigImage(detail.morepic.small, index)"
                 >
+                <i 
+                  class="player" 
+                  v-if="index === 1"
+                  @click="player()" 
+                ></i>
               </swiper-slide>
             </swiper>
           </div>
@@ -132,22 +137,7 @@
           <section class="game-section game-liked">
             <div class="title"><i class="icon"></i><span class="text">猜你喜欢</span></div>
             <div class="section-content">
-              <div class="game-list2">
-                <ul class="list">
-                  <li 
-                  v-for="(item, index) in liked" 
-                  :key="index"
-                  class="game-item">
-                    <div
-                      class="container" 
-                      @click="toDetail(item)">
-                      <img :src="item.titlepic" class="game-img">
-                      <div class="game-name">{{item.title}}</div>
-                    </div>
-                    <a :href="item.down_ip" class="button">{{'下载'}}</a>
-                  </li>
-                </ul>
-              </div>
+              <GameList2 :list="liked" :type="5" @refresh="refresh"/>
             </div>
           </section>
         </div>
@@ -161,6 +151,7 @@ import 'swiper/dist/css/swiper.css';
 import {swiper as Swiper, swiperSlide as SwiperSlide} from 'vue-awesome-swiper';
 import Box from '@/common/box.js';
 import { ImagePreview } from 'vant';
+import GameList2 from '@/components/gamelist2/gamelist2.vue';
 
 export default {
   name: 'DetailIndex',
@@ -184,13 +175,13 @@ export default {
     this.createdMethod();
   },
   activated() {
-    if(this.id !== JSON.parse(sessionStorage.getItem('gameInfo')).id) {
+    if(this.id !== this.$store.getters.gameInfo.id) {
       this.createdMethod();
     }
   },
   methods: {
     createdMethod() {
-      this.id = JSON.parse(sessionStorage.getItem('gameInfo')).id;
+      this.id = this.$store.getters.gameInfo.id;
       this.loading = 'ready';
       this.$axios.all([
         this.$axios({
@@ -283,12 +274,17 @@ export default {
         images: list,
         startPosition: index,
       }); 
-    }
+    },
+    refresh() {
+      this.createdMethod();
+    },
+    player() {}
   },
   components: {
     Swiper,
     SwiperSlide,
     Loading,
+    GameList2,
   }
 }
 </script>

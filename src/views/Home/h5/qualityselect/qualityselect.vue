@@ -4,16 +4,15 @@
       <van-pull-refresh v-model="pullDownState" @refresh="pullDown" slot="loading-content">
         <div class="content">
           <!-- swiper -->
-          <div class="swiper">
+          <div class="swiper" v-if="bannerList.length !== 0">
             <Swiper :options="swiperOption">
               <!-- slides -->
               <SwiperSlide
                 v-for="(item, index) in bannerList"
                 :key="index" 
                 class="swiper-slide"
-                @click="toDetail"
               >
-                <img :src="item.titleimg" alt="">
+                <img :src="item.titleimg" @click="toDetail(item)" alt="">
               </SwiperSlide>
               <div class="swiper-pagination"  slot="pagination"></div>
             </Swiper>
@@ -25,8 +24,11 @@
             :key="index"
             class="nav-item"
             @click="toTypePage(index)">
-              <div class="nav-icon" :class="item.class"></div>
-              <div class="nav-text">{{item.title}}</div>
+              <div 
+                class="nav-icon"
+                :style="{backgroundImage: `url(${item.icon_url})`}"
+              ></div>
+              <div class="nav-text">{{item.text1}}</div>
             </li>
           </ul>
           <!-- lately -->
@@ -52,18 +54,20 @@
           </div>
           <!-- quality -->
           <div class="quality">
-            <GameTitle :name="''" />
-            <GameList2 :type="4" :list="qualityList"/>
+            <GameTitle :headerTitle="qualityRecommend.header_title" /> 
+            <GameList2 :type="5" :list="qualityRecommend.game_list"/>
+            <GameList :list="qualityFirstList" :type="5"/>
           </div>
           <!-- hotList -->
-          <GameTitle :headerTitle="'热门推荐'" :type="false"/>
+          <GameTitle v-if="newGameAppointment.game_list.length != 0" :headerTitle="newGameAppointment.header_title" :type="false"  />
+          <GameList2 :list="newGameAppointment.game_list" :type="5"/>
           <van-list
             v-model="pullUpState"
             :finished="noMore"
             finished-text="没有更多了"
             @load="pullUp"
           >
-            <GameList :list="hotList" :type="5"/>
+            <GameList :list="newGameFirstList" :type="5" />
           </van-list>
         </div>
       </van-pull-refresh>
@@ -94,23 +98,15 @@ export default {
         preventClicks : false,
         spaceBetween : 10,
       },
-      navList: [{
-        class: 'bt',
-        title: '变态版'
-      }, {
-        class: 'vip',
-        title: '满V版'
-      }, {
-        class: 'discount',
-        title: '折扣'
-      }, {
-        class: 'quality',
-        title: '精品'
-      }],
+      navList: [],
       bannerList: [],
       latelyList: [],
-      qualityList: [],
-      hotList: [],
+      qualityRecommend: {},
+      newGameAppointment: {
+        'game_list': []
+      },
+      qualityFirstList: [],
+      newGameFirstList: [],
       loading: 'ready',
       pullDownState: false,
       pullUpState: false,
@@ -149,16 +145,40 @@ export default {
     },
     handleInitData(res, res2) {
       this.bannerList = res.data.banner;
-      console.log(res2)
       this.latelyList = res2.data.list;
-      this.qualityList = res.data.game_list[0].game_list;
-      if(res.data.game_list.length < 21) {
+      this.navList = res.data.tab_action;
+      let temp = 0;
+      // 过滤列表以外的节点
+      res.data.game_list.forEach((item, index) => {
+        // 判断是否包含view_type字段
+        if(item.hasOwnProperty('view_type')) {
+          if(temp === 0) {
+            this.qualityRecommend = res.data.game_list.slice(0, 1)[0];
+            temp++;
+          } else {
+            this.qualityFirstList = res.data.game_list.slice(1, index);
+            this.newGameAppointment = res.data.game_list.splice(index, 1)[0];
+            this.newGameFirstList = res.data.game_list.splice(index);
+          }
+        }
+      });
+      if(this.newGameFirstList.length < 20) {
         this.noMore = true;
       }
-      this.hotList = res.data.game_list.splice(1);
     },
     toTypePage(index) {
-
+      if(index === 3) {
+        this.$router.push({
+          name: 'Topic'
+        })
+      } else {
+        this.$router.push({
+          name: 'GameClass',
+          query: {
+            type: JSON.stringify(index),
+          }
+        })
+      }
     },
     pullDown() {
       this.$axios.all([
@@ -185,16 +205,16 @@ export default {
         this.$toast('刷新失败');
       })  
     },
-    pullUp() {
-      
-    },
-    toDetail() {
+    toDetail(item) {
       sessionStorage.setItem('goBack', this.$route.name);
-      sessionStorage.setItem('gameInfo', JSON.stringify(this.item));
-      sessionStorage.setItem('item', 1);
+      this.$store.commit('setGameInfo', item);
+      this.$store.commit('setGameType', 2);
       this.$router.push({
         name: 'DetailIndex'
       });
+    },
+    pullUp() {
+      
     }
   },
   components: {    

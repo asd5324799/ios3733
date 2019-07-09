@@ -23,6 +23,7 @@
 </template>
 <script>
     import Navigation from '@/components/navigation/navigation.vue';
+    import { JSEncrypt } from 'jsencrypt';
     export default {
         data() {
             return {
@@ -49,7 +50,31 @@
         filters: {
             
         },
+        created() {
+          this.getPublicKey();
+        },
+        mounted () {
+            this.inputTitleChange();
+        },
         methods: {
+            opensslEncrypt(str) {
+              let encryptor = new JSEncrypt()  // 新建JSEncrypt对象
+              if(this.publicKey === '') {
+                this.getPublicKey();
+              }
+              encryptor.setPublicKey(this.publicKey)  // 设置公钥
+              let temp = encryptor.encrypt(str)  // 对密码进行加密
+              return temp;
+            },
+            getPublicKey() {
+              this.$axios({
+                url: '/api/index/rsaKey',
+                data: {}
+              })
+              .then(res => {
+                this.publicKey = res.data.rsa_public_key;
+              })
+            },
             back(){
                 this.$router.go(-1);
             },
@@ -77,11 +102,16 @@
                 if(this.codeBtnShow){
                     this.$axios({
                         url: '/api/sms/send',
+                        headers: {
+                          'User-Agent': 'xmyy',
+                        },
                         data: {
                             phone:this.userAccount.phoneNum,
                             type:4
                         }
-                    }).then(() =>{
+                    }).then((res) =>{
+                      this.$toast(res.msg);
+                      if(res.code) {
                         this.codeBtnShow = false;
                         const TIME_COUNT = 60;   
                         if (!this.codeTimer) {    
@@ -97,6 +127,7 @@
                                 }    
                             }, 1000)    
                         }  
+                      }
                     }).catch(() =>{
                     })
                 }
@@ -114,12 +145,13 @@
                 }
                 if(this.ajaxSwitch) {
                   this.ajaxSwitch = false;
+                  let password = this.opensslEncrypt(this.userAccount.password);
                   this.$axios({
                       url: '/api/user/resetPassword',
                       data: {
                           phone:this.userAccount.phoneNum,
                           code:this.userAccount.codeNum,
-                          password:this.userAccount.password
+                          password:password
                       }
                   }).then(res =>{
                       this.message = res.msg;
@@ -170,9 +202,6 @@
                     this.nameIsFocus = true;
                 }
             }
-        },
-        mounted () {
-            this.inputTitleChange();
         },
         components: {
             Navigation,

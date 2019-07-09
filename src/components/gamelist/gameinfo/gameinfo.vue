@@ -3,15 +3,15 @@
       <div @click="toDetail">
         <img class="big-img" v-if="showBigImg()" :src="BigImgSrc()">
         <div class="container" v-else>
-          <div class="game-number" v-if="type === 2 ? true : false">{{index + 4}}</div>
+          <div class="game-number" v-if="isNum">{{index + 4}}</div>
           <img 
             :src="item.titlepic"
             class="game-img">
-          <div class="discount" v-if="type === 5">4.5折</div>
+          <!-- <div class="discount" v-if="type === 5">4.5折</div> -->
           <div class="game-content">
             <div class="game-name">
               <span>{{item.title}}</span>
-              <i v-if="type === 5">精品首发</i>
+              <!-- <i v-if="type === 5">精品首发</i> -->
             </div>
             <div class="game-type" v-if="type !== 5">
               <span 
@@ -38,7 +38,7 @@
         </div>
       </div>
       <div 
-        @click="clickEvent(item.down_ip, index, item.h5_url)" 
+        @click="clickEvent(item.down_ip, item.h5_url)" 
         class="game-download" 
         v-if="!showBigImg() && type !== 4"
         ref="down"
@@ -55,7 +55,10 @@
 </template>
 <script>
 /**
- * @param type 1为正常列表(有大图) 2序号列表 3开服列表 4预约列表 5h5列表
+ * @param item 游戏信息
+ * @param type 1为正常列表(有大图) 3开服列表 4预约列表 5h5列表
+ * @param index 在列表里的所在位置
+ * @param isNum 是否显示序号
   */
   import Box from '@/common/box.js';
 
@@ -73,9 +76,12 @@ export default {
     },
     index: {
       type: Number,
-      default: 0
+      default: 0,
     },
-
+    isNum: {
+      type: Boolean,
+      default: false,
+    }
   },
   data() {
     return {  
@@ -131,16 +137,18 @@ export default {
     },
     toDetail() {
       sessionStorage.setItem('goBack', this.$route.name);
-      sessionStorage.setItem('gameInfo', JSON.stringify(this.item));
+      this.$store.commit('setGameInfo', this.item);
+      let type;
       if(this.type === 4) {
         // 如果是预约详情页
-        sessionStorage.setItem('type', 0);
+        type = 0;
       } else if(this.type === 5) {
         // 如果是H5详情页
-        sessionStorage.setItem('type', 2);
+        type = 2;
       } else {
-        sessionStorage.setItem('type', 1);
+        type = 1;
       }
+      this.$store.commit('setGameType', type);
       this.$router.push({
         name: 'DetailIndex',
       });

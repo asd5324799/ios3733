@@ -36,13 +36,13 @@ export default {
     this.createdMethod();
   },
   activated() {
-    if(this.id !== JSON.parse(sessionStorage.getItem('gameInfo')).id) {
+    if(this.id !== this.$store.getters.gameInfo.id) {
       this.createdMethod();
     }
   },
   methods: {
     createdMethod() {
-      this.id = JSON.parse(sessionStorage.getItem('gameInfo')).id;
+      this.id = this.$store.getters.gameInfo.id;
       this.page = 1;
       this.loading = 'ready';
       this.noMore = false;

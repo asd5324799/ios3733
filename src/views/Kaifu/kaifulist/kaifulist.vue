@@ -57,6 +57,9 @@ export default {
       })
     },
     handleInitData(res) {
+      if(res.data.length < 20) {
+        this.noMore = true;
+      }
       for(let i of res.data) {
         i.game.kaifuState = i.state;
         i.game.kaifuNewstime = i.newstime;

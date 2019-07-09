@@ -37,10 +37,11 @@ export default {
       this.loading = 'ready';
       this.page = 2;
       this.noMore = false;
+      let token = sessionStorage.getItem('token');
       this.$axios({
         url: '/api/resource/collection',
         data: {
-          token: sessionStorage.getItem('token'),
+          token: token,
           listRows: 20,
         }
       }).then(res => {
@@ -52,7 +53,7 @@ export default {
             this.text = '您还没有收藏游戏';
           }
         }
-      }).catch(() => {
+      }).catch((res) => {
         this.loading = 'fail';
       })
     },

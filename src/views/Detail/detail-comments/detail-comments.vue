@@ -108,13 +108,13 @@ export default {
     this.createdMethod();
   },
   activated() {
-    if(this.id !== JSON.parse(sessionStorage.getItem('gameInfo')).id) {
+    if(this.id !== this.$store.getters.gameInfo.id) {
       this.createdMethod();
     }
   },
   methods: {
     createdMethod() {
-      this.id = JSON.parse(sessionStorage.getItem('gameInfo')).id;
+      this.id = this.$store.getters.gameInfo.id;
       this.loading = 'ready';
       this.$axios({
         url: '/api/comment/comments',
@@ -171,6 +171,10 @@ export default {
     },
     handleInitData(res) {
       this.comments = res.data;
+      console.log(res);
+      if(res.data.comments.length < 20) {
+        this.noMore = true;
+      }
       this.defaultList = this.handleComments(res.data);
       this.newList = this.handleNewsList(this.handleComments(res.data));
     },
@@ -209,13 +213,13 @@ export default {
           order: 0
         }
       }).then(res => {
+        if(res.data.list.length < 20) {
+          this.noMore = true;
+        }
         this.page++;
         this.pullUpState = false;
         this.defaultList = [...this.defaultList, ...res.data.comments];
         this.newList = this.handleNewsList([...this.newList, ...res.data.comments]);
-        if(res.data.list.length < 20) {
-          this.noMore = true;
-        }
       })
       .catch(() => {   
         this.pullUpState = false;

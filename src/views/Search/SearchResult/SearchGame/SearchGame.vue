@@ -6,7 +6,7 @@
     :finished-text="text"
     @load="pullUp"
     >
-      <GameList class="content" :list="list" :type="1"/> 
+      <GameList class="content" :list="list" :type="5"/> 
     </van-list>
   </div>
 </template>

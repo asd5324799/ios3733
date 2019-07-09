@@ -36,14 +36,14 @@ export default {
     this.createdMethod();
   },
   activated() {
-    if(this.title !== JSON.parse(sessionStorage.getItem('gameInfo')).title) {
+    if(this.title !== this.$store.getters.gameInfo.title) {
       this.createdMethod();
     }
   },
   methods: {
     createdMethod() {
       this.page = 1;
-      this.title = JSON.parse(sessionStorage.getItem('gameInfo')).title;
+      this.title = this.$store.getters.gameInfo.title;
       this.text = '没有更多了';
       this.loading = 'ready';
       this.noMore = false;

@@ -14,6 +14,7 @@ import '@/common/common.less'
 import 'vant/lib/index.css';
 import '@/common/vant.less'
 
+
 Vue.use(PullRefresh).use(List);
 Vue.use(Calendar);
 Vue.use(Prompt)
