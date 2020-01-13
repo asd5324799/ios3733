@@ -38,6 +38,9 @@ export default {
   created() {
     this.createdMethod();
   },
+  activated() {
+    this.createdMethod(); 
+  },
   methods: {
     createdMethod() {
       this.loading = 'ready';
@@ -75,6 +78,7 @@ export default {
     },
     pullDown() {
       this.page = 2;
+      this.noMore = false;
       let data;
       if(sessionStorage.getItem('token') !== '') {
         data = {

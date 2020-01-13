@@ -1,0 +1,111 @@
+@rem: .0267rem;
+.popup {
+  background-color: #ffffff;
+  .content {
+    box-sizing: border-box;
+    height: 210*@rem;
+    padding: 14*@rem;
+    .title {
+      overflow: hidden;
+      .name {
+        float: left;
+        line-height: 30*@rem;
+        font-size: 16*@rem;
+        font-weight: normal;
+      }
+      .button1 {
+        float: right;
+        width: 75*@rem;
+        height: 28*@rem;
+        line-height: 28*@rem;
+        text-align: center;
+        font-size: 12*@rem;
+        color: rgba(93, 172, 83, 1);
+        border: 1*@rem solid rgba(71, 168, 58, 1);
+        border-radius: 4*@rem;
+      }
+    }
+    .button2 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 45*@rem;
+      margin: 20*@rem 0 15*@rem;
+      border-radius: 5*@rem;
+      background-color: rgba(71, 168, 58, 1);
+      font-size: 17*@rem;
+      color: #ffffff;
+      &.loading {
+        span {
+          display: block;
+          width: 16*@rem;
+          height: 16*@rem;
+          background-size: 16*@rem 16*@rem;
+          background-image: url(../../common/images/downloadLoading.png);
+          animation: rotate 1s infinite linear;
+        }
+        div {
+          display: none;
+        }
+      }
+    }
+    .red {
+      line-height: 18*@rem;
+      font-size: 12*@rem;
+      color: rgba(255, 54, 0, 1);
+    }
+    .green {
+      margin-top: 10*@rem;
+      text-align: center;
+      font-size: 14*@rem;
+      color: rgba(71, 168, 58, 1);
+      text-decoration: underline;
+    }
+  }
+}
+.popup2 {
+  .content {
+    position: relative;
+    width: 300*@rem;
+    height: 160*@rem;
+    background-color: #ffffff;
+    border-radius: 5*@rem;
+    overflow: hidden;
+    .text {
+      margin: 20*@rem 10*@rem 10*@rem;
+      line-height: 21*@rem;
+      font-size: 15*@rem;
+    }
+    .color {
+      margin: 0 10*@rem;
+      font-size: 15*@rem;
+      color: rgba(71, 168, 58, 1);
+      text-decoration: underline;
+    }
+    .bottom {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      font-size: 0;
+      .left, .right {
+        display: inline-block;
+        box-sizing: border-box;
+        width: 50%;
+        height: 37*@rem;
+        text-align: center;
+        line-height: 37*@rem;
+        font-size: 14*@rem;
+        border-top: 1*@rem solid rgba(136, 136, 136, 1);
+      }
+      .left {
+        color: rgba(136, 136, 136, 1);
+        border-right: 1*@rem solid rgba(136, 136, 136, 1);
+      }
+      .right {
+        color: rgba(71, 168, 58, 1);
+      }
+    }
+  }
+}

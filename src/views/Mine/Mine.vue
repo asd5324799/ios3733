@@ -222,7 +222,7 @@
         }
       },
       components: {
-        NavCom,
+        NavCom, 
       }
     }
 </script>

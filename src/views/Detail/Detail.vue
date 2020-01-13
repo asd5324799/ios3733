@@ -54,14 +54,15 @@
     <div class="game-download">
       <!-- <div class="left"><i class="icon icon-left"></i><div class="text">收藏</div></div>  -->
       <div 
-        @click="clickEvent($store.getters.gameInfo.down_ip, $store.getters.gameInfo.h5_url)" 
+        @click="clickEvent($store.getters.gameInfo.h5_url)" 
         class="download"
-        :class="{
-          appointment: this.$store.getters.gameType === 0,
-          already: this.$store.getters.gameType === 0 && alreadyAppointment,
-          h5: this.$store.getters.gameType === 2
-        }"
         ref="down"
+        :class="{
+          appointment: this.$store.getters.gameInfo.state === 2,
+          already: this.$store.getters.gameInfo.subscribed === 1 || alreadyAppointment,
+          h5: this.$store.getters.gameInfo.hasOwnProperty('h5_url') && this.$store.getters.gameInfo.h5_url !== null,
+        }"
+
       >
         <span></span>
         <div>{{text}}</div>
@@ -71,9 +72,6 @@
   </div>
 </template>
 <script>
-/**
- * @type 0为预约详情页 1为普通详情页 2为H5详情页
-  */
 
 import Navigation from '@/components/navigation/navigation.vue';
 import Box from '@/common/box.js';
@@ -104,14 +102,14 @@ export default {
   },
   computed: {
     text() {
-      if(this.$store.getters.gameType === 0) {
+      if(this.$store.getters.gameInfo.state === 2) {
         // 如果是预约页面
-        if(this.alreadyAppointment) {
+        if(this.$store.getters.gameInfo.subscribed === 1 || this.alreadyAppointment) {
           return '已预约'
         } else {
           return `预约《${this.$store.getters.gameInfo.title}》`
         }
-      } else if(this.$store.getters.gameType === 2) {
+      } else if(this.$store.getters.gameInfo.hasOwnProperty("h5_url") && this.$store.getters.gameInfo.h5_url !== null) {
         //如果是H5页面
         return `打开《${this.$store.getters.gameInfo.title}》`
       } else {
@@ -149,10 +147,14 @@ export default {
     changeDetail() {
       this.createdMethod();
     },
-    clickEvent(url = '', h5Url = '') {
-      if(this.$store.getters.gameType === 0) { 
-        // 如果是预约详情页
-        if(!this.$store.getters.gameInfo.subscribed) {
+    clickEvent(h5Url = '') {
+      if(!sessionStorage.getItem('token') && sessionStorage.getItem('token') === '') {
+        this.$router.push({
+          name: 'Login'
+        })
+      } else {
+        if(this.$store.getters.gameInfo.state === 2) { 
+          // 如果是预约详情页
           this.$axios({
             url: '/api/game/subscribe',
             data: {
@@ -164,19 +166,22 @@ export default {
             this.alreadyAppointment = true;
             this.$toast(res.msg); 
           })
+        } else if (this.$store.getters.gameInfo.hasOwnProperty("h5_url") && this.$store.getters.gameInfo.h5_url !== null) {
+          //如果是H5详情页 
+          let box = new Box();
+          box.openH5Game(h5Url);
+        } else {
+          // 如果是游戏详情页
+          // this.$refs.down.classList.add('loading');
+          // let box = new Box();
+          // box.openInBrowser(url);
+          // setTimeout(() => {
+          //   this.$refs.down.classList.remove('loading');
+          // }, 2000)
+
+          this.$store.commit("setDownloadInfo", this.$store.getters.gameInfo);
+          this.$store.commit("setShowDownloadInfo", true);
         }
-      } else if (this.$store.getters.gameType === 2) {
-        //如果是H5详情页 
-        let box = new Box();
-        box.openH5Game(h5Url);
-      } else {
-        // 如果是游戏详情页
-        this.$refs.down.classList.add('loading');
-        let box = new Box();
-        box.openInBrowser(url);
-        setTimeout(() => {
-          this.$refs.down.classList.remove('loading');
-        }, 2000)
       }
     }
   },

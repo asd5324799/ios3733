@@ -55,19 +55,27 @@
           <!-- quality -->
           <div class="quality">
             <GameTitle :headerTitle="qualityRecommend.header_title" /> 
-            <GameList2 :type="5" :list="qualityRecommend.game_list"/>
-            <GameList :list="qualityFirstList" :type="5"/>
+            <!-- <GameList2 :type="5" :list="qualityRecommend.game_list"/>
+            <GameList :list="qualityFirstList" :type="5"/> -->
+            <GameList2 :list="qualityRecommend.game_list"/>
+            <GameList :list="qualityFirstList"/>
           </div>
-          <!-- hotList -->
-          <GameTitle v-if="newGameAppointment.game_list.length != 0" :headerTitle="newGameAppointment.header_title" :type="false"  />
-          <GameList2 :list="newGameAppointment.game_list" :type="5"/>
+          <!-- newGameList -->
+          <GameTitle 
+            v-if="newGameAppointment.game_list.length != 0" 
+            :headerTitle="newGameAppointment.header_title" 
+            :type="false"  
+          />
+          <!-- <GameList2 :list="newGameAppointment.game_list" :type="5"/> -->
+          <GameList2 :list="newGameAppointment.game_list" :type="2" />
           <van-list
             v-model="pullUpState"
             :finished="noMore"
             finished-text="没有更多了"
             @load="pullUp"
           >
-            <GameList :list="newGameFirstList" :type="5" />
+            <!-- <GameList :list="newGameFirstList" :type="5" /> -->
+            <GameList :list="newGameFirstList" />
           </van-list>
         </div>
       </van-pull-refresh>
@@ -111,6 +119,7 @@ export default {
       pullDownState: false,
       pullUpState: false,
       noMore: false,
+      page: 2,
     }
   },
   created() {
@@ -162,9 +171,6 @@ export default {
           }
         }
       });
-      if(this.newGameFirstList.length < 20) {
-        this.noMore = true;
-      }
     },
     toTypePage(index) {
       if(index === 3) {
@@ -214,7 +220,23 @@ export default {
       });
     },
     pullUp() {
-      
+      this.$axios({
+        url: '/api/game/index',
+        data: {
+          order: 7,
+          page: this.page
+        }
+      }).then(res => {
+        this.page++;
+        this.pullUpState = false;
+        this.newGameFirstList = [...this.newGameFirstList, ...res.data.list];
+        if(res.data.list.length < 20) {
+          this.noMore = true;
+        }
+      })
+      .catch(() => {   
+        this.pullUpState = false;
+      })  
     }
   },
   components: {    

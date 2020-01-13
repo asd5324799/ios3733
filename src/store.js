@@ -10,14 +10,27 @@ const state = {
   gameInfo: {},
   // 游戏类型（普通、预约、已预约、H5）
   gameType: 1,
+  // 游戏下载弹窗信息
+  downloadInfo: {},
+  // 是否显示游戏下载弹窗
+  showDownloadInfo: false
 }
 
 const getters = {
+  appType(state) {
+    return state.appType
+  },
   gameInfo(state) {
     return state.gameInfo
   },
   gameType(state) {
     return state.gameType
+  },
+  downloadInfo(state) {
+    return state.downloadInfo
+  },
+  showDownloadInfo(state) {
+    return state.showDownloadInfo
   }
 }
 
@@ -27,6 +40,15 @@ const mutations = {
   },
   setGameType(state, gameType) {
     state.gameType = gameType;
+  },
+  setSubscribed(state) {
+    Object.defineProperty(state.gameInfo, {subscribe: 0});
+  },
+  setDownloadInfo(state, downloadInfo) {
+    state.downloadInfo = downloadInfo;
+  },
+  setShowDownloadInfo(state, showDownloadInfo) {
+    state.showDownloadInfo = showDownloadInfo;
   }
 }
 

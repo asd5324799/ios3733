@@ -13,7 +13,8 @@
           finished-text="没有更多了"
           @load="pullUp"
         >
-          <GameList :list="list" class="content" :type="5"></GameList>
+          <!-- <GameList :list="list" class="content" :type="5"></GameList> -->
+          <GameList :list="list" class="content"></GameList>
         </van-list>
       </van-pull-refresh>
     </Loading>

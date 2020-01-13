@@ -14,7 +14,7 @@
           <div class="game-type" v-if="type === 3">{{item.totaldown}}人在玩</div>
         </div>
         <div 
-          @click="clickEvent(item.down_ip, index, item.h5_url)" 
+          @click="clickEvent(item, item.h5_url)" 
           class="button" 
           :class="{
             orange: type === 2,
@@ -70,7 +70,7 @@ export default {
       this.$store.commit('setGameInfo', item);
       if(this.$route.name === 'DetailIndex') {
         this.$emit('refresh');
-      };
+      }
       let type;
       if(this.type === 2) {
         type = 0; 
@@ -84,34 +84,42 @@ export default {
           name: 'DetailIndex',
       });
     },
-    clickEvent(url = '', index = 0, gameUrl = '') {
-      if(this.type === 2) {
-        // 如果是预约列表
-        if(!this.alreadyAppointment) {
-          this.$axios({
-            url: '/api/game/subscribe',
-            data: {
-              token: sessionStorage.getItem('token'),
-              gameId: this.item.id
-            }
-          })
-          .then(res => {
-            this.alreadyAppointment = true;
-            this.$toast(res.msg); 
-          })
-        }
-      } else if(this.type === 5) {
-        // 如果是H5列表
-        let box = new Box();
-        box.openH5Game(gameUrl);
+    clickEvent(item = {}, gameUrl = '') {
+      if(!sessionStorage.getItem('token') && sessionStorage.getItem('token') === '') {
+        this.$router.push({
+          name: 'Login'
+        })
       } else {
-        // 如果是正常列表
-        this.$refs.down[index].classList.add('loading');
-        let box = new Box();
-        box.openInBrowser(url);
-        setTimeout(() => {
-          this.$refs.down[index].classList.remove('loading');
-        }, 2000)
+        if(this.type === 2) {
+          // 如果是预约列表
+          if(!this.alreadyAppointment) {
+            this.$axios({
+              url: '/api/game/subscribe',
+              data: {
+                token: sessionStorage.getItem('token'),
+                gameId: item.id
+              }
+            })
+            .then(res => {
+              this.alreadyAppointment = true;
+              this.$toast(res.msg); 
+            })
+          }
+        } else if(this.type === 5) {
+          // 如果是H5列表
+          let box = new Box();
+          box.openH5Game(gameUrl);
+        } else {
+          // 如果是正常列表
+            this.$store.commit("setDownloadInfo", item);
+            this.$store.commit("setShowDownloadInfo", true);
+          // this.$refs.down[index].classList.add('loading');
+          // let box = new Box();
+          // box.openInBrowser(url);
+          // setTimeout(() => {
+          //   this.$refs.down[index].classList.remove('loading');
+          // }, 2000)
+        }
       }
     }
   },

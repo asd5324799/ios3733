@@ -23,8 +23,8 @@ class Box {
   getToken() {
     let result; 
     try {
-        result = BOX.getToken();
-        // window.webkit.messageHandlers.getToken.postMessage(null);
+        // result = BOX.getToken();
+        window.webkit.messageHandlers.getToken.postMessage(null);
         result = true;
     } catch (e) {
         result = false;
@@ -35,8 +35,8 @@ class Box {
   openInNewWindow(url) {
     let result;
     try {
-      // window.webkit.messageHandlers.openInNewWindow.postMessage(url);
-        BOX.openInNewWindow(url);
+      window.webkit.messageHandlers.openInNewWindow.postMessage(url);
+        // BOX.openInNewWindow(url);
         result = true;
     } catch (e) {
         result = false;
@@ -47,8 +47,8 @@ class Box {
   loginSuccess(user) {
     let result;
     try {
-      BOX.refreshUser(user);
-      // window.webkit.messageHandlers.refreshUser.postMessage(user);
+      // BOX.refreshUser(user);
+      window.webkit.messageHandlers.refreshUser.postMessage(user);
       result = true;
     } catch(e) {
       result = false;
@@ -70,8 +70,7 @@ class Box {
   openInBrowser(str) {
     let result;
     try {
-      BOX.openInBrowser(str);
-      // window.webkit.messageHandlers.openInBrowser.postMessage(str);
+      window.webkit.messageHandlers.openInBrowser.postMessage(str);
       result = true;
     } catch(e) {
       result = false;
@@ -82,8 +81,7 @@ class Box {
   openH5Game(url) {
     let result;
     try {
-      BOX.openH5Game(url);
-      // window.webkit.messageHandlers.openH5Game.postMessage(url);
+      window.webkit.messageHandlers.openH5Game.postMessage(url);
       result = true;
     } catch(e) {
       result = false;

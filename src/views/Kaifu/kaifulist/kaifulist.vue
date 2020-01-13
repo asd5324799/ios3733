@@ -8,7 +8,8 @@
           finished-text="没有更多了"
           @load="pullUp"
         >
-          <GameList :list="list" :type="5"></GameList>
+          <GameList :list="list" :isBoon="false"></GameList>
+          <!-- <GameList :list="list" :type="5"></GameList> -->
         </van-list>
       </van-pull-refresh>
     </Loading>

@@ -56,6 +56,7 @@ import CommentMessage from '../views/Mine/MyMessage/CommentMessage/CommentMessag
 import ReplyMessage from '../views/Mine/MyMessage/ReplyMessage/ReplyMessage.vue';
 import Notice from '../views/Mine/MyMessage/Notice/Notice.vue';
 import GameClass from '../views/GameClass/GameClass.vue';
+import DownloadManage from '../views/DownloadManage/DownloadManage.vue';
 
 Vue.use(Router)
 
@@ -306,6 +307,13 @@ var router = new Router({
           requiresAuth: true    
         },
       }],
+    }, {
+      path: '/downloadManage',
+      name: 'DownloadManage',
+      component: DownloadManage,
+      meta: {  
+        requiresAuth: true    
+      },
     }
    
     // {

@@ -2,7 +2,8 @@
   <div>
     <div class="top-bar">
       <div class="search-bar">
-        <router-link class="search-button" to="/search" >搜索</router-link>
+        <router-link tag="div" class="search-button" to="/search" >搜索</router-link>
+        <router-link tag="div" class="download-manage" to="/downloadmanage"></router-link>
       </div>
       <div class="tab-list">
         <router-link

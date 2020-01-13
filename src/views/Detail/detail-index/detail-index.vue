@@ -57,7 +57,7 @@
                 <span class="text">充值返利</span>
               </div>
               <div class="right">
-                <div class="button">充值返利点击申请</div>
+                <div class="button" @click="openInBrowser('http://u.3733.com/float.php/float/kefu/new_index')">充值返利点击申请</div>
                 <i class="icon3733"></i>
               </div>
             </div>
@@ -137,7 +137,8 @@
           <section class="game-section game-liked">
             <div class="title"><i class="icon"></i><span class="text">猜你喜欢</span></div>
             <div class="section-content">
-              <GameList2 :list="liked" :type="5" @refresh="refresh"/>
+              <GameList2 :list="liked" @refresh="refresh"/>
+              <!-- <GameList2 :list="liked" :type="5" @refresh="refresh"/> -->
             </div>
           </section>
         </div>
@@ -263,6 +264,11 @@ export default {
     openInBrowser(str) {
       let box = new Box();
       box.openInBrowser(str);
+    },
+    // 客服
+    BOX_openInNewWindow(url) {
+      let box = new Box();
+      box.openInNewWindow(url); 
     },
     toDetail(item) {
       sessionStorage.setItem('gameInfo', JSON.stringify(item));

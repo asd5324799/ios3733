@@ -10,6 +10,23 @@
         slot="loading-content"
       >
         <div class="content">
+          <!-- today-newgame -->
+          <div class="today-newgame" v-if="todayNewGameList.length !== 0">
+            <div class="title">今日新游</div>
+            <GameList
+              :list="todayNewGameList"
+              :type="1"
+            ></GameList>
+          </div>
+          <!-- appointment -->
+          <GameTitle
+            :headerTitle="'预约专区'"
+            :name="'Subscribe'"
+          ></GameTitle>
+          <GameList2
+            :list="appointmentList"
+            :type="2">
+          </GameList2>
           <!-- time sort -->
           <van-list
             v-model="pullUpState"
@@ -21,9 +38,12 @@
               v-for="(item, key, index) in sortGameObject"
               :key="index">
               <div class="title">{{key}}</div>
-              <GameList
+              <!-- <GameList
                 :list="item"
                 :type="5"
+              ></GameList> -->
+              <GameList
+                :list="item"
               ></GameList>
             </div>
           </van-list>
@@ -34,6 +54,7 @@
 </template>
 <script>
 import GameList from '@/components/gamelist/gamelist.vue';
+import GameList2 from '@/components/gamelist2/gamelist2.vue';
 import GameTitle from '@/components/gametitle/gametitle.vue';
 import Loading from '@/components/loading/loading.vue';
 
@@ -41,6 +62,8 @@ export default {
   name: 'NewGame',
   data() {
     return {
+      todayNewGameList: [],
+      appointmentList: [],
       originalGameList: [],
       sortGameObject: {},
       newGamePage: 2,
@@ -73,6 +96,8 @@ export default {
     },
     // 数据初始化
     handleInitData(res) {
+      this.todayNewGameList = res.data.today_list;
+      this.appointmentList = res.data.subscribe_list.slice(0, 4);
       this.sortGameObject = {};
       this.originalGameList = res.data.list;
       this.handleListSort(this.originalGameList);
@@ -134,6 +159,7 @@ export default {
   },
   components: {
     GameList,
+    GameList2,
     GameTitle,
     Loading,
   },

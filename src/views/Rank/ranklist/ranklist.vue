@@ -3,14 +3,16 @@
     <Loading :loading="loading" @refresh="createdMethod">
       <van-pull-refresh v-model="pullDownState" @refresh="pullDown" slot="loading-content">
         <div class="content">
-          <Billboard :gameTop="gameTop" :title="rank.title" :bg="rank.bg" :type="5"></Billboard>
+          <Billboard :gameTop="gameTop" :title="rank.title" :bg="rank.bg" ></Billboard>
+          <!-- <Billboard :gameTop="gameTop" :title="rank.title" :bg="rank.bg" :type="5"></Billboard> -->
             <van-list
             v-model="pullUpState"
             :finished="noMore"
             finished-text="没有更多了"
             @load="pullUp"
             >
-              <GameList :list="gameList" :type="5" :isNum="true" />
+              <!-- <GameList :list="gameList" :type="5" :isNum="true" /> -->
+              <GameList :list="gameList" :isNum="true" />
             </van-list>
         </div>
       </van-pull-refresh>
