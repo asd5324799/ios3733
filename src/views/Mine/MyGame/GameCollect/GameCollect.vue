@@ -1,16 +1,20 @@
 <template>
   <div class="game-collect">
     <Loading :loading="loading" @refresh="createdMethod">
-      <div slot="loading-content">
+      <van-pull-refresh 
+        v-model="pullDownState" 
+        @refresh="pullDown" 
+        slot="loading-content"
+      >
         <van-list
           v-model="pullUpState"
           :finished="noMore"
-          :finished-text="text"
+          :finished-text="'没有更多了'"
           @load="pullUp"
         >
           <GameList :list="list" class="content"></GameList>
         </van-list>
-      </div>
+      </van-pull-refresh>
     </Loading>
   </div>
 </template>
@@ -24,9 +28,9 @@ export default {
       list: [],
       page: 2,
       loading: 'ready',
+      pullDownState: false,
       pullUpState: false,
       noMore: false,
-      text: '没有更多了',
     }
   },
   activated() {
@@ -43,9 +47,9 @@ export default {
         data: {
           token: token,
           listRows: 20,
+          classId: 3,
         }
       }).then(res => {
-        this.loading = 'success';
         this.handleInitData(res);
         if(res.data.list.length < 20) {
           this.noMore = true;
@@ -53,7 +57,11 @@ export default {
             this.text = '您还没有收藏游戏';
           }
         }
+        this.$nextTick(() => {
+          this.loading = 'success';
+        })
       }).catch((res) => {
+        console.log(res);
         this.loading = 'fail';
       })
     },
@@ -77,6 +85,30 @@ export default {
         this.list.push(...res.data.list);
       }).catch(() => {
         this.pullUpState = false;
+      })
+    },
+    pullDown() {
+      this.page = 2;
+      this.noMore = false;
+      let data;
+      data = {
+        classId: 3,
+        page: 1,
+        listRows: 20,
+        token: sessionStorage.getItem('token')
+      }
+      this.$axios({
+        url: '/api/resource/collection',
+        data: data
+      }).then(res => {
+        this.$toast('刷新成功');
+        this.handleInitData(res);
+        this.pullDownState = false;
+        if(res.data.list.length < 20) {
+          this.noMore = true;
+        }
+      }).catch(() => {
+        this.pullDownState = false;
       })
     },
   },

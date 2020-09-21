@@ -50,8 +50,9 @@ export default {
   },
   methods: {
     createdMethod() {
+      this.titlePic = JSON.parse(this.$route.query.titlepic),
       this.$axios({
-        url: "/api/subject/items",
+        url: "/api/collect/gameCollect",
         data:{
           id: JSON.parse(this.$route.query.topicId),
           page: 1,
@@ -67,15 +68,14 @@ export default {
     },
     handleInitData(res){
       this.topicList = res.data.games;
-      this.titlePic = res.data.info.titlepic;
-      this.topicDesc = res.data.info.subject_desc;
+      // this.topicDesc = res.data.info.subject_desc;
       if(this.topicList.length < 20) {
         this.noMore = true;
       }
     },
     pullDown() {
       this.$axios({
-        url: "/api/subject/items",
+        url: "/api/collect/gameCollect",
         data:{
           id: JSON.parse(this.$route.query.topicId),
           page: 1,
@@ -95,7 +95,7 @@ export default {
     },
     pullUp() {
       this.$axios({
-        url: "/api/subject/items",
+        url: "/api/collect/gameCollect",
         data:{
           id: JSON.parse(this.$route.query.topicId),
           page: this.page,

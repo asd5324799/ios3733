@@ -6,6 +6,7 @@ import Calendar from 'vue2-datepick'
 import Prompt from './components/prompt'
 import theConfirm from './components/confirm/confirm.js'
 import store from './store'
+import VueClipboard from 'vue-clipboard2'
 
 import '@/common/flexible.min.js'
 import '@/axios/axios.js'
@@ -17,7 +18,8 @@ import '@/common/vant.less'
 
 Vue.use(PullRefresh).use(List).use(Popup);
 Vue.use(Calendar);
-Vue.use(Prompt)
+Vue.use(Prompt);
+Vue.use(VueClipboard);
 
 Vue.prototype.$confirm = theConfirm;
 Vue.prototype.$toast = Toast;

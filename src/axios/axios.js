@@ -8,12 +8,17 @@ axios.interceptors.request.use(res => {
   res.method = 'post';
   res.data.uuid = localStorage.getItem('uuid');
   res.data.from = '212';
-  res.data.build = '31';
+  res.data.build = '40';
   res.data.channel = 'cps1354';
 
-  // 生产环境下
-  if(process.env.NODE_ENV === 'production' && res.url.indexOf('manage') >= 0) {
-    res.url = res.url.replace('manage', 'index/api');
+  if(res.url.indexOf('manage') >= 0) {
+    res.url = res.url.replace('/manage', 'https://grq.3733.com/index/api');
+    res.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
+    if(res.method === 'post') {
+      res.data = qs.stringify( {
+          ...res.data
+      })
+    } 
   }
 
   return res;

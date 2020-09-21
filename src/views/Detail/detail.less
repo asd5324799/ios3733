@@ -30,7 +30,7 @@
   }
   main {
     box-sizing: border-box;
-    padding: 45*@rem 0 60*@rem;
+    padding: 65*@rem 0 60*@rem;
     overflow: hidden;
     z-index: 2;
     .background-image {
@@ -102,7 +102,7 @@
       border-bottom: 1px solid rgba(238, 238, 238, 1);
       &.fixed {
         position: fixed;
-        top: 45*@rem;
+        top: 65*@rem;
         left: 0;
       }
       .tab-item {
@@ -142,14 +142,27 @@
     padding: 0 14*@rem;
     border-top: 1px solid rgba(238, 238, 238, 1);
     background-color: #ffffff;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     z-index: 999;
     .left,.right {
+      width: 40*@rem;
       text-align: center;
       .text {
         font-size: 12*@rem;
         color: rgba(102, 102, 102, 1);
+      }
+    }
+    .left {
+      &.collected {
+        .text {
+          color: #47a83a;
+        }
+        .icon {
+          &.icon-left {
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAC0ElEQVRYR8WXQUgUYRTH/28iKaJbdIkubUQY0UWwnbVQyp0V0kupM3uIAtFT0SEPWwfzkHtIKOqUKAWRM7tFUF12Vsm97IyHIpAkyFDo0CE6dkjL78Vaiisz63zjVAN7mu/9/7/3vvces4T//FBY/5QV72TQEIBFAg8WdPdJGK3QAJqVmAa4ccWU+Y1tuA3/DEDLN6UhxOP1hszcVzTcEVmIUBXQrPgUQM1VZiGrIA3QlmtqFyxeeGXKzD1Fwx2TqYI0gGf2q44hqiAFoOUSLWB+VStDAp0t6OVnQasgB+B19xudJKsQGCBlHm9mUqaCZMYCp4ppp2alVnWqAQagtB5qjCmkxECIgegAgFjlR0CMgZ1BAAB8Z2CBCPNgWiDwgiAxp9C2D42z5bnBQYg1gKQVP6OQ0suCDxOtmCgBTUIdI0AwYZ4ZbxkYpZpdHcpCJohLpFmJ2wBfkQmL7izdWekBzVTHQTCiEw6gxDBtw0mvNaFmqQ8AXAgQGsWRh7buXKwIVU1BylLvM9AbhYOfBgEjBd3p8x5DAClLvcvApb8BQcC9gu5cXq/tuYhSucQtZr4aJQQRDRe6y/0bNX03oWaqN0G4FgkEY8g2nOteWjVXcdJSZwg4uiUI5hnbcI/V6Al/ec1SeUvmf4Jt3fFN1PdF0jy5n+jnpygABNO+CaP8WeoKUmaig4mfRwFAxKlCt2tLASRz6gAxbkQBwMT9xW53WA7AUvMEdEYBAOCRrTvnpQA0S30H4EgkADUmwX8PbDIBlcXyfe/2TAVwx5cf2c0Wl98keAK05U/UC7E865P9aJ2oy7xMl76uf98+3rxnSVnKAujxiluGqJ/Up98H2oRe339EeMrEGbvL/VjrWrR8/CAxZZlxrmrns2gpGNOlQAAdY4ndi7sw8fu/H00KRmbCKL+W6YdWM9GgELIAnwbgLCp1Wqmr9C0QgIzRVs/+AouXCT3ghu/jAAAAAElFTkSuQmCC);
+          }
+        }
       }
     }
     .icon {
@@ -158,13 +171,17 @@
       height: 18*@rem;
       margin-bottom: 3*@rem;
       background-size: 100%;
+      &.icon-left {
+        background-size: 100%;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAD30lEQVRYR8WWW2icRRTH/2e+hL6IBkTBS/ElgthWpCmpDSrxAla0Fw3Jk4rr7swsW/JgVVBfNE8K1vqUZefMpoG0IFiq1gpW8RIEW5W2iG190L5ItYLie247RyZ+WzaXTfJtUjLwwX473znnd87MuRDWedE620fLANbau0MI90UHlFLfO+d+acWZlgAKhcLtSqmTADalRi+GEHZWq9U/skK0BGCtfUdEXgYwlBp8g4gOOOdeueYAWutNRPQTgN8A7EgNngZwp4jc672/mAUicwSMMYcBPAPAMjNHY8YYA8ABOMLMz14zgGKx2B1C+AHAV8z8aKMhY8yXAB5RSm2vVCo/rhQiUwSstSdF5DER2eW9/7TRiNb6SSI6QUSfO+d2rilAPp/vTJLk4TTMh5n5ucUMGGPGAMQjsLVa7euRkZFLy4EsiIAxZgsRbQawJT4hhPh+Rz3diGigWc7H2iAiH9TTU0R+V0qdBzD7iMgFZo6/r645AMaYMwC65lH/miq4ECPAzH8t5VWpVLpuampqm1LqAQD3p/pubJA5y8zb6u9XAYwxkbw/3uRIGsmTJDlfLpcvLxfG5fbz+Xx3kiTdRNQlIs8DOMrMA1GuEUBEpOy937ecwtXsa62HiajEzLO2GwE+AbCLiF5yzh1cjZFmstba/SLyLoATzLx7DkChULiHiI4RUScRveCcG11LCGttTkQOicglEemrVqs/zwFIK9p2AMcA3EZEe51zx9cCwlq7R0Q+BvAngD5mjsVsdi1Iw0Kh0KuUihAgoqecc9+uBsJa+6CIfBR1hBCi5+NN07C+obV+PB4HgCtKqb2VSiWmYOZVLBY3hxCi57fGsHvvP5uvpGkpttY+LSIRYoiZ38xs/f8mFeViq+5zzn24mI4le4Ex5pSITHrvH2oFQGv9DRFtYOaeZvLLAcQiNJ61xdaNpa27l5k3tgogAN5m5tdaiYAx5i0Ar9aLTqYjSOe+yyKyz3tfbgVAa10iouEQwsZm8+JSl3CHiMQ7sMd7H6tk5qW13k1Ex4moxzkXx7YFqymAMSY2ptigupj5XKNkrBVEFG93b/xfRMZFZGh+jhtjtgI4C2CAmY9mBXgRwMHp6embR0dH/4nC8w0DOJQWs9xiILlc7qb29va/Aexn5veyAtRzuKdWq22oeywiV4hobGJi4sDY2Ni/Uakx5hYAr6fT0A31iCRJMhmPcalaspIjmAUnou9E5H1mHm52GQYHB6+fnJwcTKfmuxq+y34EUbhUKnXOzMzEEfwUM3+x0lvY39+fdHR0PEFEW9va2o6Uy+Wms2GmqXilAFm+W3eA/wC7Na4w3IbfdwAAAABJRU5ErkJggg==);
+      }
     }
     .download {
       display: flex;
       justify-content: center;
       align-items: center;
       box-sizing: border-box;
-      width: 260*@rem;
+      width: 240*@rem;
       height: 40*@rem;
       line-height: 40*@rem;
       text-align: center;
@@ -183,19 +200,6 @@
           background-color: rgba(255, 255, 255, 1);
           color: #6e6e6e;
           border: 1px solid #6e6e6e;
-        }
-      }
-      &.loading {
-        span {
-          display: block;
-          width: 16*@rem;
-          height: 16*@rem;
-          background-size: 16*@rem 16*@rem;
-          background-image: url(../../common/images/downloadLoading.png);
-          animation: rotate 1s infinite linear;
-        }
-        div {
-          display: none;
         }
       }
     }

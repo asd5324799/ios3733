@@ -9,7 +9,7 @@
             :finished-text="text"
             @load="pullUp"
           >
-            <GiftList :giftList="list"></GiftList>
+            <GiftList :giftList="list" @updateCardpass="updateCardpass"></GiftList>
           </van-list>
         </div>
       </div>
@@ -36,22 +36,22 @@ export default {
     this.createdMethod();
   },
   activated() {
-    if(this.id !== this.$store.getters.gameInfo.id) {
-      this.createdMethod();
-    }
+    this.createdMethod();
   },
   methods: {
     createdMethod() {
       this.id = this.$store.getters.gameInfo.id;
-      this.page = 1;
+      this.page = 2;
       this.loading = 'ready';
       this.noMore = false;
       this.text = '没有更多了';
+
       this.$axios({
         url: '/api/card/index',
         data: {
           gameId: this.id,
-          page: 1
+          page: 1,
+          token: sessionStorage.getItem('token')
         }
       }).then(res => {
         this.handleInitData(res);
@@ -69,7 +69,13 @@ export default {
       });
     },
     handleInitData(res) {
-      this.list = res.data.list;
+      let list = []
+      res.data.list.forEach(ele => {
+        if(ele.classid !== '22') {
+          list.push(ele);
+        }
+      });
+      this.list = list;
     },
     pullUp() {
       this.$axios({
@@ -83,13 +89,24 @@ export default {
           this.noMore = true;
         }
         this.page++;
-        this.list.push(...res.data.list);
+        res.data.list.forEach(ele => {
+          if(ele.classid !== '22') {
+            this.list.push(ele);
+          }
+        });
+        // this.list.push(...res.data.list);
         this.pullUpState = false;
       })
       .catch(() => {
         this.pullUpState = false;
       })
     },
+    updateRemain(index) {
+      this.$set(this.list[index], 'remain', 0);
+    },
+    updateCardpass(index, cardpass) {
+      this.$set(this.list[index], 'cardpass', cardpass);
+    }
   },
   components: {
     Loading,

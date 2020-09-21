@@ -8,12 +8,34 @@
         <div>
           <GameInfo :item="giftGame" />
           <!-- gift -->
-          <div class="gift-info gift-section">
-            <h4>{{giftData.title}}</h4>
-            <div class="gift-remain"><b><i :style="{width:giftData.remain+'%'}"></i></b><span>(剩余{{giftData.remain}}%)</span></div>
-            <span class="get-number">已有{{giftData.yi_ling_qu}}人领取</span>
-            <span @click="getGift" :class="{already: already}" class="get-gift">{{text}}</span>
-            <!-- <a href="javascript:void(0);" class="get-account">淘号</a> -->
+          <div v-if="!giftData.cardpass || giftData.cardpass === null" class="gift-type1">
+            <div class="gift-info gift-section">
+              <h4>{{giftData.title}}</h4>
+              <div class="gift-remain"><b><i :style="{width:giftData.remain+'%'}"></i></b><span>(剩余{{giftData.remain}}%)</span></div>
+              <span class="get-number">已有{{giftData.yi_ling_qu}}人领取</span>
+              <span 
+                @click="getGift" 
+                :class="{already: giftData.remain === 0}" 
+                class="get-gift"
+              >{{giftData.remain !== 0 ? '领取' : '已空'}}</span>
+              <!-- <a href="javascript:void(0);" class="get-account">淘号</a> -->
+            </div>
+          </div>
+          <div v-if="giftData.cardpass !== null" class="gift-type2">
+            <div class="gift-info">
+              <div class="gift-content">
+                <div class="title">                    
+                  <div class="gift-name">{{giftData.title}}</div>
+                </div>
+                <div class="code">礼包码:<span class="orange">{{giftData.cardpass}}</span></div>
+              </div>
+              <div 
+                v-clipboard:copy="giftData.cardpass"
+                v-clipboard:success="copySuccess"
+                v-clipboard:error="copyError"
+                class="get-gift"
+                >复制</div>
+            </div>
           </div>
           <!-- gift-detail -->
           <div class="gift-con gift-section">
@@ -54,8 +76,6 @@ import GameInfo from '@/components/gamelist/gameinfo/gameinfo.vue';
             giftGame:{},
             loading: 'ready',
             ajaxSwitch: true,
-            text: '领取',
-            already: false,
           }
         },
         filters: {
@@ -84,7 +104,8 @@ import GameInfo from '@/components/gamelist/gameinfo/gameinfo.vue';
             this.$axios({
               url:"/api/game/read",
               data:{
-                title: gameTitle
+                title: gameTitle,
+                token: sessionStorage.getItem('token'),
               }
             }).then(res => {
               this.giftGame = res.data.detail;
@@ -95,7 +116,8 @@ import GameInfo from '@/components/gamelist/gameinfo/gameinfo.vue';
             this.$axios({
               url:"/api/card/read",
               data:{
-                cardId: this.$route.params.id
+                cardId: this.$route.params.id,
+                token: sessionStorage.getItem('token'),
               }
             }).then(res => {
               this.handleGameGift(res);
@@ -108,8 +130,11 @@ import GameInfo from '@/components/gamelist/gameinfo/gameinfo.vue';
             this.gameRelated(this.giftData.titlegame);
           },
           getGift() {
-            if(this.ajaxSwitch && !this.already) {
-              this.ajaxSwitch = false;
+            if(!sessionStorage.getItem('token') || sessionStorage.getItem('token') === '') {
+              this.$router.push({
+                name: 'Login'
+              })
+            } else {
               this.$axios({
                 url: '/api/card/get',
                 data: {
@@ -118,18 +143,33 @@ import GameInfo from '@/components/gamelist/gameinfo/gameinfo.vue';
                 }
               })
               .then(res => {
-                if(!res.msg) {
-                  this.text = '已领取';
-                  this.already = true;
-                  this.$toast('领取成功')
+                if(res.msg) {
+                  this.$toast(res.msg);
+                } else {
+                  if(res.data.remain === 0) {
+                    this.$toast('手慢啦~礼包已经被抢光~');
+                    this.$set(this.giftData, 'remain', 0);
+                  } else {
+                    this.$toast('领取成功');
+                    if(this.giftData.cardpass === null) {
+                      this.$set(this.giftData, 'cardpass', res.data.cardpass);
+                    }
+                  }
                 }
-                this.ajaxSwitch = false;
-              })
-              .catch(() => {
-                this.ajaxSwitch = false;
               })
             }
-          }
+          },
+          copySuccess() {
+            this.$Dialog.alert({
+              title: '礼包码已复制',
+              message: '使用说明：游戏内复制-兑换'
+            })
+          },
+          copyError() {
+            this.$Dialog.alert({
+              message: '复制失败，请手动复制'
+            })
+          },
         },
         components:{
             GameInfo,

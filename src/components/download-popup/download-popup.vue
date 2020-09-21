@@ -83,6 +83,7 @@ export default {
         this.$toast(res.msg);
         if(res.data.status === 1) {
           // 跳转下载管理页
+          this.popupShow = !this.popupShow;
           this.$router.push({
             name: "DownloadManage"
           });
@@ -94,7 +95,7 @@ export default {
             // 转BASE64
             let dataBase64 = btoa(data);
             // 拼接并打开URL
-            this.BOX_openInNewWindow(`https://grq.3733.com/index/api/index/?data=${dataBase64}&code=2&isweb=1`);
+            this.BOX_openInBrowser(`https://grq.3733.com/index/api/index/?data=${dataBase64}&code=2&isweb=1`);
         } else if(res.data.status === 4) {
           // 弹出已经添加入列表消息
           this.$router.push({
@@ -120,6 +121,10 @@ export default {
     BOX_openInNewWindow(url) {
       let box = new Box();
       box.openInNewWindow(url); 
+    },
+    BOX_openInBrowser(url) {
+      let box = new Box();
+      box.openInBrowser(url); 
     },
     changePopupShow3() {
       this.popupShow3 = !this.popupShow3;

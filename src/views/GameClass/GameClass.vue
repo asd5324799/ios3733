@@ -13,7 +13,6 @@
           finished-text="没有更多了"
           @load="pullUp"
         >
-          <!-- <GameList :list="list" class="content" :type="5"></GameList> -->
           <GameList :list="list" class="content"></GameList>
         </van-list>
       </van-pull-refresh>
@@ -37,34 +36,25 @@ export default {
       pullDownState: false,
       pullUpState: false,
       noMore: false,
-      typeList: [{"id":0,"title":"类型"},{"id":"2","title":"角色"},{"id":"16","title":"回合"},{"id":"1","title":"卡牌"},{"id":"3","title":"策略"},{"id":"8","title":"动作"},{"id":"10","title":"休闲"},{"id":"5","title":"即时"},{"id":"6","title":"格斗"},{"id":"11","title":"模拟"}]
+      typeList: {}
     }
   },
   activated() {
-    let type = JSON.parse(this.$route.query.type);
-    this.classId = 10001;
-    this.type = 0;
     this.noMore = false;
-    if(type === 0) {
-      this.title = '变态版';
-      this.classId = 1;
-    } else if (type === 1) {
-      this.title = '满V版';
-      this.classId = 49;
-    } else if(type === 2){
-      this.title = 'GM版';
-      this.classId = 43;
+    if(this.$route.query.type) {
+      if(this.$route.query.type == 0) {
+        this.title = '变态版';
+        this.classId = 1;
+      } else if (this.$route.query.type == 1) {
+        this.title = '满V版';
+        this.classId = 49;
+      } else if(this.$route.query.type == 2){
+        this.title = 'GM版';
+        this.classId = 43;
+      }
     } else {
       this.title = this.$route.query.tag;
-      this.typeList.forEach(ele => {
-        if(ele.title === this.$route.query.tag) {
-          this.type = ele.id
-        }
-      });
     }
-    this.createdMethod();
-  },
-  created() {
     this.createdMethod();
   },
   methods: {
@@ -72,20 +62,37 @@ export default {
       this.loading = 'ready';
       this.page = 2;
       this.$axios({
-        url: '/api/game/index',
+        url: '/api/game/cate',
         data: {
-          order: 0,
-          type: this.type,
-          sizeId: 0,
-          classId: this.classId,
+          isNav: 1
         }
       }).then(res => {
-        this.handleInitData(res);
-        if(res.data.list.length < 20) {
-          this.noMore = true;
-        }
-        this.$nextTick(() => {
-          this.loading = 'success';
+         this.typeList = res.data.game_cate;
+         if(this.$route.query.tag) {
+          this.typeList.forEach(ele => {
+            if(ele.title === this.$route.query.tag) {
+              this.type = ele.id;
+            }
+          });
+         }
+        this.$axios({
+          url: '/api/game/index',
+          data: {
+            order: 0,
+            type: this.type,
+            sizeId: 0,
+            classId: this.classId,
+          }
+        }).then(res => {
+          this.handleInitData(res);
+          if(res.data.list.length < 20) {
+            this.noMore = true;
+          }
+          this.$nextTick(() => {
+            this.loading = 'success';
+          })
+        }).catch(() => {
+          this.loading = 'fail';
         })
       }).catch(() => {
         this.loading = 'fail';

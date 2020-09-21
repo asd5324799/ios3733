@@ -87,7 +87,7 @@
                   </div>
               </router-link>
               <!-- <li @click="BOX_openH5Game('http://api2.3733.com/h5/game/index?app_id=62453')" class="func-item complaint"> -->
-              <li @click="BOX_openInNewWindow('http://api2.c3733.com/h5/html/feedback')" class="func-item complaint">
+              <li @click="BOX_openInNewWindow('http://api2.3733.com/h5/html/feedback')" class="func-item complaint">
                   <div class="item-content">
                         <div class="func-left">
                           <i class="func-icon"></i>

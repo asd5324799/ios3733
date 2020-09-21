@@ -32,16 +32,22 @@
                 </div>
               </div>
               <div
-                @click="clickEvent(item)"
+                @click="clickEvent(item, index)"
                 class="game-download"
+                ref="down"
                 :class="{
-                  grq_status1: item.grq_status === 1 || item.grq_status === 0,
-                  grq_status3: item.grq_status === 3
+                  grq_status1: item.grq_status === '1' || item.grq_status === '0',
+                  grq_status3: item.grq_status === '3'
                 }"
               >
                 <span></span>
                 <div>{{text(item)}}</div>
               </div>
+              <div 
+                class="visa-button" 
+                v-show="item.grq_status === '2'"
+                @click="visaAgain(item, index)"
+              >{{text2}}</div>
             </div>
           </div>
         </van-list>
@@ -54,6 +60,7 @@ import Navigation from "@/components/navigation/navigation.vue";
 import Loading from "@/components/loading/loading.vue";
 import { JSEncrypt } from "jsencrypt";
 import {JSEncrypt as JSEncryptLong} from 'encryptlong';
+import Box from "@/common/box.js";
 
 export default {
   data() {
@@ -63,7 +70,8 @@ export default {
       loading: "ready",
       pullDownState: false,
       pullUpState: false,
-      noMore: false
+      noMore: false,
+      text2: '重新获取',
     };
   },
   activated() {
@@ -84,15 +92,14 @@ export default {
     //   })
     // },
     text(item) {
-      if (item.grq_status === 3) {
-        return "签名失败";
-      } else if (item.grq_status === 1) {
+      if (item.grq_status === '3') {
+        return "重新获取";
+      } else if (item.grq_status === '2') {
+        return "安装";
+      } else if (item.grq_status === '1') {
         return '签名中'
-      } else if (item.grq_status === 1) {
-        return '等待中'
-      } else {
-        // 如果下载列表
-        return "下载";
+      } else if (item.grq_status === '0') {
+        return '排队中'
       }
     },
     toDetail(item) {
@@ -102,26 +109,44 @@ export default {
         name: "DetailIndex"
       });
     },
-    clickEvent(item) {
-      if (item.grq_status === 3) {
-        // 如果是签名失败
-        let data = this.opensslEncryptLong(`{"uuid":"${localStorage.getItem("uuid")}","token":"${sessionStorage.getItem("token")}","game_id":"${item.id}","status":"${item.grq_status}","from":"212"}`);
-        this.$axios({
-          url: "/manage/resignGame",
-          data: {
-            code: 2,
-            data: data
-          }
-        }).then(res => {
-          this.$toast(res.msg);
-        }).catch(() => {
-          this.$toast('网络不太好~，请稍后再试~');
-        })
-      } else {
+    BOX_openInBrowser(url) {
+      let box = new Box();
+      box.openInBrowser(url); 
+    },
+    clickEvent(item, index) {
+      if (item.grq_status === '3') {
+        this.visaAgain(item, index);
+      } else if(item.grq_status === '2') {
         // 如果是下载列表
-          this.$store.commit("setDownloadInfo", item);
-          this.$store.commit("setShowDownloadInfo", true);
+        this.$refs.down[index].classList.add('loading');
+        let box = new Box();
+        box.openInBrowser(item.grq_down_ip);
+        setTimeout(() => {
+          this.$refs.down[index].classList.remove('loading');
+        }, 2000)
+      } else if(item.grq_status === '1') {
+        // 签名中
+      } else if(item.grq_status === '0') {
+        // 排队中
       }
+    },
+    visaAgain(item, index) {
+      // 如果是签名失败
+      let data = this.opensslEncryptLong(`{"uuid":"${localStorage.getItem("uuid")}","token":"${sessionStorage.getItem("token")}","game_id":"${item.id}","status":"${item.grq_status}","from":"212"}`);
+      this.$axios({
+        url: "/manage/resignGame",
+        data: {
+          code: 2,
+          data: data
+        }
+      }).then(res => {
+        this.$toast(res.msg);
+        if(res.code === 1) {
+          this.$set(this.list[index], 'grq_status', '0');
+        }
+      }).catch(() => {
+        this.$toast('网络不太好~，请稍后再试~');
+      })
     },
     opensslEncrypt(str) {
       let encryptor = new JSEncrypt(); // 新建JSEncrypt对象

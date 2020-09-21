@@ -83,6 +83,10 @@ export default {
         box.openInNewWindow(url); 
       }
     },
+    BOX_openInBrowser(url) {
+      let box = new Box();
+      box.openInBrowser(url); 
+    },
     installGrqapp() {
       if(!sessionStorage.getItem('token') && sessionStorage.getItem('token') === '') {
         this.$router.push({
@@ -111,7 +115,7 @@ export default {
               // 转BASE64
               let dataBase64 = btoa(data);
               // 拼接并打开URL
-              this.BOX_openInNewWindow(`https://grq.3733.com/index/api/index/?data=${dataBase64}&code=2&isweb=1`);
+              this.BOX_openInBrowser(`https://grq.3733.com/index/api/index/?data=${dataBase64}&code=2&isweb=1`);
           } else if(res.data.status === 4) {
             // 弹出已经添加入列表消息
             this.$router.push({

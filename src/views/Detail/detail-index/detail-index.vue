@@ -126,7 +126,7 @@
                   v-for="(item, index) in detail.type"
                   :key="index"
                   :class="color(index)"
-                  :to="{name: 'GameClass', query: {type: 4, tag: item}}"
+                  :to="{name: 'GameClass', query: {tag: item}}"
                 >
                   {{item}}
                 </router-link>

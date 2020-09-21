@@ -29,7 +29,6 @@
               finished-text="没有更多了"
               @load="pullUp"
             >
-              <!-- <GameList :list="gameList" :type="5"></GameList> -->
               <GameList :list="gameList"></GameList>
             </van-list>
           </div>

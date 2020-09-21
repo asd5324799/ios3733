@@ -1,117 +1,164 @@
 /* giftdetail */
 @rem: 0.0267rem;
 .gift-detail{
-    box-sizing: border-box;
-    height: 100%;
-    padding-top: 45*@rem;
-    .detail-header {
-      position: fixed;
+  box-sizing: border-box;
+  height: 100%;
+  padding-top: 65*@rem;
+  .detail-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    .back-icon {
+      position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      z-index: 10;
-      .back-icon {
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: inline-block;
-        width: 19*@rem;
-        height: 15*@rem;
-        padding: 15*@rem 14*@rem;
-        background-size: 19*@rem 15*@rem;
-        background-repeat: no-repeat;
-        background-position: 14*@rem 15*@rem;
-        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADkAAAAtCAYAAAAUX8MIAAACeElEQVRoQ92auYsUQRSHv5/+CSYigngguHiABx6BYGRisAaaiWBsoGBiIgjmph6LiSB4RsuqgauZR6yRgQaiooKYmHg8eUON9LLd0zPVBVPVldfr93V9vKn3ekTCZWYCNgI3gA3AeUk3Ez4iKpQnlWQFwL3AdWBrCPodWCXJkjwkMkhKyE3AHWAHsCLk81rStsjckm3rDFlR9HFQ1JPzk/sAHJP0Mlm2kYE6QTYo6qm8B04DDyX9jcwt2baukHWKfgaOAq9yAPQ3FQXZouhxSS+SHUOCQLGQu8PPRLWoZKVo9d1MDGlm64DbwJ5KFc1O0WjIALgAzIQgwyqanaJRkGa2C7gG7KwEyFbRiSFLVHQiyFIVHRuyZEXHgixd0VbIPig6ErIvijZC9knRWsi+KboMso+KLoFsUPQ3cMHbJWDq/WCHRsTHL29kZovAoQ6Bct7qB3TRIf3UVuacacfc3jnkI+Bwx0A5b59zyNXAXeBApT/0pOeBZ8CfnAlG5OZtoPe584Om2cy2AFeAg5VN34BzwC1JvwoFHaT9fzJQqbI+IB6wA1+AU5K8US52LRl/NKj7E5gFFiUVqe6yGY+Z+WhjDtjfF3VrB1lm5h9t7oeRf/HqNk7rzGwt8ADw2c7w20aR6o4cSZrZduAqsK+i7lfgjH/ckeQXiexX69y1Qd2PwElJT7InHPczQYO6P4AjwPPcq27rSQ5PqkFdv1GcBe7lrO7YkOFmVFd1s1d3IsgAWld1s1Z3YsgAWld1s1U3CrI0daMhS1K3E2Qp6naGbFH3hKSn074wJIEcoe5bSZt7A9mg7idJa3oFWVH3MrAeuCTJ/18w1fUPYqwuNX8snQAAAAAASUVORK5CYII=);
-      }
-      .title {
-        height: 45*@rem;
-        line-height: 45*@rem;
-        font-size: 18*@rem;
-        text-align: center;
-        background-color: rgba(72, 168, 58, 1);
-        color: rgba(255, 255, 255, 1);
-      }
+      display: inline-block;
+      width: 19*@rem;
+      height: 15*@rem;
+      padding: 15*@rem 14*@rem;
+      background-size: 19*@rem 15*@rem;
+      background-repeat: no-repeat;
+      background-position: 14*@rem 15*@rem;
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADkAAAAtCAYAAAAUX8MIAAACeElEQVRoQ92auYsUQRSHv5/+CSYigngguHiABx6BYGRisAaaiWBsoGBiIgjmph6LiSB4RsuqgauZR6yRgQaiooKYmHg8eUON9LLd0zPVBVPVldfr93V9vKn3ekTCZWYCNgI3gA3AeUk3Ez4iKpQnlWQFwL3AdWBrCPodWCXJkjwkMkhKyE3AHWAHsCLk81rStsjckm3rDFlR9HFQ1JPzk/sAHJP0Mlm2kYE6QTYo6qm8B04DDyX9jcwt2baukHWKfgaOAq9yAPQ3FQXZouhxSS+SHUOCQLGQu8PPRLWoZKVo9d1MDGlm64DbwJ5KFc1O0WjIALgAzIQgwyqanaJRkGa2C7gG7KwEyFbRiSFLVHQiyFIVHRuyZEXHgixd0VbIPig6ErIvijZC9knRWsi+KboMso+KLoFsUPQ3cMHbJWDq/WCHRsTHL29kZovAoQ6Bct7qB3TRIf3UVuacacfc3jnkI+Bwx0A5b59zyNXAXeBApT/0pOeBZ8CfnAlG5OZtoPe584Om2cy2AFeAg5VN34BzwC1JvwoFHaT9fzJQqbI+IB6wA1+AU5K8US52LRl/NKj7E5gFFiUVqe6yGY+Z+WhjDtjfF3VrB1lm5h9t7oeRf/HqNk7rzGwt8ADw2c7w20aR6o4cSZrZduAqsK+i7lfgjH/ckeQXiexX69y1Qd2PwElJT7InHPczQYO6P4AjwPPcq27rSQ5PqkFdv1GcBe7lrO7YkOFmVFd1s1d3IsgAWld1s1Z3YsgAWld1s1U3CrI0daMhS1K3E2Qp6naGbFH3hKSn074wJIEcoe5bSZt7A9mg7idJa3oFWVH3MrAeuCTJ/18w1fUPYqwuNX8snQAAAAAASUVORK5CYII=);
     }
+    .title {
+      height: 45*@rem;
+      line-height: 45*@rem;
+      font-size: 18*@rem;
+      text-align: center;
+      background-color: rgba(72, 168, 58, 1);
+      color: rgba(255, 255, 255, 1);
+    }
+  }
+  .gift-type1 {
     .gift-info{
-        position: relative;
-        h4{
-            font-size: 15*@rem;
-            font-weight: normal;
-        }
-        .gift-remain{
-            margin: 5*@rem 0;
-            b{
-              display: inline-block;
-              background: #E5E5E5;
-              width: 100*@rem;
-              height: 4*@rem;
-              margin-right: 5*@rem;
-              border-radius: 3*@rem;
-              overflow: hidden;
-              vertical-align: 2*@rem;
-              i{
-                display: block;
-                height: 4*@rem;
-                background: rgba(71, 168, 58, 1);
-              }
-            }
-            span{
-                color: #666666;
-              font-size: 10*@rem;
-            }
+      position: relative;
+      h4{
+        font-size: 15*@rem;
+        font-weight: normal;
+      }
+      .gift-remain{
+        margin: 5*@rem 0;
+        b{
+          display: inline-block;
+          background: #E5E5E5;
+          width: 100*@rem;
+          height: 4*@rem;
+          margin-right: 5*@rem;
+          border-radius: 3*@rem;
+          overflow: hidden;
+          vertical-align: 2*@rem;
+          i{
+            display: block;
+            height: 4*@rem;
+            background: rgba(71, 168, 58, 1);
           }
-          .get-number{
-            font-size: 10*@rem;
+        }
+        span{
             color: #666666;
-            line-height: 16*@rem;
-            
-          }
-          .get-gift{
-            box-sizing: border-box;
-            position: absolute;
-            right: 15*@rem;
-            top: 20*@rem;
-            display: block;
-            width: 60*@rem;
-            height: 30*@rem;
-            border-radius: 5*@rem;
-            line-height: 30*@rem;
-            text-align: center;
-            color: rgba(71, 168, 58, 1);
-            border: 1px solid rgba(71, 168, 58, 1);
-            font-size: 14*@rem;
-            &.already {
-              color: #6e6e6e;
-              border-color: #6e6e6e;
-            }
-          }
-          a.get-account{
-            box-sizing: border-box;
-            position: absolute;
-            right: 10*@rem;
-            top: 43*@rem;
-            display: block;
-            width: 50*@rem;
-            height: 25*@rem;
-            border-radius: 5*@rem;
-            line-height: 25*@rem;
-            text-align: center;
-            color: rgba(71, 168, 58, 1);
-            border: 1px solid rgba(71, 168, 58, 1);
-            font-size: 12*@rem;
-          }
-    }
-    .gift-section{
-        border-bottom: 1px solid #eee;
-        padding: 8*@rem 10*@rem 12*@rem;
+          font-size: 10*@rem;
+        }
+      }
+      .get-number{
+        font-size: 10*@rem;
+        color: #666666;
+        line-height: 16*@rem;
+        
+      }
+      .get-gift{
+        box-sizing: border-box;
+        position: absolute;
+        right: 15*@rem;
+        top: 20*@rem;
+        display: block;
+        width: 60*@rem;
+        height: 30*@rem;
+        border-radius: 5*@rem;
+        line-height: 30*@rem;
+        text-align: center;
+        color: rgba(71, 168, 58, 1);
+        border: 1px solid rgba(71, 168, 58, 1);
         font-size: 14*@rem;
-        .section-title{
-            color: #4FD03EFF;
-            margin-bottom:5*@rem;
+        &.already {
+          color: #6e6e6e;
+          border-color: #6e6e6e;
         }
-        p{
-            color: #333;
-            line-height: 21*@rem;
-        }
+      }
+      a.get-account{
+        box-sizing: border-box;
+        position: absolute;
+        right: 10*@rem;
+        top: 43*@rem;
+        display: block;
+        width: 50*@rem;
+        height: 25*@rem;
+        border-radius: 5*@rem;
+        line-height: 25*@rem;
+        text-align: center;
+        color: rgba(71, 168, 58, 1);
+        border: 1px solid rgba(71, 168, 58, 1);
+        font-size: 12*@rem;
+      }
     }
+  }
+  .gift-section{
+    border-bottom: 1px solid #eee;
+    padding: 8*@rem 10*@rem 12*@rem;
+    font-size: 14*@rem;
+    .section-title{
+        color: #4FD03EFF;
+        margin-bottom:5*@rem;
+    }
+    p{
+        color: #333;
+        line-height: 21*@rem;
+    }
+}
+  .gift-type2 {
+    position: relative;
+    height: 61*@rem;
+    padding: 8*@rem 10*@rem 12*@rem;
+    border-bottom: 1px solid #eee;
+    .title {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      .gift-name {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 15*@rem;
+      }
+    }
+    .code {
+      margin-top: 10*@rem;
+      font-size: 14*@rem;
+      color: #333;
+      .orange {
+        margin-left: 5*@rem;
+        color: #ff9d02;
+      }
+    }
+    .boon {
+      color: #333;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .get-gift {
+      box-sizing: border-box;
+      position: absolute;
+      right: 15*@rem;
+      top: 20*@rem;
+      width: 60*@rem;
+      height: 30*@rem;
+      text-align: center;
+      line-height: 28*@rem;
+      border: 1px solid #47a83a;
+      font-size: 14*@rem;
+      color: #47a83a;
+      border-radius: 5px;
+    }
+  }
 }

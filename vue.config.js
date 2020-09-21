@@ -13,13 +13,13 @@ module.exports = {
           '^/api': '/api'
         } 
       },
-      '/manage': {
-        target: 'https://grq.3733.com',
-        changeOrigin: true,
-        pathRewrite: {
-            '^/manage': '/index/api'
-        }
-      }
+      // '/manage': {
+      //   target: 'https://grq.3733.com',
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //       '^/manage': '/index/api'
+      //   }
+      // }
     }
   },
   productionSourceMap: false,
@@ -27,7 +27,7 @@ module.exports = {
   // 如果是H5编译
   // publicPath: '/static/h5/box/',
   // 如果是APP编译
-  publicPath: 'https://static.3733.com/3733/',
+  // publicPath: 'https://static.3733.com/3733/',
   // 如果是APP编译
   indexPath: 'btdown.html',
 }   

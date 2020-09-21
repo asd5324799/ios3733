@@ -52,14 +52,14 @@
       </main>
     <!-- download -->
     <div class="game-download">
-      <!-- <div class="left"><i class="icon icon-left"></i><div class="text">收藏</div></div>  -->
+      <div class="left" :class="{collected: collection_status===1?true:false}" @click="collect()"><i class="icon icon-left"></i><div class="text">{{collection_text}}</div></div> 
       <div 
         @click="clickEvent($store.getters.gameInfo.h5_url)" 
         class="download"
         ref="down"
         :class="{
-          appointment: this.$store.getters.gameInfo.state === 2,
-          already: this.$store.getters.gameInfo.subscribed === 1 || alreadyAppointment,
+          appointment: this.$store.getters.gameInfo.state === '2',
+          already: this.$store.getters.gameInfo.subscribed === '1' || alreadyAppointment,
           h5: this.$store.getters.gameInfo.hasOwnProperty('h5_url') && this.$store.getters.gameInfo.h5_url !== null,
         }"
 
@@ -67,7 +67,10 @@
         <span></span>
         <div>{{text}}</div>
       </div>
-      <!-- <div class="right"><i class="icon icon-right"></i><div class="text">分享</div></div>  -->
+      <div class="right">
+        <!-- <i class="icon icon-right"></i> -->
+        <!-- <div class="text">分享</div> -->
+      </div> 
     </div>
   </div>
 </template>
@@ -98,13 +101,14 @@ export default {
       ],
       fixed: false,
       alreadyAppointment: false,
+      collection_status: -1,
     }
   },
   computed: {
     text() {
-      if(this.$store.getters.gameInfo.state === 2) {
+      if(this.$store.getters.gameInfo.state === '2') {
         // 如果是预约页面
-        if(this.$store.getters.gameInfo.subscribed === 1 || this.alreadyAppointment) {
+        if(this.$store.getters.gameInfo.subscribed === '1' || this.alreadyAppointment) {
           return '已预约'
         } else {
           return `预约《${this.$store.getters.gameInfo.title}》`
@@ -115,6 +119,9 @@ export default {
       } else {
         return `下载《${this.$store.getters.gameInfo.title}》`
       }
+    },
+    collection_text() {
+      return this.collection_status === -1 ? '收藏' : '已收藏'
     }
   },
   created() {
@@ -143,6 +150,19 @@ export default {
       } else {
         this.alreadyAppointment = false;
       }
+      if(sessionStorage.getItem('token') !== null && sessionStorage.getItem('token') !== '') {
+        this.$axios({
+          url: '/api/resource/collStatus',
+          data: {
+            token: sessionStorage.getItem('token'),
+            sourceId: this.id,
+            classId: 3
+          }
+        })
+        .then(res => {
+          this.collection_status = res.data.collection_status === 0?-1:1;
+        })
+      }
     },
     changeDetail() {
       this.createdMethod();
@@ -153,7 +173,7 @@ export default {
           name: 'Login'
         })
       } else {
-        if(this.$store.getters.gameInfo.state === 2) { 
+        if(this.$store.getters.gameInfo.state === '2') { 
           // 如果是预约详情页
           this.$axios({
             url: '/api/game/subscribe',
@@ -183,6 +203,24 @@ export default {
           this.$store.commit("setShowDownloadInfo", true);
         }
       }
+    },
+    collect() {
+      this.$axios({
+        url: '/api/resource/collect',
+        data: {
+          token: sessionStorage.getItem('token'),
+          sourceId: this.id,
+          classId: '3',
+          status: this.collection_status === -1 ? 1 : -1,
+        }
+      })
+      .then(res => {
+        this.$toast(res.msg);
+        this.collection_status = res.data.status === 0 ? -1 : 1;
+      })
+      .catch(() => {
+        this.$toast('请求失败啦！请稍后重试~');
+      })
     }
   },
   components: {

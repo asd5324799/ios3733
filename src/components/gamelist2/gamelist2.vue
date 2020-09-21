@@ -85,7 +85,7 @@ export default {
       });
     },
     clickEvent(item = {}, gameUrl = '') {
-      if(!sessionStorage.getItem('token') && sessionStorage.getItem('token') === '') {
+      if(!sessionStorage.getItem('token') || sessionStorage.getItem('token') === '') {
         this.$router.push({
           name: 'Login'
         })
